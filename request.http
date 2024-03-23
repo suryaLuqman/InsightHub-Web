@@ -1,0 +1,17 @@
+### regis
+POST http://localhost:3000/api/v1/auth/admin/register
+Content-Type: application/json
+
+{
+  "idAdmin":"admin",
+  "password":"admin123"
+}
+
+### Login
+POST http://localhost:3000/api/v1/auth/admin/login
+Content-Type: application/json
+
+{
+  "idAdmin":"admin",
+  "password":"admin123"
+}
