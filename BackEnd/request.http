@@ -29,7 +29,7 @@ Content-Type: application/json
 
 
 ### change password
-# POST http://localhost:3000/api/v1/auth/change-password?token={link email params}
+# POST /api/v1/auth/change-password?token={link email params}
 POST http://localhost:3000/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJpYXQiOjE3MTEyNzQ0NTksImV4cCI6MTcxMTI3ODA1OX0.8DutF9Lu5WdR-sQ_Pv9jzVmhz-To6U1JqRjkxu06BOQ
 Content-Type: application/json
 

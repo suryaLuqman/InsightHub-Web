@@ -4,12 +4,28 @@
         {
             "src": "BackEnd/app.js",
             "use": "@vercel/node"
+        },
+        {
+            "src": "package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "build"
+            }
         }
     ],
     "routes": [
         {
-            "src": "/(.*)",
-            "dest": "BackEnd/app.js"
+            "src": "/api/v1/auth/(.*)",
+            "dest": "BackEnd/api/v1/auth/$1"
+        },
+        {
+            "src": "/api/v1/kategori/(.*)",
+            "dest": "BackEnd/api/v1/kategori/$1"
+        },
+        {
+            "src": "/api/v1/artikel/(.*)",
+            "dest": "BackEnd/api/v1/artikel/$1"
         }
     ]
+
 }
