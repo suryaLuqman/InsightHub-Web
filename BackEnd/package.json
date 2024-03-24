@@ -4,9 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "build": "prisma generate && next build",
     "start": "node app.js",
-    "dev": "nodemon app.js",
-    "build": "prisma generate && next build"
+    "dev": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
