@@ -5,14 +5,14 @@ const prisma = require('../libs/prisma');
 const { createUserSchema, createAdminSchema, loginSchema } = require('../validation/auth.validations');
 
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  
-  if (token == null) return res.sendStatus(401); // No token
+const authenticateUser = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader?.split(' ')[1];
+
+  if (!token) return res.sendStatus(401);
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return res.sendStatus(403); // Invalid token or expired token
+    if (err) return res.sendStatus(403);
 
     req.user = decoded;
     next();
@@ -266,6 +266,6 @@ module.exports = {
   login,
   registerUser,
   registerAdmin,
-  authenticateToken,
+  authenticateUser,
   registerSU
 };
