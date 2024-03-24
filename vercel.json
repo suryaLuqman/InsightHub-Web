@@ -16,7 +16,7 @@
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "/"
+            "dest": "BackEnd/app.js"
         }
     ]
 }
