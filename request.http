@@ -4,7 +4,7 @@ POST http://localhost:3000/api/v1/auth/register/user
 Content-Type: application/json
 
 {
-  "email":"user01@gmail.com", 
+  "email":"jeni.riskaa@gmail.com", 
   "password":"123123", 
   "nama":"user1"
 }
@@ -15,8 +15,33 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "user01@gmail.com", 
-  "password": "123123"
+  "email":"jeni.riskaa@gmail.com", 
+  "password": "user12345"
+}
+
+### forgot password
+POST http://localhost:3000/api/v1/auth/forgotPassword
+Content-Type: application/json
+
+{
+    "email": "jeni.riskaa@gmail.com"
+}
+
+### forgot password
+POST http://localhost:3000/api/v1/auth/forgotPassword
+Content-Type: application/json
+
+{
+    "email": "jeni.riskaa@gmail.com"
+}
+
+### reset password
+POST http://localhost:3000/api/v1/auth/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJpYXQiOjE3MTEyODY4NTUsImV4cCI6MTcxMTI5MDQ1NX0.pBQ92xAZNDSF8oQ8m0vfn-lZfRmA3JcxoAxlrRnJ7lE
+Content-Type: application/json
+
+{
+  "password":"user12345",
+  "confirm_password":"user12345"
 }
 
 ### regis SUPERADMIN

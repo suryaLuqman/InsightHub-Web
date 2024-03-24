@@ -2,8 +2,8 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const prisma = require('../libs/prisma');
-const { createUserSchema, createAdminSchema, loginSchema } = require('../validation/auth.validations');
-
+const nodemailer=require('../libs/nodemailer');
+const { createUserSchema, createAdminSchema, loginSchema ,forgotPasswordSchema, resetPasswordSchema} = require('../validation/auth.validations');
 
 const authenticateUser = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -260,11 +260,118 @@ const registerAdmin = async (req, res, next) => {
     next(error);
   }
 };
+const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    await forgotPasswordSchema.validateAsync({ ...req.body });
+
+    const user = await prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({
+        status: false,
+        message: 'User not found',
+        err: null,
+        data: null,
+      });
+    } else {
+      const token = jwt.sign(
+        {
+          id: user.id,
+          name: user.nickname,
+          email: user.email,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      );
+      console.log("ini token :", token);
+      let url = `http://localhost:3000/reset-password?token=${token}`;
+
+      let html = `<p>Hi ${user.nama},</p>
+      <p>You have requested to reset your password.</p>
+      <p>Please click on the link below to reset your password:</p>
+      <a href="${url}">${url}</a>`;
+      await nodemailer.sendEmail(email, 'Reset Password Request', html);
+
+      return res.json({
+        status: true,
+        message: 'Password reset link sent to email successfully',
+        err: null,
+        data: null,
+      });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+const resetPassword = async (req, res, next) => {
+  try {
+    const { token } = req.query;
+
+    if (!token) {
+      return res.status(400).json({
+        status: false,
+        message: 'Token is missing!',
+        err: null,
+        data: null,
+      });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return res.status(400).json({
+        status: false,
+        message: 'Invalid token!',
+        err: err.message,
+        data: null,
+      });
+    }
+
+    const { password, confirm_password } = req.body;
+
+    await resetPasswordSchema.validateAsync({ ...req.body });
+
+    if (password !== confirm_password) {
+      return res.status(400).json({
+        status: false,
+        message: 'Password & Confirm_Password do not match!',
+        err: null,
+        data: null,
+      });
+    }
+
+    await prisma.user.update({
+      where: {
+        email: decoded.email,
+      },
+      data: {
+        password: await bcrypt.hash(password, 10),
+      },
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: 'Password updated successfully!',
+      err: null,
+      data: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 
 module.exports = {
   login,
   registerUser,
   registerAdmin,
   authenticateUser,
-  registerSU
+  registerSU,
+  resetPassword,
+  forgotPassword
 };
