@@ -60,3 +60,36 @@ Content-Type: application/json
 }
 
 
+###Membuat Artikel Baru (POST)
+POST http://localhost:3000/api/v1/artikel/add
+Content-Type: application/json
+
+{
+  "judul": "Judul Artikel",
+  "deskripsi": "Deskripsi lengkap dari artikel",
+  "link": "http://contohlink.com",
+  "gambar_artikel": "http://contohgambar.com/gambar.jpg",
+  "kategoriId": 1,
+  "authorId": 1
+}
+
+###Mengambil Semua Artikel (GET)
+GET http://localhost:3000/api/v1/artikel/get-all
+
+###Edit Artikel (PUT)
+PUT http://localhost:3000/api/v1/artikel/edit/1
+Content-Type: application/json
+
+{
+  "judul": "Judul Artikel Baru",
+  "deskripsi": "Deskripsi baru dari artikel",
+  "link": "http://contohlinkbaru.com",
+  "gambar_artikel": "http://contohgambarbaru.com/gambar.jpg",
+  "kategoriId": 2,
+  "authorId": 1
+}
+
+###DELETE ARTIKEL 
+DELETE http://localhost:3000/api/v1/artikel/delete/1
+
+

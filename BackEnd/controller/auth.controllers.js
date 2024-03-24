@@ -213,7 +213,6 @@ const registerSU = async (req, res, next) => {
 const registerAdmin = async (req, res, next) => {
   try {
     const { email, password, nama } = req.body;
-    console.log("ini req body", req.body);
     const { value, error } = await createAdminSchema.validateAsync({ email, password, nama });
     if (error) {
       return res.status(400).json({
