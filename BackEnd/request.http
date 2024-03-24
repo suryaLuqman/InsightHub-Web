@@ -4,7 +4,7 @@ POST http://localhost:3000/api/v1/auth/register/user
 Content-Type: application/json
 
 {
-  "email":"jeni.riskaa@gmail.com", 
+  "email":"jeni.riska@gmail.com", 
   "password":"123123", 
   "nama":"user1"
 }
@@ -15,8 +15,8 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email":"jeni.riskaa@gmail.com", 
-  "password": "user12345"
+  "email":"jeni.riska@gmail.com", 
+  "password": "123123"
 }
 
 ### forgot password
@@ -24,18 +24,12 @@ POST http://localhost:3000/api/v1/auth/forgotPassword
 Content-Type: application/json
 
 {
-    "email": "jeni.riskaa@gmail.com"
+    "email": "jeni.riska@gmail.com"
 }
 
-### forgot password
-POST http://localhost:3000/api/v1/auth/forgotPassword
-Content-Type: application/json
-
-{
-    "email": "jeni.riskaa@gmail.com"
-}
 
 ### change password
+# POST http://localhost:3000/api/v1/auth/change-password?token={link email params}
 POST http://localhost:3000/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJpYXQiOjE3MTEyNzQ0NTksImV4cCI6MTcxMTI3ODA1OX0.8DutF9Lu5WdR-sQ_Pv9jzVmhz-To6U1JqRjkxu06BOQ
 Content-Type: application/json
 
@@ -132,7 +126,7 @@ GET http://localhost:3000/api/v1/artikel/get-all
 
 ###Edit Artikel (PUT)
 # PUT /api/v1/artikel/edit/:id
-PUT http://localhost:3000/api/v1/artikel/edit/4
+PUT http://localhost:3000/api/v1/artikel/edit/1
 Content-Type: application/json
 
 {
@@ -140,7 +134,7 @@ Content-Type: application/json
   "deskripsi": "Deskripsi baru dari artikel",
   "link": "http://contohlinkbaru.com",
   "gambar_artikel": "http://contohgambarbaru2.com/gambar.jpg",
-  "kategoriId": 2,
+  "kategoriId": 1,
   "authorId": 1
 }
 
