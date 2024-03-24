@@ -1,4 +1,5 @@
 ### regis user
+# POST /api/v1/auth/register/user
 POST http://localhost:3000/api/v1/auth/register/user
 Content-Type: application/json
 
@@ -9,6 +10,7 @@ Content-Type: application/json
 }
 
 ### Login user
+# POST /api/v1/auth/login
 POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
@@ -18,6 +20,7 @@ Content-Type: application/json
 }
 
 ### regis SUPERADMIN
+# POST /api/v1/auth/register/su
 POST http://localhost:3000/api/v1/auth/register/su
 Content-Type: application/json
 
@@ -28,6 +31,7 @@ Content-Type: application/json
 }
 
 ### Login SUPER ADMIN
+# POST /api/v1/auth/login
 POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
@@ -39,9 +43,10 @@ Content-Type: application/json
 
 
 ### regis admin
+# POST /api/v1/auth/register/admin
 POST http://localhost:3000/api/v1/auth/register/admin
 Content-Type: application/json
-# Authorization: Bearer <token didapat saat login dengan superUser dan token akan nonAktif >1d>
+# Authorization: Bearer <token didapat saat login dengan superUser dan token akan nonAktif > 1 days
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJzdXBlcjAxQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiLCJBRE1JTiIsIlNVUEVSQURNSU4iXSwiaWF0IjoxNzExMjQxMzQ5LCJleHAiOjE3MTEzMjc3NDl9.NG8vNoSE9_Agzc3w6wR9BI7kluZ98EtdArcuo3Rx6c4
 
 {
@@ -51,6 +56,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiO
 }
 
 ### Login admin
+# POST /api/v1/auth/login
 POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
@@ -62,6 +68,7 @@ Content-Type: application/json
 
 
 ###Membuat kategori Baru
+# POST /api/v1/kategori/add
 POST http://localhost:3000/api/v1/kategori/add
 Content-Type: application/json
 
@@ -71,15 +78,17 @@ Content-Type: application/json
 }
 
 ###Mengambil semua kategori
+# GET /api/v1/kategori/get-all
 GET http://localhost:3000/api/v1/kategori/get-all
 
 ###DELETE kategori
-# DELETE http://localhost:3000/api/v1/kategori/delete/:id
+# DELETE /api/v1/kategori/delete/:id
 DELETE http://localhost:3000/api/v1/kategori/delete/1
 
 
 
 ###Membuat Artikel Baru (POST)
+# POST /api/v1/artikel/add
 POST http://localhost:3000/api/v1/artikel/add
 Content-Type: application/json
 
@@ -93,10 +102,11 @@ Content-Type: application/json
 }
 
 ###Mengambil Semua Artikel (GET)
+# GET /api/v1/artikel/get-all
 GET http://localhost:3000/api/v1/artikel/get-all
 
 ###Edit Artikel (PUT)
-# PUT http://localhost:3000/api/v1/artikel/edit/:id
+# PUT /api/v1/artikel/edit/:id
 PUT http://localhost:3000/api/v1/artikel/edit/4
 Content-Type: application/json
 
@@ -110,12 +120,12 @@ Content-Type: application/json
 }
 
 ###DELETE ARTIKEL 
-# DELETE http://localhost:3000/api/v1/artikel/delete/:id
+# DELETE /api/v1/artikel/delete/:id
 DELETE http://localhost:3000/api/v1/artikel/delete/4
 
 
 # Mencari Artikel
-# http://localhost:3000/api/v1/artikel/search?:param=key
+# /api/v1/artikel/search?:param=key
 
 # example
 ###Mencari Artikel Berdasarkan Kategori
