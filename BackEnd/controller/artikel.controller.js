@@ -6,11 +6,20 @@ const createArtikel = async (req, res, next) => {
   try {
     const { judul, deskripsi, link, gambar_artikel, kategoriId, authorId } = req.body;
 
-    if (!judul || !deskripsi || !link || !kategoriId || !authorId) {
+    let missingFields = [];
+
+    if (!judul) missingFields.push("judul");
+    if (!deskripsi) missingFields.push("deskripsi");
+    if (!link) missingFields.push("link");
+    if (!kategoriId) missingFields.push("kategoriId");
+    if (!authorId) missingFields.push("authorId");
+
+    // Jika ada field yang hilang, kembalikan error dengan detail field yang hilang.
+    if (missingFields.length > 0) {
       return res.status(400).json({
         success: false,
-        message: 'Missing required fields',
-        data: null,
+        message: `Missing required fields: ${missingFields.join(", ")}`,
+        data: missingFields,
       });
     }
 
