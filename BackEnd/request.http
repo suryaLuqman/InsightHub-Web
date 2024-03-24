@@ -148,11 +148,11 @@ DELETE http://localhost:3000/api/v1/artikel/delete/4
 
 # example
 ###Mencari Artikel Berdasarkan Kategori
-GET http://localhost:3000/api/v1/artikel/search?kategori=Teknologi
+GET http://localhost:3000/api/v1/search-artikel/search?kategori=Teknologi
 
 ###Mencari Artikel Berdasarkan Judul
-GET http://localhost:3000/api/v1/artikel/search?judul=artikel
+GET http://localhost:3000/api/v1/search-artikel/search?judul=ok
 
 ###Mencari Artikel Berdasarkan AuthorId
-GET http://localhost:3000/api/v1/artikel/search?authorId=1
+GET http://localhost:3000/api/v1/search-artikel/search?authorId=1
 

@@ -15,17 +15,8 @@
     ],
     "routes": [
         {
-            "src": "/api/v1/auth/(.*)",
-            "dest": "BackEnd/api/v1/auth/$1"
-        },
-        {
-            "src": "/api/v1/kategori/(.*)",
-            "dest": "BackEnd/api/v1/kategori/$1"
-        },
-        {
-            "src": "/api/v1/artikel/(.*)",
-            "dest": "BackEnd/api/v1/artikel/$1"
+            "src": "/api/v1/(.*)",
+            "dest": "BackEnd/api/v1/$1"
         }
     ]
-
 }

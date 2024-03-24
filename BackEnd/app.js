@@ -10,10 +10,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use('/api/v1', require('./routes/index.routes'));
-// Gunakan artikel routes
-app.use(artikelRoutes);
-app.use(kategoriRoutes);
-app.use(searchArtikel);
 app.use(notFound);
 app.use(serverError);
 
