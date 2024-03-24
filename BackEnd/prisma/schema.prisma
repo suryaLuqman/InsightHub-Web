@@ -1,6 +1,3 @@
-// This is your Prisma schema file, 
-// learn more about it in the docs: https://pris.ly/d/prisma-schema 
- 
 generator client { 
   provider = "prisma-client-js" 
 } 
@@ -10,23 +7,18 @@ datasource db {
   url      = env("DATABASE_URL") 
 }
 
-model Admin {
-  id        Int      @id @default(autoincrement())
-  idAdmin   String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model User { 
+  id          Int           @id @default(autoincrement()) 
+  email       String        @unique 
+  password    String 
+  nama        String 
+  profile     UserProfile? 
+  roles       Role[]        @default([USER])
+  articles    Artikel[]     
+  ratings     Rating[]      
+  reports     Report[]      
 }
 
-
-model User { 
-  id       Int         @id @default(autoincrement()) 
-  email    String      @unique 
-  password String 
-  nama     String 
-  profile  UserProfile? 
-} 
- 
 model UserProfile { 
   id              Int      @id @default(autoincrement()) 
   first_name      String 
@@ -36,7 +28,7 @@ model UserProfile {
   user            User     @relation(fields: [userId], references: [id]) 
   userId          Int      @unique 
 } 
- 
+
 model Artikel { 
   id              Int      @id @default(autoincrement()) 
   judul           String 
@@ -45,12 +37,40 @@ model Artikel {
   gambar_artikel  String   @unique 
   kategori        Kategori @relation(fields: [kategoriId], references: [id]) 
   kategoriId      Int 
-  author          String 
+  author          User     @relation(fields: [authorId], references: [id])
+  authorId        Int
+  ratings         Rating[] 
+  reports         Report[] 
 } 
- 
+
 model Kategori { 
-  id        Int      @id @default(autoincrement()) 
-  nama      String 
+  id       Int       @id @default(autoincrement()) 
+  nama     String 
   deskripsi String? 
-  artikel   Artikel[] 
+  articles Artikel[] 
+} 
+
+model Rating {
+  id        Int     @id @default(autoincrement())
+  nilai     Int
+  artikel   Artikel @relation(fields: [artikelId], references: [id])
+  artikelId Int
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+}
+
+model Report {
+  id        Int     @id @default(autoincrement())
+  alasan    String
+  artikel   Artikel @relation(fields: [artikelId], references: [id])
+  artikelId Int
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+}
+
+// Enum untuk Role User
+enum Role {
+  ADMIN
+  USER
+  SUPERADMIN
 }

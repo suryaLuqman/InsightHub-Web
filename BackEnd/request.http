@@ -1,17 +1,62 @@
-### regis
-POST http://localhost:3000/api/v1/auth/admin/register
+### regis user
+POST http://localhost:3000/api/v1/auth/register/user
 Content-Type: application/json
 
 {
-  "idAdmin":"admin",
-  "password":"admin123"
+  "email":"user01@gmail.com", 
+  "password":"123123", 
+  "nama":"user1"
 }
 
-### Login
-POST http://localhost:3000/api/v1/auth/admin/login
+### Login user
+POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "idAdmin":"admin",
-  "password":"admin123"
+  "email": "user01@gmail.com", 
+  "password": "123123"
 }
+
+### regis SUPERADMIN
+POST http://localhost:3000/api/v1/auth/register/su
+Content-Type: application/json
+
+{
+  "email":"super01@gmail.com", 
+  "password":"123123", 
+  "nama":"super1"
+}
+
+### Login SUPER ADMIN
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "super01@gmail.com", 
+  "password": "123123"
+}
+
+
+
+### regis admin
+POST http://localhost:3000/api/v1/auth/register/admin
+Content-Type: application/json
+# Authorization: Bearer <token didapat saat login dengan superUser token akan nonAktif >1d>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJzdXBlcjAxQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiLCJBRE1JTiIsIlNVUEVSQURNSU4iXSwiaWF0IjoxNzExMjQxMzQ5LCJleHAiOjE3MTEzMjc3NDl9.NG8vNoSE9_Agzc3w6wR9BI7kluZ98EtdArcuo3Rx6c4
+
+{
+  "email": "admin01@gmail.com", 
+  "password": "123123", 
+  "nama": "admin11"
+}
+
+### Login admin
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin01@gmail.com", 
+  "password": "123123"
+}
+
+
