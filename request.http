@@ -35,8 +35,8 @@ Content-Type: application/json
     "email": "jeni.riskaa@gmail.com"
 }
 
-### reset password
-POST http://localhost:3000/api/v1/auth/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJpYXQiOjE3MTEyODY4NTUsImV4cCI6MTcxMTI5MDQ1NX0.pBQ92xAZNDSF8oQ8m0vfn-lZfRmA3JcxoAxlrRnJ7lE
+### change password
+POST http://localhost:3000/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJpYXQiOjE3MTEyNzQ0NTksImV4cCI6MTcxMTI3ODA1OX0.8DutF9Lu5WdR-sQ_Pv9jzVmhz-To6U1JqRjkxu06BOQ
 Content-Type: application/json
 
 {
@@ -116,13 +116,13 @@ DELETE http://localhost:3000/api/v1/kategori/delete/1
 # POST /api/v1/artikel/add
 POST http://localhost:3000/api/v1/artikel/add
 Content-Type: application/json
-
+ 
 {
   "judul": "okkey gaes",
   "deskripsi": "Deskripsi lengkap dari artikel",
   "link": "http://contohlink.com",
-  "gambar_artikel": "http://contohgambar3.com/gambar.jpg",
-  "kategoriId": 2,
+  "gambar_artikel": "",
+  "kategoriId": 1,
   "authorId": 1
 }
 

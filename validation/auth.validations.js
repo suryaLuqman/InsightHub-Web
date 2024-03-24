@@ -20,7 +20,7 @@ const forgotPasswordSchema = joi.object({
   email: joi.string().email().required(),
 });
 
-const resetPasswordSchema = joi.object({
+const changePasswordSchema = joi.object({
   password: joi.string().min(6).required(),
   confirm_password: joi.string().min(6).required(),
 });
@@ -29,6 +29,6 @@ module.exports = {
   createUserSchema,
   createAdminSchema,
   loginSchema,
-  resetPasswordSchema,
+  changePasswordSchema,
   forgotPasswordSchema
 };

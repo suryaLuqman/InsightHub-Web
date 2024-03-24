@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const prisma = require('../libs/prisma');
 const nodemailer=require('../libs/nodemailer');
-const { createUserSchema, createAdminSchema, loginSchema ,forgotPasswordSchema, resetPasswordSchema} = require('../validation/auth.validations');
+const { createUserSchema, createAdminSchema, loginSchema ,forgotPasswordSchema, changePasswordSchema} = require('../validation/auth.validations');
 
 const authenticateUser = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -286,17 +286,17 @@ const forgotPassword = async (req, res, next) => {
         { expiresIn: '1h' }
       );
       console.log("ini token :", token);
-      let url = `http://localhost:3000/reset-password?token=${token}`;
+      let url = `http://localhost:3000/api/v1/auth/change-password?token=${token}`;
 
       let html = `<p>Hi ${user.nama},</p>
-      <p>You have requested to reset your password.</p>
-      <p>Please click on the link below to reset your password:</p>
+      <p>You have requested to change your password.</p>
+      <p>Please click on the link below to change your password:</p>
       <a href="${url}">${url}</a>`;
-      await nodemailer.sendEmail(email, 'Reset Password Request', html);
+      await nodemailer.sendEmail(email, 'change Password Request', html);
 
       return res.json({
         status: true,
-        message: 'Password reset link sent to email successfully',
+        message: 'Password change link sent to email successfully',
         err: null,
         data: null,
       });
@@ -306,7 +306,7 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
-const resetPassword = async (req, res, next) => {
+const changePassword = async (req, res, next) => {
   try {
     const { token } = req.query;
 
@@ -333,7 +333,7 @@ const resetPassword = async (req, res, next) => {
 
     const { password, confirm_password } = req.body;
 
-    await resetPasswordSchema.validateAsync({ ...req.body });
+    await changePasswordSchema.validateAsync({ ...req.body });
 
     if (password !== confirm_password) {
       return res.status(400).json({
@@ -372,6 +372,6 @@ module.exports = {
   registerAdmin,
   authenticateUser,
   registerSU,
-  resetPassword,
+  changePassword,
   forgotPassword
 };
