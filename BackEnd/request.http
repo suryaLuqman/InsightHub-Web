@@ -114,3 +114,16 @@ Content-Type: application/json
 DELETE http://localhost:3000/api/v1/artikel/delete/4
 
 
+# Mencari Artikel
+# http://localhost:3000/api/v1/artikel/search?:param=key
+
+# example
+###Mencari Artikel Berdasarkan Kategori
+GET http://localhost:3000/api/v1/artikel/search?kategori=Teknologi
+
+###Mencari Artikel Berdasarkan Judul
+GET http://localhost:3000/api/v1/artikel/search?judul=artikel
+
+###Mencari Artikel Berdasarkan AuthorId
+GET http://localhost:3000/api/v1/artikel/search?authorId=1
+

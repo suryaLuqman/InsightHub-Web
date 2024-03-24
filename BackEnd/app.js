@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const artikelRoutes = require('./routes/artikel.routes');
 const kategoriRoutes = require('./routes/kategori.routes');
+const searchArtikel = require('./routes/search.artikel.routes');
 const { serverError, notFound } = require('./middleware/error.handling');
 const PORT = process.env.PORT || 3000;
 
@@ -12,6 +13,7 @@ app.use('/api/v1', require('./routes/index.routes'));
 // Gunakan artikel routes
 app.use(artikelRoutes);
 app.use(kategoriRoutes);
+app.use(searchArtikel);
 app.use(notFound);
 app.use(serverError);
 
