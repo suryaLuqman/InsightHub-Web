@@ -160,3 +160,33 @@ GET http://localhost:3000/api/v1/search-artikel/search?judul=ok
 ###Mencari Artikel Berdasarkan AuthorId
 GET http://localhost:3000/api/v1/search-artikel/search?authorId=1
 
+
+### Memberikan Rating pada Artikel (POST)
+POST http://localhost:3000/api/v1/artikel/action/rating
+Content-Type: application/json
+
+{
+  "artikelId": 123,
+  "userId": 456,
+  "nilai": 4
+}
+
+### Melaporkan Artikel (POST)
+POST http://localhost:3000/api/v1/artikel/action/report
+Content-Type: application/json
+
+{
+  "artikelId": 123,
+  "userId": 456,
+  "alasan": "Isi laporan disini"
+}
+
+### Menyimpan Artikel (POST)
+POST http://localhost:3000/api/v1/artikel/action/save
+Content-Type: application/json
+
+{
+  "artikelId": 123,
+  "userId": 456
+}
+
