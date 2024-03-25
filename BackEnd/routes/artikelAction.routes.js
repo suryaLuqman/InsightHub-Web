@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const artikelActionController = require('../controller/artikelAction.controller');
+const { saveArtikel, reportArtikel, rateArtikel,verifyToken } = require('../controller/artikelAction.controller');
 
 
-// Routes for article actions
-router.post('/rating', artikelActionController.addRatingToArtikel);
-router.post('/report', artikelActionController.reportArtikel);
-router.post('/save', artikelActionController.saveArtikel);
+// Menyimpan artikel
+router.post('/save/:artikelId', verifyToken, saveArtikel);
+
+// Melaporkan artikel
+router.post('/report/:artikelId',verifyToken, reportArtikel);
+
+// Memberikan rating pada artikel
+router.post('/rate/:artikelId',verifyToken,rateArtikel);
 
 module.exports = router;

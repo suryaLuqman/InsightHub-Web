@@ -70,7 +70,7 @@ Content-Type: application/json
 POST http://localhost:3000/api/v1/auth/register/admin
 Content-Type: application/json
 # Authorization: Bearer <token didapat saat login dengan superUser dan token akan nonAktif > 1 days
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJzdXBlcjAxQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiLCJBRE1JTiIsIlNVUEVSQURNSU4iXSwiaWF0IjoxNzExMjQxMzQ5LCJleHAiOjE3MTEzMjc3NDl9.NG8vNoSE9_Agzc3w6wR9BI7kluZ98EtdArcuo3Rx6c4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJzdXBlcjAxQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiLCJBRE1JTiIsIlNVUEVSQURNSU4iXSwiaWF0IjoxNzExMzU2NjQwLCJleHAiOjE3MTE0NDMwNDB9.BEsIUz7Kltxt7sKvfEPbUIg4fIx16PqkE_VXh2nyg
 
 {
   "email": "admin01@gmail.com", 
@@ -161,32 +161,31 @@ GET http://localhost:3000/api/v1/search-artikel/search?judul=ok
 GET http://localhost:3000/api/v1/search-artikel/search?authorId=1
 
 
-### Memberikan Rating pada Artikel (POST)
-POST http://localhost:3000/api/v1/artikel/action/rating
+### Menyimpan Artikel
+# POST http://localhost:3000/api/v1/artikel/save/{artikelId}
+POST http://localhost:3000/api/v1/artikel/save/1
+Content-Type: application/json
+# Authorization: Bearer <token didapat saat login user dan token akan nonAktif > 1 days
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExMzYxODQ4LCJleHAiOjE3MTE0NDgyNDh9.bj_MJxL-TmLvrc8ejLYgQj9OOYfPoS3uhAhYmiaJf8k
+
+### Melaporkan Artikel
+# Gantikan {artikelId} dengan ID artikel yang ingin dilaporkan dan isi alasan dengan alasan pelaporan.
+# POST http://localhost:3000/api/v1/artikel/report/{artikelId}
+POST http://localhost:3000/api/v1/artikel/report/1
+Content-Type: application/json
+# Authorization: Bearer <token didapat saat login user dan token akan nonAktif > 1 days
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExMzYwOTc5LCJleHAiOjE3MTE0NDczNzl9.v7tkH1BHphXhidgx7WttJ9pV0i-UTcpjit6Cc05lv1E
+
+{
+  "alasan": "Isi alasan pelaporan di sini"
+}
+
+###Memberikan Rating pada Artikel
+# Gantikan {artikelId} dengan ID artikel yang ingin diberi rating dan isi nilai dengan nilai rating (1-5).
+POST http://localhost:3000/api/v1/artikel/rating/{artikelId}
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
 Content-Type: application/json
 
 {
-  "artikelId": 123,
-  "userId": 456,
-  "nilai": 4
+  "nilai": 5
 }
-
-### Melaporkan Artikel (POST)
-POST http://localhost:3000/api/v1/artikel/action/report
-Content-Type: application/json
-
-{
-  "artikelId": 123,
-  "userId": 456,
-  "alasan": "Isi laporan disini"
-}
-
-### Menyimpan Artikel (POST)
-POST http://localhost:3000/api/v1/artikel/action/save
-Content-Type: application/json
-
-{
-  "artikelId": 123,
-  "userId": 456
-}
-

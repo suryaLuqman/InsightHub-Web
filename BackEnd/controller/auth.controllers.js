@@ -59,18 +59,16 @@ const login = async (req, res, next) => {
       });
     }
 
-    const payload = {
+    // Include user ID in the profile object
+    const profile = {
       id: user.id,
       email: user.email,
       roles: user.roles,
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    const token = jwt.sign(profile, process.env.JWT_SECRET, {
       expiresIn: '1d',
     });
-
-    var profile = user;
-    // console.log({ profile });
 
     return res.status(200).json({
       success: true,
@@ -84,6 +82,7 @@ const login = async (req, res, next) => {
     next(error);
   }
 };
+
 
 const registerUser = async (req, res, next) => {
   try {
