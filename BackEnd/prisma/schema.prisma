@@ -1,0 +1,77 @@
+generator client { 
+  provider = "prisma-client-js" 
+} 
+ 
+datasource db { 
+  provider = "postgresql" 
+  url      = env("DATABASE_URL") 
+  directUrl = env("DIRECT_URL")
+}
+
+model User { 
+  id          Int           @id @default(autoincrement()) 
+  email       String        @unique 
+  password    String 
+  nama        String 
+  profile     UserProfile? 
+  roles       Role[]        @default([USER])
+  articles    Artikel[]     
+  ratings     Rating[]      
+  reports     Report[]      
+}
+
+model UserProfile { 
+  id              Int      @id @default(autoincrement()) 
+  first_name      String 
+  last_name       String 
+  profile_picture String? 
+  no_hp           String 
+  user            User     @relation(fields: [userId], references: [id]) 
+  userId          Int      @unique 
+} 
+
+model Artikel { 
+  id              Int      @id @default(autoincrement()) 
+  judul           String 
+  deskripsi       String 
+  link            String 
+  gambar_artikel  String   @unique 
+  kategori        Kategori @relation(fields: [kategoriId], references: [id]) 
+  kategoriId      Int 
+  author          User     @relation(fields: [authorId], references: [id])
+  authorId        Int
+  ratings         Rating[] 
+  reports         Report[] 
+} 
+
+model Kategori { 
+  id       Int       @id @default(autoincrement()) 
+  nama     String 
+  deskripsi String? 
+  articles Artikel[] 
+} 
+
+model Rating {
+  id        Int     @id @default(autoincrement())
+  nilai     Int
+  artikel   Artikel @relation(fields: [artikelId], references: [id])
+  artikelId Int
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+}
+
+model Report {
+  id        Int     @id @default(autoincrement())
+  alasan    String
+  artikel   Artikel @relation(fields: [artikelId], references: [id])
+  artikelId Int
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+}
+
+// Enum untuk Role User
+enum Role {
+  ADMIN
+  USER
+  SUPERADMIN
+}

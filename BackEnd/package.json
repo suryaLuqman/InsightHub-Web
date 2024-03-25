@@ -1,0 +1,28 @@
+{
+  "name": "backend-kkp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "build": "prisma generate && next build",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "postinstall": "prisma generate"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.4.2",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.1",
+    "googleapis": "^134.0.0",
+    "joi": "^17.12.2",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.13",
+    "nodemon": "^3.1.0",
+    "otp-generator": "^4.0.1",
+    "prisma": "^5.11.0"
+  }
+}

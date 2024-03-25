@@ -1,0 +1,162 @@
+# Base Url = https://insight-hub-web.vercel.app
+# sample = https://insight-hub-web.vercel.app/api/v1/artikel/get-all
+
+
+### regis user
+# POST /api/v1/auth/register/user
+POST http://localhost:3000/api/v1/auth/register/user
+Content-Type: application/json
+
+{
+  "email":"jeni.riska@gmail.com", 
+  "password":"123123", 
+  "nama":"user1"
+}
+
+### Login user
+# POST /api/v1/auth/login
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email":"jeni.riska@gmail.com", 
+  "password": "123123"
+}
+
+### forgot password
+POST http://localhost:3000/api/v1/auth/forgotPassword
+Content-Type: application/json
+
+{
+    "email": "jeni.riska@gmail.com"
+}
+
+
+### change password
+# POST /api/v1/auth/change-password?token={link email params}
+POST http://localhost:3000/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJpYXQiOjE3MTEyNzQ0NTksImV4cCI6MTcxMTI3ODA1OX0.8DutF9Lu5WdR-sQ_Pv9jzVmhz-To6U1JqRjkxu06BOQ
+Content-Type: application/json
+
+{
+  "password":"user12345",
+  "confirm_password":"user12345"
+}
+
+### regis SUPERADMIN
+# POST /api/v1/auth/register/su
+POST http://localhost:3000/api/v1/auth/register/su
+Content-Type: application/json
+
+{
+  "email":"super01@gmail.com", 
+  "password":"123123", 
+  "nama":"super1"
+}
+
+### Login SUPER ADMIN
+# POST /api/v1/auth/login
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "super01@gmail.com", 
+  "password": "123123"
+}
+
+
+
+### regis admin
+# POST /api/v1/auth/register/admin
+POST http://localhost:3000/api/v1/auth/register/admin
+Content-Type: application/json
+# Authorization: Bearer <token didapat saat login dengan superUser dan token akan nonAktif > 1 days
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJzdXBlcjAxQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiLCJBRE1JTiIsIlNVUEVSQURNSU4iXSwiaWF0IjoxNzExMjQxMzQ5LCJleHAiOjE3MTEzMjc3NDl9.NG8vNoSE9_Agzc3w6wR9BI7kluZ98EtdArcuo3Rx6c4
+
+{
+  "email": "admin01@gmail.com", 
+  "password": "123123", 
+  "nama": "admin11"
+}
+
+### Login admin
+# POST /api/v1/auth/login
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin01@gmail.com", 
+  "password": "123123"
+}
+
+
+
+###Membuat kategori Baru
+# POST /api/v1/kategori/add
+POST http://localhost:3000/api/v1/kategori/add
+Content-Type: application/json
+
+{
+    "nama": "Teknologi",
+    "deskripsi": "Artikel-artikel tentang teknologi informasi"
+}
+
+###Mengambil semua kategori
+# GET /api/v1/kategori/get-all
+GET http://localhost:3000/api/v1/kategori/get-all
+
+###DELETE kategori
+# DELETE /api/v1/kategori/delete/:id
+DELETE http://localhost:3000/api/v1/kategori/delete/1
+
+
+
+###Membuat Artikel Baru (POST)
+# POST /api/v1/artikel/add
+POST http://localhost:3000/api/v1/artikel/add
+Content-Type: application/json
+ 
+{
+  "judul": "okkey gaes",
+  "deskripsi": "Deskripsi lengkap dari artikel",
+  "link": "http://contohlink.com",
+  "gambar_artikel": "",
+  "kategoriId": 1,
+  "authorId": 1
+}
+
+###Mengambil Semua Artikel (GET)
+# GET /api/v1/artikel/get-all
+GET http://localhost:3000/api/v1/artikel/get-all
+
+###Edit Artikel (PUT)
+# PUT /api/v1/artikel/edit/:id
+PUT http://localhost:3000/api/v1/artikel/edit/1
+Content-Type: application/json
+
+{
+  "judul": "okky gaes update",
+  "deskripsi": "Deskripsi baru dari artikel",
+  "link": "http://contohlinkbaru.com",
+  "gambar_artikel": "http://contohgambarbaru2.com/gambar.jpg",
+  "kategoriId": 1,
+  "authorId": 1
+}
+
+###DELETE ARTIKEL 
+# DELETE /api/v1/artikel/delete/:id
+DELETE http://localhost:3000/api/v1/artikel/delete/4
+
+
+# Mencari Artikel
+# /api/v1/artikel/search?:param=key
+
+# example
+###Mencari Artikel Berdasarkan Kategori
+GET http://localhost:3000/api/v1/search-artikel/search?kategori=Teknologi
+
+###Mencari Artikel Berdasarkan Judul
+GET http://localhost:3000/api/v1/search-artikel/search?judul=ok
+
+###Mencari Artikel Berdasarkan AuthorId
+GET http://localhost:3000/api/v1/search-artikel/search?authorId=1
+
