@@ -14,10 +14,10 @@ Content-Type: application/json
 }
 
 ### Login user
-# POST /api/v1/auth/login
+# POST /api/v1/auth/login   
 POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
-
+ 
 {
   "email":"jeni.riska@gmail.com", 
   "password": "123123"
@@ -91,7 +91,7 @@ Content-Type: application/json
 
 
 ###Membuat kategori Baru
-# POST /api/v1/kategori/add
+# POST /api/v1/kategori/add 
 POST http://localhost:3000/api/v1/kategori/add
 Content-Type: application/json
 
@@ -112,36 +112,34 @@ DELETE http://localhost:3000/api/v1/kategori/delete/1
 
 ###Membuat Artikel Baru (POST)
 # POST /api/v1/artikel/add
-POST http://localhost:3000/api/v1/artikel/add
-Content-Type: application/json
+POST http://localhost:3000/api/v1/artikel/upload
+Content-Type:application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExMzYxNzI3LCJleHAiOjE3MTE0NDgxMjd9.uyFnqiwo3aC5LFnG_Tjc0a1EgQ45W45LyCW-txj_1lE
  
 {
   "judul": "okkey gaes",
   "deskripsi": "Deskripsi lengkap dari artikel",
   "link": "http://contohlink.com",
   "gambar_artikel": "",
-  "kategoriId": 1,
-  "authorId": 1
+  "kategoriId": 1
 }
 
 ###Mengambil Semua Artikel (GET)
 # GET /api/v1/artikel/get-all
 GET http://localhost:3000/api/v1/artikel/get-all
 
-###Edit Artikel (PUT)
-# PUT /api/v1/artikel/edit/:id
-PUT http://localhost:3000/api/v1/artikel/edit/1
+#### 1. Update Artikel (Request dengan Token)
+PUT http://localhost:3000/api/v1/artikel/updateArtikel/2
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExMzgxNzYzLCJleHAiOjE3MTE0NjgxNjN9.9JyNFuD3vvb-8PrOFUDH6vpplqXtDpDmTeruJPgdc5c
 
 {
-  "judul": "okky gaes update",
-  "deskripsi": "Deskripsi baru dari artikel",
-  "link": "http://contohlinkbaru.com",
-  "gambar_artikel": "http://contohgambarbaru2.com/gambar.jpg",
+  "judul": "Artikelbb Baru",
+  "deskripsi": "Deskripsi artikel baru",
+  "link": "https://example.com",
   "kategoriId": 1,
   "authorId": 1
 }
-
 ###DELETE ARTIKEL 
 # DELETE /api/v1/artikel/delete/:id
 DELETE http://localhost:3000/api/v1/artikel/delete/4
