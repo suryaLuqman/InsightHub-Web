@@ -130,16 +130,17 @@ Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOi
 GET http://localhost:3000/api/v1/artikel/get-all
 
 #### 1. Update Artikel (Request dengan Token)
-PUT http://localhost:3000/api/v1/artikel/editArtikel/3
+PUT http://localhost:3000/api/v1/artikel/updateArtikel/3
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExNDY1OTUwLCJleHAiOjE3MTE1NTIzNTB9.1quHOrWjV1Hr4RL59I71PN6Ny4gunZWrj-Bj_x36j-o
 
 {
-  "judul": "Artikelbb Baruya",
+  "judul": "ganti2",
   "deskripsi": "Deskripsi artikel baru",
   "link": "https://example.com",
-  "gambar_artikel": "",
-  "kategoriId": 1
+  "kategoriId": 1,
+  "gambar_artikel": ""
+  
 }
 ###DELETE ARTIKEL 
 # DELETE /api/v1/artikel/delete/:id

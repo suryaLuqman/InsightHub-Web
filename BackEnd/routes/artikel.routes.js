@@ -10,8 +10,8 @@ router.post('/upload', image.single('gambar_artikel'),authenticate,createArtikel
 // Route untuk mendapatkan semua artikel
 router.get('/get-all', getAllArtikel);
 
-// Route untuk memperbarui artikel berdasarkan ID
-// router.put('/updateArtikel/:id',authenticate, updateArtikel);
+// Route untuk memperbarui artikel berdasarkan Artikel ID
+router.put('/updateArtikel/:artikelId',image.single('gambar_artikel'),authenticate, updateArtikel);
 
 // Route untuk menghapus artikel berdasarkan ID
 router.delete('/delete/:id', deleteArtikel);

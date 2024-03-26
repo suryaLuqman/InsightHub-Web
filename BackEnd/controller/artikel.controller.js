@@ -129,89 +129,129 @@ const getAllArtikel = async (req, res, next) => {
 };
 
 // Update Artikel
-// const updateArtikel = async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const { judul, deskripsi, link, gambar_artikel, kategoriId, authorId } = req.body;
+const updateArtikel = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const { artikelId } = req.params;
+    if (!artikelId) {
+      return res.status(400).json({
+        status: false,
+        message: 'artikelId diperlukan',
+        data: null,
+      });
+    }
+    const { judul, deskripsi, link, kategoriId } = req.body;
+    if (!kategoriId) {
+      return res.status(400).json({
+        status: false,
+        message: 'kategoriId diperlukan',
+        data: null,
+      });
+    }
 
-//     const existingArtikel = await prisma.artikel.findUnique({
-//       where: {
-//         id: parseInt(id),
-//       },
-//     });
+    // Cek apakah judul sudah digunakan oleh artikel lain
+    const existingJudul = await prisma.artikel.findFirst({
+      where: {
+        judul: judul,
+        NOT: {
+          id: parseInt(artikelId),
+        },
+      },
+    });
 
-//     if (!existingArtikel) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'Artikel tidak ditemukan',
-//         data: null,
-//       });
-//     }
+    if (existingJudul) {
+      return res.status(400).json({
+        status: false,
+        message: 'Judul sudah digunakan oleh artikel lain',
+        data: null,
+      });
+    }
 
-//     // Periksa judul jika akan diubah dan apakah judul tersebut sudah digunakan oleh artikel lain
-//     if (judul !== existingArtikel.judul) {
-//       const artikelWithSameJudul = await prisma.artikel.findFirst({
-//         where: {
-//           judul: judul,
-//           NOT: {
-//             id: parseInt(id),
-//           },
-//         },
-//       });
+    const existingArtikel = await prisma.artikel.findUnique({
+      where: { id: parseInt(artikelId) },
+    });
 
-//       if (artikelWithSameJudul) {
-//         return res.status(400).json({
-//           success: false,
-//           message: 'Judul artikel sudah ada, harap gunakan judul yang berbeda',
-//           data: null,
-//         });
-//       }
-//     }
+    if (!existingArtikel) {
+      return res.status(404).json({
+        success: false,
+        message: 'Artikel not found',
+        data: null,
+      });
+    }
 
-//     // Periksa gambar jika akan diubah dan apakah gambar tersebut sudah digunakan oleh artikel lain
-//     if (gambar_artikel !== existingArtikel.gambar_artikel) {
-//       const artikelWithSameImage = await prisma.artikel.findFirst({
-//         where: {
-//           gambar_artikel: gambar_artikel,
-//           NOT: {
-//             id: parseInt(id),
-//           },
-//         },
-//       });
+    // Jika ada file yang diunggah
+    if (req.file) {
+      const strFile = req.file.buffer.toString('base64');
+      const hash = crypto.createHash('sha256').update(strFile).digest('hex');
+      const { url } = await imagekit.upload({
+        fileName: Date.now() + path.extname(req.file.originalname),
+        file: strFile,
+      });
 
-//       if (artikelWithSameImage) {
-//         return res.status(400).json({
-//           success: false,
-//           message: 'Gambar sudah digunakan oleh artikel lain. Harap gunakan gambar orisinal.',
-//           data: null,
-//         });
-//       }
-//     }
+      // Cek apakah hash dari gambar sudah ada dalam database dan digunakan oleh artikel lain
+      const existingHash = await prisma.artikel.findFirst({
+        where: {
+          fileId: hash,
+          NOT: {
+            id: parseInt(artikelId),
+          },
+        },
+      });
 
-//     // Melanjutkan proses update jika tidak ada masalah
-//     const updatedArtikel = await prisma.artikel.update({
-//       where: {
-//         id: parseInt(id),
-//       },
-//       data: {
-//         judul,
-//         deskripsi,
-//         link,
-//         gambar_artikel,
-//         kategoriId,
-//         authorId,
-//       },
-//     });
+      if (existingHash) {
+        return res.status(400).json({
+          status: false,
+          message: 'Gambar sudah digunakan oleh artikel lain',
+          data: null,
+        });
+      }
 
-//     res.status(200).json({
-//       success: true,
-//       message: 'Artikel updated successfully',
-//       data: updatedArtikel,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+      // Update gambar dan fileId
+      artikel = await prisma.artikel.update({
+        where: {
+          id: parseInt(artikelId),
+        },
+        data: {
+          judul,
+          deskripsi,
+          link,
+          kategori: { connect: { id: parseInt(kategoriId) } },
+          gambar_artikel: url,
+          fileId: hash,
+        },
+      });
+    } else {
+      // Jika tidak ada file yang diunggah, hanya update judul, deskripsi, link, dan kategoriId
+      artikel = await prisma.artikel.update({
+        where: {
+          id: parseInt(artikelId),
+        },
+        data: {
+          judul,
+          deskripsi,
+          link,
+          kategori: { connect: { id: parseInt(kategoriId) } },
+        },
+      });
+    }
+
+    if (!artikel) {
+      return res.status(400).json({
+        status: false,
+        message: 'Failed to update article',
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      status: true,
+      message: 'Article updated successfully',
+      data: { artikel },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 
 // Delete Artikel
@@ -238,7 +278,7 @@ const deleteArtikel = async (req, res, next) => {
 module.exports = {
   createArtikel,
   getAllArtikel,
-  // updateArtikel,
+  updateArtikel,
   deleteArtikel,
   authenticate
 };
