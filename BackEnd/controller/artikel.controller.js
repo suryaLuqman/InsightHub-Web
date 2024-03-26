@@ -21,6 +21,13 @@ const authenticate = (req, res, next) => {
 
 const createArtikel = async (req, res, next) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No file uploaded',
+        data: null
+      });
+    }
     const { judul, deskripsi, link, kategoriId } = req.body;
     const strFile = req.file.buffer.toString('base64');
     

@@ -115,13 +115,13 @@ DELETE http://localhost:3000/api/v1/kategori/delete/1
 # POST /api/v1/artikel/add
 POST http://localhost:3000/api/v1/artikel/upload
 Content-Type:application/json
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExMzYxNzI3LCJleHAiOjE3MTE0NDgxMjd9.uyFnqiwo3aC5LFnG_Tjc0a1EgQ45W45LyCW-txj_1lE
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExNDY3MjA3LCJleHAiOjE3MTE1NTM2MDd9.KzEom6BUdns-u1Y9bvXQ2fZyBPq82WyGG8UD64vxUNw
  
 {
-  "judul": "okkey gaes",
+  "judul": "okse",
   "deskripsi": "Deskripsi lengkap dari artikel",
   "link": "http://contohlink.com",
-  "gambar_artikel": "",
+  "gambar_artikel": " ",
   "kategoriId": 1
 }
 
@@ -130,16 +130,16 @@ Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOi
 GET http://localhost:3000/api/v1/artikel/get-all
 
 #### 1. Update Artikel (Request dengan Token)
-PUT http://localhost:3000/api/v1/artikel/updateArtikel/2
+PUT http://localhost:3000/api/v1/artikel/editArtikel/3
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExMzgxNzYzLCJleHAiOjE3MTE0NjgxNjN9.9JyNFuD3vvb-8PrOFUDH6vpplqXtDpDmTeruJPgdc5c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExNDY1OTUwLCJleHAiOjE3MTE1NTIzNTB9.1quHOrWjV1Hr4RL59I71PN6Ny4gunZWrj-Bj_x36j-o
 
 {
-  "judul": "Artikelbb Baru",
+  "judul": "Artikelbb Baruya",
   "deskripsi": "Deskripsi artikel baru",
   "link": "https://example.com",
-  "kategoriId": 1,
-  "authorId": 1
+  "gambar_artikel": "",
+  "kategoriId": 1
 }
 ###DELETE ARTIKEL 
 # DELETE /api/v1/artikel/delete/:id
