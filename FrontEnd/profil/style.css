@@ -1,0 +1,109 @@
+.title {
+
+    margin-bottom: 50px;
+    text-transform: uppercase;
+}
+
+.card-block {
+    font-size: 1em;
+    position: relative;
+    margin: 0;
+    padding: 1em;
+    border: none;
+    border-top: 1px solid rgba(34, 36, 38, .1);
+    box-shadow: none;
+
+}
+
+.card {
+    font-size: 1em;
+    overflow: hidden;
+    padding: 5;
+    border: none;
+    border-radius: .28571429rem;
+    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+    margin-top: 20px;
+}
+
+/* CSS */
+#CarouselTest {
+    display: flex;
+    align-items: center;
+    /* Menengahkan gambar secara vertikal */
+    justify-content: center;
+    /* Menengahkan gambar secara horizontal */
+}
+
+.carousel-inner {
+    text-align: center;
+    /* Mengatur teks di tengah */
+}
+
+.carousel-item img {
+    max-width: 100%;
+    /* Maksimalkan lebar gambar */
+    height: auto;
+    /* Sesuaikan tinggi gambar */
+}
+
+
+.btn {
+    margin-top: auto;
+}
+
+/* CSS */
+.border-bottom-only {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+}
+
+.input-group-text {
+    border-radius: 0;
+}
+
+/* CSS */
+.form-control {
+    border: none;
+    border-bottom: 1px solid #ced4da;
+    /* Warna garis bawah */
+    border-radius: 0;
+    /* Hilangkan border-radius */
+}
+
+.input-group-text {
+    border: none;
+    background-color: transparent;
+}
+
+/* CSS */
+.nav-link {
+    border: none;
+    border-bottom: 2px solid transparent;
+    /* Tambahkan garis bawah */
+    transition: border-bottom-color 0.3s ease;
+    /* Animasi perubahan warna garis */
+}
+
+.nav-link.active,
+.nav-link:hover {
+    border-bottom-color: #000;
+    /* Warna garis bawah saat tab aktif atau dihover */
+}
+
+.kartu {
+    border: none;
+    border-bottom: 1px solid #dee2e6;
+    /* Warna garis bawah */
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure footer appears above other content */
+}
+
+/* Additional CSS styles can be added as needed */
+
