@@ -39,6 +39,9 @@ const login = async (req, res, next) => {
       where: {
         email: email,
       },
+      include: {
+        profile: true, // Include UserProfile data
+      },
     });
 
     if (!user) {
@@ -46,6 +49,23 @@ const login = async (req, res, next) => {
         success: false,
         message: 'User not found',
         data: null,
+      });
+    }
+
+   // Check if user already has a profile
+    if (!user.profile) {
+      // If UserProfile doesn't exist, create a new UserProfile
+      const newProfile = await prisma.userProfile.create({
+        data: {
+          first_name: "Default",
+          last_name: "Profile",
+          user: {
+            connect: {
+              id: user.id
+            }
+          },
+          no_hp: "" // Provide a valid value for `no_hp`
+        }
       });
     }
 
@@ -64,6 +84,7 @@ const login = async (req, res, next) => {
       name: user.nama,
       email: user.email,
       roles: user.roles,
+      profile: user.profile,
     };
 
     const token = jwt.sign(profile, process.env.JWT_SECRET, {
@@ -86,9 +107,8 @@ const login = async (req, res, next) => {
 
 const registerUser = async (req, res, next) => {
   try {
-    const { email, password, nama } = req.body;
-    // console.log("ini req body", req.body);
-    if (!email || !password || !nama) {
+    const { email, password, username, no_hp } = req.body;
+    if (!email || !password || !username || !no_hp) {
       return res.status(400).json({
         success: false,
         message: 'Bad Request',
@@ -97,7 +117,7 @@ const registerUser = async (req, res, next) => {
       });
     }
 
-    const { value, error } = await createUserSchema.validateAsync({ email, password, nama });
+    const { value, error } = await createUserSchema.validateAsync({ email, password, username, no_hp });
     if (error) {
       return res.status(400).json({
         success: false,
@@ -118,7 +138,7 @@ const registerUser = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await prisma.user.create({
-      data: { email, password: hashedPassword, nama },
+      data: { email, password: hashedPassword, username },
     });
 
     if (!newUser) {
@@ -129,20 +149,35 @@ const registerUser = async (req, res, next) => {
       });
     }
 
+    // Create UserProfile for the new user
+    await prisma.userProfile.create({
+      data: {
+        first_name: username, // Assuming username is the first name
+        last_name: 'Default', // Add a default value for last_name
+        user: {
+          connect: {
+            id: newUser.id,
+          },
+        },
+        no_hp: no_hp, // Include provided phone number
+      },
+    });
+
     return res.status(201).json({
       success: true,
       message: 'User registered successfully',
-      data: { 
-        userId: newUser.id, 
+      data: {
+        userId: newUser.id,
         email: newUser.email,
-        nama: newUser.nama,
-        roles: newUser.roles
+        username: newUser.username,
+        roles: newUser.roles,
       },
     });
   } catch (error) {
     next(error);
   }
 };
+
 
 const registerSU = async (req, res, next) => {
   try {
