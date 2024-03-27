@@ -1,109 +1,110 @@
 .title {
-
-    margin-bottom: 50px;
-    text-transform: uppercase;
+  margin-bottom: 50px;
+  text-transform: uppercase;
 }
 
 .card-block {
-    font-size: 1em;
-    position: relative;
-    margin: 0;
-    padding: 1em;
-    border: none;
-    border-top: 1px solid rgba(34, 36, 38, .1);
-    box-shadow: none;
-
+  font-size: 1em;
+  position: relative;
+  margin: 0;
+  padding: 1em;
+  border: none;
+  border-top: 1px solid rgba(34, 36, 38, 0.1);
+  box-shadow: none;
 }
 
 .card {
-    font-size: 1em;
-    overflow: hidden;
-    padding: 5;
-    border: none;
-    border-radius: .28571429rem;
-    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
-    margin-top: 20px;
+  font-size: 1em;
+  overflow: hidden;
+  padding: 5;
+  border: none;
+  border-radius: 0.28571429rem;
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+  margin-top: 20px;
 }
 
-/* CSS */
 #CarouselTest {
-    display: flex;
-    align-items: center;
-    /* Menengahkan gambar secara vertikal */
-    justify-content: center;
-    /* Menengahkan gambar secara horizontal */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .carousel-inner {
-    text-align: center;
-    /* Mengatur teks di tengah */
+  text-align: center;
 }
 
 .carousel-item img {
-    max-width: 100%;
-    /* Maksimalkan lebar gambar */
-    height: auto;
-    /* Sesuaikan tinggi gambar */
+  max-width: 100%;
+  height: auto;
+  border-radius: 0;
 }
-
 
 .btn {
-    margin-top: auto;
+  margin-top: auto;
 }
 
-/* CSS */
 .border-bottom-only {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-radius: 0;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
 }
 
 .input-group-text {
-    border-radius: 0;
+  border-radius: 0;
 }
 
-/* CSS */
 .form-control {
-    border: none;
-    border-bottom: 1px solid #ced4da;
-    /* Warna garis bawah */
-    border-radius: 0;
-    /* Hilangkan border-radius */
+  border: none;
+  border-bottom: 1px solid #ced4da;
+  border-radius: 0;
 }
 
 .input-group-text {
-    border: none;
-    background-color: transparent;
+  border: none;
+  background-color: transparent;
 }
 
-/* CSS */
 .nav-link {
-    border: none;
-    border-bottom: 2px solid transparent;
-    /* Tambahkan garis bawah */
-    transition: border-bottom-color 0.3s ease;
-    /* Animasi perubahan warna garis */
+  border: none;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom-color 0.3s ease;
 }
 
 .nav-link.active,
 .nav-link:hover {
-    border-bottom-color: #000;
-    /* Warna garis bawah saat tab aktif atau dihover */
+  border-bottom-color: #000;
 }
 
 .kartu {
-    border: none;
-    border-bottom: 1px solid #dee2e6;
-    /* Warna garis bawah */
+  border: none;
+  border-bottom: 1px solid #dee2e6;
 }
 
+.card-text {
+  text-align: justify; /* Rata kanan dan kiri */
+}
+
+.card img {
+  width: 75%; /* Foto artikel menjadi full width */
+  height: auto; /* Tetap menjaga aspek rasio gambar */
+  border-radius: 0; /* Hilangkan border-radius yang membuat card */
+}
+
+.article-content {
+  text-align: justify; /* Rata kanan dan kiri */
+}
+.article-image {
+    width: 90% !important;
+    border-radius: 10px !important;
+}
+.article-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow untuk kartu */
+  border-radius: 10px; /* Border radius untuk kartu */
+}
 footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 1000; /* Ensure footer appears above other content */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
 }
-
-/* Additional CSS styles can be added as needed */
-

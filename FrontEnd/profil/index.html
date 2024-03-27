@@ -23,117 +23,115 @@
       <div class="row">
         <!-- Sidebar -->
         <div class="col-md-9">
-          <!-- Content above the tabs -->
           <div class="py-4 px-3">
             <button class="btn btn-light mb-3">
-              <i class="fas fa-arrow-circle-left fa-lg me-2"></i>
-              <span class="fs-5">Kembali</span>
+              <i class="fas fa-arrow-circle-left fa-lg"></i>
+              <span class="ms-2 fs-5">Kembali</span>
             </button>
 
-            <h4 class="mb-4 title">Informasi Detail</h4>
-          </div>
-
-          <!-- Tabs -->
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link active"
-                id="postingan-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#postingan"
-                type="button"
-                role="tab"
-                aria-controls="postingan"
-                aria-selected="true"
+            <h4 class="mb-4">Informasi Detail</h4>
+            <!-- Tabs -->
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="postingan-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#postingan"
+                  type="button"
+                  role="tab"
+                  aria-controls="postingan"
+                  aria-selected="true"
+                >
+                  Postingan
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="statistik-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#statistik"
+                  type="button"
+                  role="tab"
+                  aria-controls="statistik"
+                  aria-selected="false"
+                >
+                  Statistik
+                </button>
+              </li>
+            </ul>
+            <!-- Tabs Content -->
+            <div class="tab-content mt-3" id="myTabContent">
+              <div
+                class="tab-pane fade show active"
+                id="postingan"
+                role="tabpanel"
+                aria-labelledby="postingan-tab"
               >
-                Postingan
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="statistik-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#statistik"
-                type="button"
-                role="tab"
-                aria-controls="statistik"
-                aria-selected="false"
-              >
-                Statistik
-              </button>
-            </li>
-          </ul>
-          <!-- Tabs Content -->
-          <div class="tab-content mt-3" id="myTabContent">
-            <!-- Postingan Tab Content -->
-            <div
-              class="tab-pane fade show active"
-              id="postingan"
-              role="tabpanel"
-              aria-labelledby="postingan-tab"
-            >
-              <div class="container py-3">
                 <!-- Card Start -->
-                <div class="card">
-                  <div class="row">
-                    <div
-                      class="col-md-5 d-flex justify-content-center align-items-center"
-                    >
-                      <div id="CarouselTest" class="carousel slide">
-                        <div class="carousel-inner">
-                          <div class="carousel-item active">
-                            <img
-                              class="d-block img-fluid"
-                              src="https://picsum.photos/450/300?image=1072"
-                              alt=""
-                            />
+                <div class="container py-3">
+                  <div class="card article-card">
+                    <div class="row">
+                      <div
+                        class="col-md-5 d-flex justify-content-center align-items-center"
+                      >
+                        <div id="CarouselTest" class="carousel slide">
+                          <div class="carousel-inner">
+                            <div class="carousel-item active">
+                              <img
+                                class="d-block img-fluid article-image"
+                                src="https://picsum.photos/450/300?image=1072"
+                                alt=""
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="col-md-7 px-3">
-                      <div class="card-block px-6 mt-4">
-                        <h4 class="card-title text-dark">
-                          FITASTY : UI/UX DESIGNER
-                        </h4>
-                        <p class="card-text text-dark">
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry. Lorem Ipsum has been the
-                          industry's standard dummy text ever since the 1500s,
-                          when an unknown printer took a galley of type and
-                          scrambled it to make a type specimen book. It has
-                          survived not only five centuries, but also the leap
-                          into electronic typesetting, remaining essentially
-                          unchanged.
-                        </p>
-                        <div
-                          class="d-flex justify-content-between align-items-center"
-                        >
-                          <p class="card-text text-dark">22 Maret 2024</p>
-                          <div class="dropdown">
-                            <button
-                              class="btn btn-link text-dark"
-                              type="button"
-                              id="dropdownMenuButton"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                            <ul
-                              class="dropdown-menu"
-                              aria-labelledby="dropdownMenuButton"
-                            >
-                              <li>
-                                <a class="dropdown-item" href="#">Edit</a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item text-danger" href="#"
-                                  >Delete</a
-                                >
-                              </li>
-                            </ul>
+                      <div class="col-md-7 px-3">
+                        <div class="card-body px-6 mt-4">
+                          <h4 class="card-title text-dark">
+                            FITASTY : UI/UX DESIGNER
+                          </h4>
+                          <div class="article-content">
+                            <p class="card-text text-dark">
+                              Lorem Ipsum is simply dummy text of the printing
+                              and typesetting industry. Lorem Ipsum has been the
+                              industry's standard dummy text ever since the
+                              1500s, when an unknown printer took a galley of
+                              type and scrambled it to make a type specimen
+                              book. It has survived not only five centuries, but
+                              also the leap into electronic typesetting,
+                              remaining essentially unchanged.
+                            </p>
+                          </div>
+                          <div
+                            class="d-flex justify-content-between align-items-center"
+                          >
+                            <p class="card-text text-dark">22 Maret 2024</p>
+                            <div class="dropdown">
+                              <button
+                                class="btn btn-link text-dark"
+                                type="button"
+                                id="dropdownMenuButton"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                <i class="fas fa-ellipsis-v"></i>
+                              </button>
+                              <ul
+                                class="dropdown-menu dropdown-menu-end"
+                                aria-labelledby="dropdownMenuButton" >
+                                <li>
+                                  <a class="dropdown-item" href="#">Edit</a>
+                                </li>
+                                <li>
+                                  <a class="dropdown-item text-danger" href="#"
+                                    >Delete</a
+                                  >
+                                </li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -141,63 +139,55 @@
                   </div>
                 </div>
                 <!-- End Card -->
-                <center>
-                  <img
-                    width="70%"
-                    src="foto/file.jpg"
-                    alt="Random Image"
-                    class="img-fluid"
-                  />
-                </center>
               </div>
-            </div>
-            <!-- Statistik Tab Content -->
-            <div
-              class="tab-pane fade"
-              id="statistik"
-              role="tabpanel"
-              aria-labelledby="statistik-tab"
-            >
-              <div class="container">
-                <h4 class="mb-4 title">Statistik Kamu</h4>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="kartu card">
-                      <div class="card-body">
-                        <h5 class="mb-4">Total Postingan :</h5>
-                        <br />
-                        <h4 class="mb-4">0</h4>
+              <div
+                class="tab-pane fade"
+                id="statistik"
+                role="tabpanel"
+                aria-labelledby="statistik-tab"
+              >
+                <!-- Statistik Tab Content -->
+                <div class="container">
+                  <h4 class="mb-4">Statistik Kamu</h4>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="kartu card">
+                        <div class="card-body">
+                          <h5 class="mb-4">Total Postingan :</h5>
+                          <br />
+                          <h4 class="mb-4">0</h4>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="kartu card">
-                      <div class="card-body">
-                        <h5 class="mb-4">Total Postingan :</h5>
-                        <br />
-                        <h4 class="mb-4">0</h4>
+                    <div class="col-md-4">
+                      <div class="kartu card">
+                        <div class="card-body">
+                          <h5 class="mb-4">Total Postingan :</h5>
+                          <br />
+                          <h4 class="mb-4">0</h4>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="kartu card">
-                      <div class="card-body">
-                        <h5 class="mb-4">Total Postingan :</h5>
-                        <br />
-                        <h4 class="mb-4">0</h4>
+                    <div class="col-md-4">
+                      <div class="kartu card">
+                        <div class="card-body">
+                          <h5 class="mb-4">Total Postingan :</h5>
+                          <br />
+                          <h4 class="mb-4">0</h4>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <!-- End Statistik Tab Content -->
               </div>
             </div>
           </div>
         </div>
-
         <!-- Profile Sidebar -->
         <div class="col-md-3">
           <div class="py-4 px-3">
-            <h4 class="mb-4 title">Profile</h4>
+            <h4 class="mb-4">Profile</h4>
             <!-- Profile Image -->
             <div class="d-flex align-items-center mb-3">
               <img
@@ -253,7 +243,6 @@
                   ></span>
                 </div>
               </div>
-
               <button
                 type="button"
                 class="btn btn-outline-danger me-2 w-100"
@@ -283,29 +272,40 @@
         </div>
       </div>
     </div>
+    <br /><br /><br /><br /><br /><br />
 
     <!-- Footer -->
     <footer class="bg-dark text-white">
-        <div class="container-fluid">
-            <div class="row justify-content-between align-items-center">
-                <div class="col-md-6 d-flex align-items-center">
-                    <div>
-                        <img width="25%" src="foto/logo.png" style="padding-right: 10px" alt="Logo" class="me-2">
-                        <p style="font-size: smaller; margin: 0">Let’s start the journey with us</p>
-                    </div>
-                </div>
-                <div class="col-md-6 d-flex align-items-center justify-content-end">
-                    <span>Created by <span class="text-warning">Kelompok 3 KKP MSIB BATCH 4</span></span>
-                    <span style="margin-left: 10px">| Copyright &copy; <span id="currentYear"></span></span>
-                </div>
+      <div class="container-fluid">
+        <div class="row justify-content-between align-items-center">
+          <div class="col-md-6 d-flex align-items-center">
+            <div>
+              <img
+                width="25%"
+                src="foto/logo.png"
+                style="padding-right: 10px"
+                alt="Logo"
+                class="me-2"
+              />
+              <p style="font-size: smaller; margin: 0">
+                Let’s start the journey with us
+              </p>
             </div>
+          </div>
+          <div class="col-md-6 d-flex align-items-center justify-content-end">
+            <span
+              >Created by
+              <span class="text-warning"
+                >Kelompok 3 KKP MSIB BATCH 4</span
+              ></span
+            >
+            <span style="margin-left: 10px"
+              >| Copyright &copy; <span id="currentYear"></span
+            ></span>
+          </div>
         </div>
+      </div>
     </footer>
-
-    <script>
-      document.getElementById("currentYear").innerText =
-        new Date().getFullYear();
-    </script>
 
     <script>
       document.getElementById("currentYear").innerText =
@@ -316,5 +316,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/icons.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var myTab = document.getElementById("myTab");
+        myTab.addEventListener("click", function (event) {
+          if (event.target.classList.contains("nav-link")) {
+            var footer = document.querySelector("footer");
+            if (event.target.getAttribute("aria-controls") === "statistik") {
+              footer.style.position = "fixed";
+              footer.style.bottom = "0";
+              footer.style.width = "100%";
+              footer.style.zIndex = "1000";
+            } else {
+              footer.style.position = "fixed";
+              footer.style.bottom = "0";
+              footer.style.width = "100%";
+              footer.style.zIndex = "1000";
+            }
+          }
+        });
+      });
+    </script>
   </body>
 </html>
