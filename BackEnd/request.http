@@ -1,5 +1,4 @@
 # Base Url = https://insight-hub-web.vercel.app
-# sample = https://insight-hub-web.vercel.app/api/v1/artikel/get-all
 
 ### regis user
 # POST /api/v1/auth/register/user
