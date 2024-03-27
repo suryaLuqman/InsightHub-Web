@@ -116,17 +116,30 @@ const createArtikel = async (req, res, next) => {
 // Read Artikel
 const getAllArtikel = async (req, res, next) => {
   try {
-    const allArtikel = await prisma.artikel.findMany();
+    const allArtikel = await prisma.artikel.findMany({
+      include: {
+        ratings: true
+      }
+    });
+
+    // Mendapatkan nilai-nilai rating dari setiap artikel
+    const artikelWithAvgRatings = allArtikel.map(artikel => {
+      const ratings = artikel.ratings.map(rating => rating.nilai);
+      const avgRating = ratings.length ? ratings.reduce((acc, curr) => acc + curr) / ratings.length : 0;
+      return { ...artikel, avgRating };
+    });
 
     res.status(200).json({
       success: true,
       message: 'All Artikel retrieved successfully',
-      data: allArtikel,
+      data: artikelWithAvgRatings,
     });
   } catch (error) {
     next(error);
   }
 };
+
+
 
 // Update Artikel
 const updateArtikel = async (req, res, next) => {

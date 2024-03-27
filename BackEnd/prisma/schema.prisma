@@ -17,6 +17,7 @@ model User {
   roles     Role[]   @default([USER])
   articles  Artikel[] // Ubah menjadi hubungan banyak-ke-banyak
   ratings   Rating[]
+  savedArtikels SavedArtikel[]
   reports   Report[]
 }
 
@@ -31,20 +32,21 @@ model UserProfile {
   userId          Int      @unique 
 } 
 
-model Artikel { 
-  id              Int      @id @default(autoincrement()) 
-  judul           String 
-  deskripsi       String 
-  link            String 
-  gambar_artikel  String   @unique 
-  fileId          String? @unique
-  kategori        Kategori @relation(fields: [kategoriId], references: [id]) 
-  kategoriId      Int 
-  author          User     @relation(fields: [authorId], references: [id])
-  authorId        Int
-  ratings         Rating[] 
-  reports         Report[] 
-} 
+model Artikel {
+  id             Int       @id @default(autoincrement())
+  judul          String
+  deskripsi      String
+  link           String
+  gambar_artikel String  @unique
+  fileId         String? @unique
+  kategori       Kategori @relation(fields: [kategoriId], references: [id])
+  kategoriId     Int
+  author         User     @relation(fields: [authorId], references: [id])
+  authorId       Int
+  ratings        Rating[]
+  reports        Report[]
+  savedArtikels  SavedArtikel[]   // Add the opposite relation field here
+}
 
 model Kategori { 
   id       Int       @id @default(autoincrement()) 
@@ -69,6 +71,16 @@ model Report {
   artikelId Int
   user      User    @relation(fields: [userId], references: [id])
   userId    Int
+}
+
+model SavedArtikel {
+  id       Int      @id @default(autoincrement())
+  user     User     @relation(fields: [userId], references: [id])
+  userId   Int
+  artikelId Int
+  artikel  Artikel  @relation(fields: [artikelId], references: [id])
+
+  @@unique([userId, artikelId])
 }
 
 // Enum untuk Role User

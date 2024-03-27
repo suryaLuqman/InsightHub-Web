@@ -7,27 +7,201 @@ function verifyToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];
   if (typeof bearerHeader !== 'undefined') {
     const bearerToken = bearerHeader.split(' ')[1];
-    req.token = bearerToken;
-    jwt.verify(req.token, process.env.JWT_SECRET, (err, authData) => {
+    jwt.verify(bearerToken, process.env.JWT_SECRET, (err, authData) => {
       if (err) {
-         res.sendStatus(403);
+        res.status(403).json({
+          success: false,
+          message: "Invalid token",
+        });
       } else {
-         // console.log(authData); // Mencetak authData untuk memeriksa strukturnya
-         req.user = authData;
-         next();
+        req.user = authData;
+        next();
       }
-   });
+    });
   } else {
-    res.sendStatus(403);
+    res.status(403).json({
+      success: false,
+      message: "Token is missing",
+    });
   }
 }
 
 
+
 // Controller untuk menyimpan artikel
-const saveArtikel = async (req, res, next) => {
+async function saveArtikel(req, res) {
   try {
-   const { artikelId } = req.params;
-   const userId = req.user?.id;
+    const { artikelId } = req.params;
+    const userId = req.user?.id;
+
+    if (!artikelId) {
+      return res.status(400).json({
+        success: false,
+        message: "Artikel ID tidak didefinisikan",
+      });
+    }
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID tidak didefinisikan",
+      });
+    }
+
+    const existingSavedArticle = await prisma.savedArtikel.findFirst({
+      where: {
+        userId: parseInt(userId),
+        artikelId: parseInt(artikelId),
+      },
+    });
+
+    if (existingSavedArticle) {
+      return res.status(400).json({
+        success: false,
+        message: 'Artikel sudah disimpan sebelumnya',
+      });
+    }
+
+    const savedArticle = await prisma.savedArtikel.create({
+      data: {
+        user: { connect: { id: parseInt(userId) } },
+        artikel: { connect: { id: parseInt(artikelId) } },
+      },
+      include: {
+        artikel: true,
+      },
+    });
+
+    const savedArticles = await prisma.savedArtikel.findMany({
+      where: {
+        userId: parseInt(userId),
+      },
+      include: {
+        artikel: true,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Artikel berhasil disimpan',
+      data: savedArticles,
+    });
+  } catch (error) {
+    console.error('Error saving article:', error);
+    if (error.name === 'PrismaClientKnownRequestError' && error.code === 'P2002') {
+      return res.status(400).json({
+        success: false,
+        message: 'Artikel sudah disimpan sebelumnya',
+      });
+    }
+    res.status(500).json({
+      success: false,
+      message: 'Terjadi kesalahan dalam menyimpan artikel',
+      error: error.message,
+    });
+  }
+}
+
+
+
+
+// Controller untuk mendapatkan artikel yang disimpan oleh pengguna
+const getSavedArtikels = async (req, res, next) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID is undefined",
+      });
+    }
+
+    const savedArtikels = await prisma.savedArtikel.findMany({
+      where: { userId: parseInt(userId) },
+      include: { artikel: true }, // Sertakan artikel yang terkait dalam respons
+    });
+
+    if (!savedArtikels || savedArtikels.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'No saved articles found',
+        data: null,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Saved articles retrieved successfully',
+      data: savedArtikels.map(entry => entry.artikel),
+    });
+  } catch (error) {
+    console.error('Error retrieving saved articles:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve saved articles',
+      error: error.message,
+      data: null,
+    });
+  }
+};
+
+
+
+// Controller untuk melaporkan artikel
+const reportArtikel = async (req, res, next) => {
+  try {
+    const { artikelId } = req.params;
+    const userId = req.user?.id;
+    const { alasan } = req.body;
+
+    // Periksa apakah pengguna telah melaporkan artikel sebelumnya
+    const existingReport = await prisma.report.findFirst({
+      where: {
+        userId: parseInt(userId),
+        artikelId: parseInt(artikelId),
+      },
+    });
+
+    if (existingReport) {
+      return res.status(400).json({
+        success: false,
+        message: 'You have already reported this article',
+      });
+    }
+
+    // Buat laporan artikel
+    const reportedArtikel = await prisma.report.create({
+      data: {
+        alasan,
+        artikelId: parseInt(artikelId),
+        userId: parseInt(userId),
+      },
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Artikel reported successfully',
+      data: reportedArtikel,
+    });
+  } catch (error) {
+    console.error('Error reporting artikel:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to report artikel',
+      error: error.message,
+      data: null,
+    });
+  }
+};
+
+
+// Controller untuk memberi peringkat pada artikel
+const rateArtikel = async (req, res, next) => {
+  try {
+    const { artikelId } = req.params;
+    const userId = req.user?.id; // Mengambil userId dari req.user
+    const { nilai } = req.body;
 
     if (!userId) {
       return res.status(400).json({
@@ -48,102 +222,31 @@ const saveArtikel = async (req, res, next) => {
       });
     }
 
-    const savedArtikel = await prisma.user.update({
-      where: { id: userId },
-      data: { articles: { connect: { id: existingArtikel.id } } }, // Menghubungkan artikel ke pengguna
-    });
-
-    res.status(200).json({
-      success: true,
-      message: 'Artikel saved successfully',
-      data: savedArtikel.articles || [], // Menggunakan nilai default jika tidak tersedia
-    });
-  } catch (error) {
-    console.error('Error saving artikel:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to save artikel',
-      error: error.message,
-      data: null,
-    });
-  }
-};
-
-
-// Controller untuk melaporkan artikel
-const reportArtikel = async (req, res, next) => {
-  try {
-    const { artikelId } = req.params;
-    const userId = req.user?.id; // Mengambil userId dari req.user
-    const { alasan } = req.body;
-
-    const existingArtikel = await prisma.artikel.findUnique({
-      where: { id: parseInt(artikelId) },
-    });
-
-    if (!existingArtikel) {
-      return res.status(404).json({
-        success: false,
-        message: 'Artikel not found',
-        data: null,
-      });
-    }
-
-    const reportedArtikel = await prisma.report.create({
-      data: {
-        alasan,
-        artikelId: existingArtikel.id, // Menggunakan artikelId langsung
-        userId, // Menggunakan userId langsung
+    const ratedArtikel = await prisma.rating.findFirst({
+      where: {
+        userId: parseInt(userId),
+        artikelId: parseInt(artikelId),
       },
     });
 
-    res.status(201).json({
-      success: true,
-      message: 'Artikel reported successfully',
-      data: reportedArtikel,
-    });
-  } catch (error) {
-    console.error('Error reporting artikel:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to report artikel',
-      error: error.message,
-      data: null,
-    });
-  }
-};
-
-// Controller untuk memberi peringkat pada artikel
-const rateArtikel = async (req, res, next) => {
-  try {
-    const { artikelId } = req.params;
-    const userId = req.user?.id; // Mengambil userId dari req.user
-    const { nilai } = req.body;
-
-    const existingArtikel = await prisma.artikel.findUnique({
-      where: { id: parseInt(artikelId) },
-    });
-
-    if (!existingArtikel) {
-      return res.status(404).json({
+    if (ratedArtikel) {
+      return res.status(400).json({
         success: false,
-        message: 'Artikel not found',
-        data: null,
+        message: 'Artikel already rated by this user',
       });
     }
 
-    const ratedArtikel = await prisma.rating.create({
+    await prisma.rating.create({
       data: {
-        nilai,
-        artikelId: existingArtikel.id, // Menggunakan artikelId langsung
-        userId, // Menggunakan userId langsung
+        nilai: parseInt(nilai), // Mengonversi nilai ke tipe integer
+        artikelId: parseInt(artikelId),
+        userId: parseInt(userId),
       },
     });
 
     res.status(201).json({
       success: true,
       message: 'Artikel rated successfully',
-      data: ratedArtikel,
     });
   } catch (error) {
     console.error('Error rating artikel:', error);
@@ -156,4 +259,7 @@ const rateArtikel = async (req, res, next) => {
   }
 };
 
-module.exports = { saveArtikel, reportArtikel, rateArtikel, verifyToken };
+
+
+
+module.exports = { saveArtikel, reportArtikel, rateArtikel, verifyToken, getSavedArtikels };

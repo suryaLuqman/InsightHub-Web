@@ -58,10 +58,10 @@ const login = async (req, res, next) => {
         data: null,
       });
     }
-
     // Include user ID in the profile object
     const profile = {
       id: user.id,
+      name: user.nama,
       email: user.email,
       roles: user.roles,
     };

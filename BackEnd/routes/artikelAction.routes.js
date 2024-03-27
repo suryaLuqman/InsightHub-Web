@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { saveArtikel, reportArtikel, rateArtikel,verifyToken } = require('../controller/artikelAction.controller');
+const { saveArtikel, reportArtikel, rateArtikel, verifyToken, getSavedArtikels } = require('../controller/artikelAction.controller');
 
 
 // Menyimpan artikel
 router.post('/save/:artikelId', verifyToken, saveArtikel);
+
+// Mendapatkan semua artikel yang disimpan oleh pengguna
+router.get('/saved', verifyToken, getSavedArtikels);
 
 // Melaporkan artikel
 router.post('/report/:artikelId',verifyToken, reportArtikel);
