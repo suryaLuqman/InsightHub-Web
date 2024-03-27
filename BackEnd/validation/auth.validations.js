@@ -26,10 +26,22 @@ const changePasswordSchema = joi.object({
   confirm_password: joi.string().min(6).required(),
 });
 
+const createArtikelSchema = joi.object({
+  judul: joi.string().required(),
+  deskripsi: joi.string().required(),
+  link: joi.string().required(),
+  kategoriId: joi.number().required(),
+  file: joi.object({
+    mimetype: joi.string().valid('image/jpeg', 'image/png').required(),
+    buffer: joi.binary().required()
+  }).required()
+});
+
 module.exports = {
   createUserSchema,
   createAdminSchema,
   loginSchema,
   changePasswordSchema,
-  forgotPasswordSchema
+  forgotPasswordSchema,
+  createArtikelSchema
 };

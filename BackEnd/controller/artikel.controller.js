@@ -4,6 +4,7 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const prisma = require('../libs/prisma');
+const { createArtikelSchema } = require('../validation/artikel.validation');
 
 const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -21,6 +22,15 @@ const authenticate = (req, res, next) => {
 
 const createArtikel = async (req, res, next) => {
   try {
+    const { error } = createArtikelSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error.details[0].message,
+        data: null
+      });
+    }
+
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -28,6 +38,7 @@ const createArtikel = async (req, res, next) => {
         data: null
       });
     }
+
     const { judul, deskripsi, link, kategoriId } = req.body;
     const strFile = req.file.buffer.toString('base64');
     
