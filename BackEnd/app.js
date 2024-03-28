@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const { serverError, notFound } = require('./middleware/error.handling');
+const { serverError, notFound,handleErrors } = require('./middleware/error.handling');
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 });
 app.use(notFound);
 app.use(serverError);
+app.use(handleErrors);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -5,6 +5,17 @@ const notFound = (req, res, next) => {
       data: null,
     });
   };
+
+  const handleErrors = (err, req, res, next) => {
+  console.error(err.stack);
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  res.status(statusCode).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+    err: err.stack,
+    data: null,
+  });
+};
   
   const serverError = (err, req, res, next) => {
     if (err.isJoi) {
@@ -28,5 +39,6 @@ const notFound = (req, res, next) => {
   module.exports = {
     notFound,
     serverError,
+    handleErrors
   };
   
