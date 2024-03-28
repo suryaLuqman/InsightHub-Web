@@ -5,49 +5,345 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Insight Hub Web API Documentation</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #2b1260;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 22%;
+      background-color: #ff7f0a;
+      padding-top: 20px;
+      color: #ffffff;
+      overflow-y: auto;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 10px 15px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .content {
+      margin-left: 408px;
+      padding: 20px;
+    }
+
+    .content h1 {
+      color: #2b1260;
+    }
+
+    .endpoint {
+      margin-top: 20px;
+    }
+
+    .endpoint h3 {
+      margin-top: 0;
+      color: #2b1260;
+    }
+
+    .endpoint ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .endpoint ul li {
+      margin-bottom: 10px;
+    }
+
+    .endpoint ul li a {
+      color: #0d47a1;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1 class="mt-5">Insight Hub Web API Documentation</h1>
-    <div class="row mt-5">
-      <div class="col-md-6">
-        <h2>User Authentication</h2>
-        <ul>
-          <li><a href="#register-user">Register User</a></li>
-          <li><a href="#user-login">User Login</a></li>
-          <li><a href="#forgot-password">Forgot Password</a></li>
-          <li><a href="#change-password">Change Password</a></li>
-          <li><a href="#register-superadmin">Register Superadmin</a></li>
-          <li><a href="#superadmin-login">Superadmin Login</a></li>
-          <li><a href="#register-admin">Register Admin</a></li>
-          <li><a href="#admin-login">Admin Login</a></li>
-        </ul>
-      </div>
-      <div class="col-md-6">
-        <h2>Categories</h2>
-        <ul>
-          <li><a href="#add-new-category">Add New Category</a></li>
-          <li><a href="#get-all-categories">Get All Categories</a></li>
-          <li><a href="#delete-category">Delete Category</a></li>
-        </ul>
-      </div>
+  <div class="sidebar container">
+    <h2>Insight Hub Web API Documentation</h2>
+    <p>Base URL: <code>https://insight-hub-api.vercel.app/</code></p>
+    <h4>User Authentication</h4>
+    <ul>
+      <li><a href="#register-user">Register User</a></li>
+      <li><a href="#user-login">User Login</a></li>
+      <li><a href="#forgot-password">Forgot Password</a></li>
+      <li><a href="#change-password">Change Password</a></li>
+      <li><a href="#register-superadmin">Register Superadmin</a></li>
+      <li><a href="#superadmin-login">Superadmin Login</a></li>
+      <li><a href="#register-admin">Register Admin</a></li>
+      <li><a href="#admin-login">Admin Login</a></li>
+    </ul>
+    <h4>Categories</h4>
+    <ul>
+      <li><a href="#add-new-category">Add New Category</a></li>
+      <li><a href="#get-all-categories">Get All Categories</a></li>
+      <li><a href="#delete-category">Delete Category</a></li>
+    </ul>
+    <h4>Articles</h4>
+    <ul>
+      <li><a href="#add-new-article">Add New Article</a></li>
+      <li><a href="#get-all-articles">Get All Articles</a></li>
+      <li><a href="#update-article">Update Article</a></li>
+      <li><a href="#delete-article">Delete Article</a></li>
+      <li><a href="#search-article">Search Article</a></li>
+      <li><a href="#save-article">Save Article</a></li>
+      <li><a href="#get-saved-articles">Get Saved Articles</a></li>
+      <li><a href="#rate-article">Rate Article</a></li>
+      <li><a href="#report-article">Report Article</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h1>Insight Hub Web API Documentation</h1>
+    <div class="endpoint" id="register-user">
+      <h3>Register User</h3>
+      <p><strong>Endpoint:</strong> /api/v1/auth/register/user</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>email</code>: string</li>
+        <li><code>password</code>: string</li>
+        <li><code>username</code>: string</li>
+        <li><code>no_hp</code>: string</li>
+      </ul>
     </div>
-    <div class="row mt-5">
-      <div class="col-md-6">
-        <h2>Articles</h2>
-        <ul>
-          <li><a href="#add-new-article">Add New Article</a></li>
-          <li><a href="#get-all-articles">Get All Articles</a></li>
-          <li><a href="#update-article">Update Article</a></li>
-          <li><a href="#delete-article">Delete Article</a></li>
-          <li><a href="#search-article">Search Article</a></li>
-          <li><a href="#save-article">Save Article</a></li>
-          <li><a href="#get-saved-articles">Get Saved Articles</a></li>
-          <li><a href="#rate-article">Rate Article</a></li>
-          <li><a href="#report-article">Report Article</a></li>
-        </ul>
-      </div>
+    
+    <!-- User Login -->
+    <div class="endpoint" id="user-login">
+      <h3>User Login</h3>
+      <p><strong>Endpoint:</strong> /api/v1/auth/login</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>email</code>: string</li>
+        <li><code>password</code>: string</li>
+      </ul>
+    </div>
+
+    <!-- Forgot Password -->
+    <div class="endpoint" id="forgot-password">
+      <h3>Forgot Password</h3>
+      <p><strong>Endpoint:</strong> /api/v1/auth/forgotPassword</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>email</code>: string</li>
+      </ul>
+    </div>
+
+    <!-- Change Password -->
+    <div class="endpoint" id="change-password">
+      <h3>Change Password</h3>
+      <p><strong>Endpoint:</strong> /api/v1/auth/change-password?token={link email params}</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Params:</strong></p>
+      <ul>
+        <li><code>token</code>: string</li>
+      </ul>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>password</code>: string</li>
+        <li><code>confirm_password</code>: string</li>
+      </ul>
+    </div>
+
+    <!-- Register Superadmin -->
+    <div class="endpoint" id="register-superadmin">
+      <h3>Register Superadmin</h3>
+      <p><strong>Endpoint:</strong> /api/v1/auth/register/su</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>email</code>: string</li>
+        <li><code>password</code>: string</li>
+        <li><code>nama</code>: string</li>
+      </ul>
+    </div>
+
+    <!-- Superadmin Login -->
+    <div class="endpoint" id="superadmin-login">
+      <h3>Superadmin Login</h3>
+      <p><strong>Endpoint:</strong> /api/v1/auth/login</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>email</code>: string</li>
+        <li><code>password</code>: string</li>
+      </ul>
+    </div>
+
+    <!-- Register Admin -->
+    <div class="endpoint" id="register-admin">
+      <h3>Register Admin</h3>
+      <p><strong>Endpoint:</strong> /api/v1/auth/register/admin</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>email</code>: string</li>
+        <li><code>password</code>: string</li>
+        <li><code>nama</code>: string</li>
+      </ul>
+      <p><strong>Request Headers:</strong></p>
+      <ul>
+        <li><code>Authorization</code>: Bearer &lt;token_didapat_saat_login_dengan_superUser_dan_token_akan_nonAktif_lebih_dari_1_hari&gt;</li>
+      </ul>
+    </div>
+
+    <!-- Admin Login -->
+    <div class="endpoint" id="admin-login">
+      <h3>Admin Login</h3>
+      <p><strong>Endpoint:</strong> /api/v1/auth/login</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>email</code>: string</li>
+        <li><code>password</code>: string</li>
+      </ul>
+    </div>
+
+    <!-- Add New Category -->
+    <div class="endpoint" id="add-new-category">
+      <h3>Add New Category</h3>
+      <p><strong>Endpoint:</strong> /api/v1/kategori/add</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>nama</code>: string</li>
+        <li><code>deskripsi</code>: string</li>
+      </ul>
+    </div>
+
+    <!-- Get All Categories -->
+    <div class="endpoint" id="get-all-categories">
+      <h3>Get All Categories</h3>
+      <p><strong>Endpoint:</strong> /api/v1/kategori/get-all</p>
+      <p><strong>Method:</strong> GET</p>
+    </div>
+
+    <!-- Delete Category -->
+    <div class="endpoint" id="delete-category">
+      <h3>Delete Category</h3>
+      <p><strong>Endpoint:</strong> /api/v1/kategori/delete/:id</p>
+      <p><strong>Method:</strong> DELETE</p>
+    </div>
+
+    <!-- Add New Article -->
+    <div class="endpoint" id="add-new-article">
+      <h3>Add New Article</h3>
+      <p><strong>Endpoint:</strong> /api/v1/artikel/upload</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>judul</code>: string</li>
+        <li><code>deskripsi</code>: string</li>
+        <li><code>link</code>: string</li>
+        <li><code>gambar_artikel</code>: file</li>
+        <li><code>kategoriId</code>: number</li>
+      </ul>
+      <p><strong>Request Headers:</strong></p>
+      <ul>
+        <li><code>Authorization</code>: Bearer &lt;user_token_here&gt;</li>
+      </ul>
+    </div>
+
+    <!-- Get All Articles -->
+    <div class="endpoint" id="get-all-articles">
+      <h3>Get All Articles</h3>
+      <p><strong>Endpoint:</strong> /api/v1/artikel/get-all</p>
+     <p><strong>Method:</strong> GET</p>
+    </div>
+
+    <!-- Update Article -->
+    <div class="endpoint" id="update-article">
+      <h3>Update Article</h3>
+      <p><strong>Endpoint:</strong> /api/v1/artikel/updateArtikel/:id</p>
+      <p><strong>Method:</strong> PUT</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>judul</code>: string</li>
+        <li><code>deskripsi</code>: string</li>
+        <li><code>link</code>: string</li>
+        <li><code>kategoriId</code>: number</li>
+        <li><code>gambar_artikel</code>: file</li>
+      </ul>
+      <p><strong>Request Headers:</strong></p>
+      <ul>
+        <li><code>Authorization</code>: Bearer &lt;user_token_here&gt;</li>
+      </ul>
+    </div>
+
+    <!-- Delete Article -->
+    <div class="endpoint" id="delete-article">
+      <h3>Delete Article</h3>
+      <p><strong>Endpoint:</strong> /api/v1/artikel/delete/:id</p>
+      <p><strong>Method:</strong> DELETE</p>
+    </div>
+
+    <!-- Search Article -->
+    <div class="endpoint" id="search-article">
+      <h3>Search Article</h3>
+      <p><strong>Endpoint:</strong> /api/v1/search-artikel/search?:param=key</p>
+      <p><strong>Method:</strong> GET</p>
+    </div>
+
+    <!-- Save Article -->
+    <div class="endpoint" id="save-article">
+      <h3>Save Article</h3>
+      <p><strong>Endpoint:</strong> /api/v1/artikel/save/:artikelId</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Headers:</strong></p>
+      <ul>
+        <li><code>Authorization</code>: Bearer &lt;user_token_here&gt;</li>
+      </ul>
+    </div>
+
+    <!-- Get Saved Articles -->
+    <div class="endpoint" id="get-saved-articles">
+      <h3>Get Saved Articles</h3>
+      <p><strong>Endpoint:</strong> /api/v1/artikel/saved</p>
+      <p><strong>Method:</strong> GET</p>
+      <p><strong>Request Headers:</strong></p>
+      <ul>
+        <li><code>Authorization</code>: Bearer &lt;user_token_here&gt;</li>
+      </ul>
+    </div>
+
+    <!-- Rate Article -->
+    <div class="endpoint" id="rate-article">
+      <h3>Rate Article</h3>
+      <p><strong>Endpoint:</strong> /api/v1/artikel/rate/:artikelId</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>nilai</code>: number</li>
+      </ul>
+      <p><strong>Request Headers:</strong></p>
+      <ul>
+        <li><code>Authorization</code>: Bearer &lt;user_token_here&gt;</li>
+      </ul>
+    </div>
+
+    <!-- Report Article -->
+    <div class="endpoint" id="report-article">
+      <h3>Report Article</h3>
+      <p><strong>Endpoint:</strong> /api/v1/artikel/report/:artikelId</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Request Body:</strong></p>
+      <ul>
+        <li><code>alasan</code>: string</li>
+      </ul>
+      <p><strong>Request Headers:</strong></p>
+      <ul>
+        <li><code>Authorization</code>: Bearer &lt;user_token_here&gt;</li>
+      </ul>
     </div>
   </div>
 </body>
 </html>
+
+
