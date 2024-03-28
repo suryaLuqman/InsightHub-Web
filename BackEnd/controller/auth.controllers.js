@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const prisma = require('../libs/prisma');
 const nodemailer=require('../libs/nodemailer');
+const socketIO= require('socket.io');
+const socketHandler = require ('../libs/socketHandler');
 const { createUserSchema, createAdminSchema, loginSchema ,forgotPasswordSchema, changePasswordSchema} = require('../validation/auth.validations');
 
 const authenticateUser = (req, res, next) => {
@@ -81,7 +83,7 @@ const login = async (req, res, next) => {
     // Include user ID in the profile object
     const profile = {
       id: user.id,
-      name: user.nama,
+      name: user.username,
       email: user.email,
       roles: user.roles,
       profile: user.profile,
@@ -90,6 +92,13 @@ const login = async (req, res, next) => {
     const token = jwt.sign(profile, process.env.JWT_SECRET, {
       expiresIn: '1d',
     });
+
+    const notificationData = {
+      type: 'login',
+      message: 'Selamat, berhasil login',
+    };
+
+    socketHandler.emitNotification(notificationData);
 
     return res.status(200).json({
       success: true,
@@ -163,6 +172,13 @@ const registerUser = async (req, res, next) => {
       },
     });
 
+    const notificationData = {
+      type: 'registration',
+      message: 'Selamat, akun baru sudah dibuat. Silahkan login',
+    };
+
+    socketHandler.emitNotification(notificationData);
+
     return res.status(201).json({
       success: true,
       message: 'User registered successfully',
@@ -235,7 +251,7 @@ const registerSU = async (req, res, next) => {
       data: { 
         userId: newUser.id, 
         email: newUser.email,
-        nama: newUser.nama,
+        nama: newUser.username,
         roles: newUser.roles
       },
     });
@@ -320,13 +336,17 @@ const forgotPassword = async (req, res, next) => {
         { expiresIn: '1h' }
       );
       console.log("ini token :", token);
-      let url = `http://localhost:3000/api/v1/auth/change-password?token=${token}`;
-
-      let html = `<p>Hi ${user.nama},</p>
-      <p>You have requested to change your password.</p>
-      <p>Please click on the link below to change your password:</p>
-      <a href="${url}">${url}</a>`;
-      await nodemailer.sendEmail(email, 'change Password Request', html);
+    
+        const changePasswordLink = `http://localhost:3000/api/v1/auth/change-password?token=<%= token %>${token}`;
+        const html = await nodemailer.getHtml('change-password-email.ejs', { changePasswordLink });
+        await nodemailer.sendEmail(email, 'Change Password', html);
+       
+        const notificationData = {
+          type: 'forgotPassword',
+          message: 'Password reset link sudah terkirim ke email, silahkan di cek',
+        };
+  
+        socketHandler.emitNotification(notificationData);
 
       return res.json({
         status: true,
@@ -380,7 +400,7 @@ const changePassword = async (req, res, next) => {
 
     await prisma.user.update({
       where: {
-        email: decoded.email,
+        id: decoded.id,
       },
       data: {
         password: await bcrypt.hash(password, 10),

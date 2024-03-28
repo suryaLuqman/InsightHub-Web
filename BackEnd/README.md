@@ -33,7 +33,7 @@
 ## User Authentication
 
 ### Register User
-- **Endpoint:** `/api/v1/auth/register/user`
+- **Endpoint:** `/api/v1/authno_hp
 - **Method:** `POST`
 - **Request Body:**
   - `email`: string

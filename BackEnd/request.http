@@ -1,12 +1,12 @@
 # Base Url = https://insight-hub-web.vercel.app
 
 ### regis user
-# POST /api/v1/auth/register/user
-POST http://localhost:3000/api/v1/auth/register/user
+# POST /api/v1/auth/register-user
+POST http://localhost:3000/api/v1/auth/register-user
 Content-Type: application/json
-
+ 
 {
-  "email":"jeni.riskaaaa@gmail.com", 
+  "email":"jeni.riskaa@gmail.com", 
   "password":"123123", 
   "username":"user1",
   "no_hp":"081281821"
@@ -18,7 +18,7 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email":"jeni.riskaaaa@gmail.com", 
+  "email":"jeni.riskaa@gmail.com", 
   "password": "123123"
 }
 
@@ -27,15 +27,15 @@ POST https://insight-hub-web.vercel.app/api/v1/auth/forgotPassword
 Content-Type: application/json
 
 {
-    "email": "jeni.riska@gmail.com"
+    "email": "jeni.riskaa@gmail.com"
 }
 
 
 ### change password
 # POST /api/v1/auth/change-password?token={link email params}
-POST https://insight-hub-web.vercel.app/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJpYXQiOjE3MTEyNzQ0NTksImV4cCI6MTcxMTI3ODA1OX0.8DutF9Lu5WdR-sQ_Pv9jzVmhz-To6U1JqRjkxu06BOQ
+POST http://localhost:3000/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sInByb2ZpbGUiOnsiaWQiOjIsImZpcnN0X25hbWUiOiJ1c2VyMSIsImxhc3RfbmFtZSI6IkRlZmF1bHQiLCJwcm9maWxlX3BpY3R1cmUiOm51bGwsIm5vX2hwIjoiMDgxMjgxODIxIiwidXNlcklkIjoyfSwiaWF0IjoxNzExNTkxNjU1LCJleHAiOjE3MTE2NzgwNTV9.z5LJ5mPsOTTV--DQuAFxSMGz46WKZRifPqADIylpITI
 Content-Type: application/json
-
+ 
 {
   "password":"user12345",
   "confirm_password":"user12345"
