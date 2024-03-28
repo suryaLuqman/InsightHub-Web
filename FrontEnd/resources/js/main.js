@@ -1,6 +1,5 @@
 const myModal = new bootstrap.Modal(
 	document.getElementById('myModal'),
-	options
 );
 // or
 const myModalAlternative = new bootstrap.Modal('#myModal', options);
@@ -52,14 +51,13 @@ function registerUser() {
     })
     .then(response => {
         if (!response.ok) {
-			console.log("response : ",response);
             throw new Error('Registration failed.');
         }
-        return response.json();
+        return response.json(); // Mengambil data JSON dari respons
     })
     .then(data => {
+        console.log("Data dari server:", data); // Mencetak data JSON ke konsol
         // Periksa nilai success dalam data JSON yang diterima dari server
-		  console.log("data",data);
         if (data.success) {
             // Jika registrasi sukses, set cookie dan redirect ke halaman utama
             const expiryDate = new Date(Date.now() + 86400000); // 86400000 milliseconds = 1 day
@@ -81,15 +79,20 @@ function registerUser() {
     })
     .catch(error => {
         console.error('Registration error:', error);
+        // Tampilkan pesan error dari respons jika tersedia
+        const errorMessage = error.message ? error.message : 'Registration failed. Please try again later.';
+        console.error('Error message from server:', errorMessage);
+
         // Tambahkan notifikasi alert Bootstrap ketika registrasi gagal
         const alertElement = document.createElement('div');
         alertElement.classList.add('alert', 'alert-danger');
-        alertElement.textContent = 'Registration failed. Please try again later.';
+        alertElement.textContent = errorMessage;
 
         const modalBody = document.querySelector('.modal-body');
         modalBody.appendChild(alertElement);
     });
 }
+
 
 
 
