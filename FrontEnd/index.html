@@ -9,6 +9,13 @@
     <link rel="icon" type="image/png" href="resources/images/favicon.ico" />
     <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="resources/css/style.css" />
+    <!-- fontawesome -->
+	 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
     <div class="main">
@@ -444,13 +451,19 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Masuk</h1> -->
               <button
                 type="button"
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
+            </div>
+            <div
+              id="registerErrorAlert"
+              class="alert alert-danger text-center d-none"
+              role="alert"
+            >
+              <!-- Teks pesan kesalahan akan ditampilkan di sini -->
             </div>
             <h3 class="text-center">Daftar</h3>
             <div class="modal-body">
@@ -504,6 +517,13 @@
               </p>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Animasi Loading -->
+      <div id="loadingOverlay" class="overlay d-none">
+        <div class="spinner-border text-1c0c41" role="status">
+          <span class="visually-hidden">Loading...</span>
         </div>
       </div>
     </div>

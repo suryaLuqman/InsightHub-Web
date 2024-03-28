@@ -42,6 +42,10 @@ function registerUser() {
     const password = document.getElementById('registerPassword').value;
     const username = document.getElementById('registerUsername').value;
 
+    // Menampilkan animasi loading
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    loadingOverlay.classList.remove('d-none');
+
     fetch('https://insight-hub-api.vercel.app/api/v1/auth/register/user', {
         method: 'POST',
         headers: {
@@ -51,12 +55,17 @@ function registerUser() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Registration failed.');
+            if (response.status === 409) {
+                console.log('Akun dengan email tersebut sudah terdaftar');
+                throw new Error('Email already in use');
+            } else {
+                throw new Error('Registration failed.');
+            }
         }
         return response.json(); // Mengambil data JSON dari respons
     })
     .then(data => {
-        console.log("Data dari server:", data); // Mencetak data JSON ke konsol
+        console.log("Data dari server:", data); // Menampilkan data JSON ke konsol
         // Periksa nilai success dalam data JSON yang diterima dari server
         if (data.success) {
             // Jika registrasi sukses, set cookie dan redirect ke halaman utama
@@ -64,17 +73,17 @@ function registerUser() {
             document.cookie = `token=${data.token}; expires=${expiryDate.toUTCString()}; path=/`;
             window.location.href = '/halaman-utama-not-found';
         } else {
-            // Jika registrasi gagal, tampilkan pesan error
+            // Jika registrasi gagal, tampilkan pesan error di alert modal
             const errorMessage = data.message;
             console.error('Registration error:', errorMessage);
 
-            // Tambahkan notifikasi alert Bootstrap dengan pesan error
-            const alertElement = document.createElement('div');
-            alertElement.classList.add('alert', 'alert-danger');
+            // Tampilkan pesan kesalahan di alert modal
+            const alertElement = document.getElementById('registerErrorAlert');
             alertElement.textContent = errorMessage;
+            alertElement.classList.remove('d-none'); // Hapus kelas d-none untuk menampilkan alert
 
-            const modalBody = document.querySelector('.modal-body');
-            modalBody.appendChild(alertElement);
+            // Sembunyikan animasi loading
+            loadingOverlay.classList.add('d-none');
         }
     })
     .catch(error => {
@@ -83,15 +92,22 @@ function registerUser() {
         const errorMessage = error.message ? error.message : 'Registration failed. Please try again later.';
         console.error('Error message from server:', errorMessage);
 
-        // Tambahkan notifikasi alert Bootstrap ketika registrasi gagal
-        const alertElement = document.createElement('div');
-        alertElement.classList.add('alert', 'alert-danger');
-        alertElement.textContent = errorMessage;
+		// Tampilkan pesan kesalahan di alert modal
+		const alertElement = document.getElementById('registerErrorAlert');
+		alertElement.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${errorMessage}`;
+		alertElement.classList.remove('d-none'); // Hapus kelas d-none untuk menampilkan alert
 
-        const modalBody = document.querySelector('.modal-body');
-        modalBody.appendChild(alertElement);
+
+        // Sembunyikan animasi loading
+        loadingOverlay.classList.add('d-none');
     });
 }
+
+
+
+
+
+
 
 
 

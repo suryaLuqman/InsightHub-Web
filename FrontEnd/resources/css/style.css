@@ -161,11 +161,34 @@ border-radius: 9999px;
 }
 
 .alert {
-    background-color: #f44336; /* Warna merah */
+    background-color: #f74012;
     color: white; /* Warna teks putih */
     padding: 10px; /* Padding untuk menjaga teks dari dinding elemen */
     margin-bottom: 15px; /* Margin bawah untuk menjaga notifikasi terpisah dari elemen lain */
 }
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7); /* Transparan */
+  z-index: 99999999; /* Lebih tinggi dari z-index modal */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner-border {
+  width: 5rem; /* Ukuran spinner */
+  height: 5rem; /* Ukuran spinner */
+  border-width: 0.5rem; /* Ketebalan border */
+}
+
+.text-1c0c41{
+  color: #1c0c41;
+}
+
 
 .border-bottom-only {
   border-top: none;
