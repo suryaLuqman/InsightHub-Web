@@ -2,9 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const morgan = require('morgan');
 const { serverError, notFound } = require('./middleware/error.handling');
 const PORT = process.env.PORT || 3000;
 
+app.use(morgan('dev'));
 app.use(express.json());
 app.use('/api/v1', require('./routes/index.routes'));
 app.use((req, res, next) => {
