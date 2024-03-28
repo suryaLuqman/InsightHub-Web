@@ -15,11 +15,7 @@ Content-Type: application/json
 
 ### Login user
 # POST /api/v1/auth/login 
-<<<<<<< HEAD
 POST http://insight-hub-api.vercel.app/api/v1/auth/login
-=======
-POST https://insight-hub-api.vercel.app/api/v1/auth/login
->>>>>>> 83971417c3ae1cce033df5d5bb23636cbdb0397f
 Content-Type: application/json
 
 {
