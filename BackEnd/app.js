@@ -2,12 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-<<<<<<< HEAD
 const morgan = require('morgan');
-const { serverError, notFound } = require('./middleware/error.handling');
-=======
 const { serverError, notFound,handleErrors } = require('./middleware/error.handling');
->>>>>>> 83971417c3ae1cce033df5d5bb23636cbdb0397f
 const PORT = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
