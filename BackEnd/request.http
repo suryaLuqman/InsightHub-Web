@@ -1,12 +1,13 @@
-# Base Url = https://insight-hub-web.vercel.app
+# Base Url = https://insight-hub-api.vercel.app
 
 ### regis user
 # POST /api/v1/auth/register/user
-POST http://localhost:3000/api/v1/auth/register/user
+# POST http://localhost:3000/api/v1/auth/register/user
+POST https://insight-hub-api.vercel.app/api/v1/auth/register/user
 Content-Type: application/json
 
 {
-  "email":"jeni.riskaaaa@gmail.com", 
+  "email":"surya@gmail.com", 
   "password":"123123", 
   "username":"user1",
   "no_hp":"081281821"
@@ -14,7 +15,11 @@ Content-Type: application/json
 
 ### Login user
 # POST /api/v1/auth/login 
+<<<<<<< HEAD
 POST http://insight-hub-api.vercel.app/api/v1/auth/login
+=======
+POST https://insight-hub-api.vercel.app/api/v1/auth/login
+>>>>>>> 83971417c3ae1cce033df5d5bb23636cbdb0397f
 Content-Type: application/json
 
 {
@@ -23,7 +28,7 @@ Content-Type: application/json
 }
 
 ### forgot password
-POST https://insight-hub-web.vercel.app/api/v1/auth/forgotPassword
+POST https://insight-hub-api.vercel.app/api/v1/auth/forgotPassword
 Content-Type: application/json
 
 {
@@ -33,7 +38,7 @@ Content-Type: application/json
 
 ### change password
 # POST /api/v1/auth/change-password?token={link email params}
-POST https://insight-hub-web.vercel.app/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJpYXQiOjE3MTEyNzQ0NTksImV4cCI6MTcxMTI3ODA1OX0.8DutF9Lu5WdR-sQ_Pv9jzVmhz-To6U1JqRjkxu06BOQ
+POST https://insight-hub-api.vercel.app/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJpYXQiOjE3MTEyNzQ0NTksImV4cCI6MTcxMTI3ODA1OX0.8DutF9Lu5WdR-sQ_Pv9jzVmhz-To6U1JqRjkxu06BOQ
 Content-Type: application/json
 
 {
@@ -43,7 +48,7 @@ Content-Type: application/json
 
 ### regis SUPERADMIN
 # POST /api/v1/auth/register/su
-POST https://insight-hub-web.vercel.app/api/v1/auth/register/su
+POST https://insight-hub-api.vercel.app/api/v1/auth/register/su
 Content-Type: application/json
 
 {
@@ -54,7 +59,7 @@ Content-Type: application/json
 
 ### Login SUPER ADMIN
 # POST /api/v1/auth/login
-POST https://insight-hub-web.vercel.app/api/v1/auth/login
+POST https://insight-hub-api.vercel.app/api/v1/auth/login
 Content-Type: application/json
 
 {
@@ -66,7 +71,7 @@ Content-Type: application/json
 
 ### regis admin
 # POST /api/v1/auth/register/admin
-POST https://insight-hub-web.vercel.app/api/v1/auth/register/admin
+POST https://insight-hub-api.vercel.app/api/v1/auth/register/admin
 Content-Type: application/json
 # Authorization: Bearer <token didapat saat login dengan superUser dan token akan nonAktif > 1 days
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJzdXBlcjAxQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiLCJBRE1JTiIsIlNVUEVSQURNSU4iXSwiaWF0IjoxNzExMzU2NjQwLCJleHAiOjE3MTE0NDMwNDB9.BEsIUz7Kltxt7sKvfEPbUIg4fIx16PqkE_VXh2nyg
@@ -79,7 +84,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiO
 
 ### Login admin
 # POST /api/v1/auth/login
-POST https://insight-hub-web.vercel.app/api/v1/auth/login
+POST https://insight-hub-api.vercel.app/api/v1/auth/login
 Content-Type: application/json
 
 {
@@ -91,7 +96,7 @@ Content-Type: application/json
 
 ###Membuat kategori Baru
 # POST /api/v1/kategori/add
-POST https://insight-hub-web.vercel.app/api/v1/kategori/add
+POST https://insight-hub-api.vercel.app/api/v1/kategori/add
 Content-Type: application/json
 
 {
@@ -101,18 +106,18 @@ Content-Type: application/json
 
 ###Mengambil semua kategori
 # GET /api/v1/kategori/get-all
-GET https://insight-hub-web.vercel.app/api/v1/kategori/get-all
+GET https://insight-hub-api.vercel.app/api/v1/kategori/get-all
 
 ###DELETE kategori
 # DELETE /api/v1/kategori/delete/:id
-DELETE https://insight-hub-web.vercel.app/api/v1/kategori/delete/1
+DELETE https://insight-hub-api.vercel.app/api/v1/kategori/delete/1
 
 
 
 
 ###Membuat Artikel Baru (POST)
 # POST /api/v1/artikel/add
-POST https://insight-hub-web.vercel.app/api/v1/artikel/upload
+POST https://insight-hub-api.vercel.app/api/v1/artikel/upload
 Content-Type:application/json
 Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExNDY3MjA3LCJleHAiOjE3MTE1NTM2MDd9.KzEom6BUdns-u1Y9bvXQ2fZyBPq82WyGG8UD64vxUNw
  
@@ -126,11 +131,11 @@ Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOi
 
 ###Mengambil Semua Artikel (GET)
 # GET /api/v1/artikel/get-all
-GET https://insight-hub-web.vercel.app/api/v1/artikel/get-all
+GET https://insight-hub-api.vercel.app/api/v1/artikel/get-all
 
 #### 1. Update Artikel (Request dengan Token)
-# PUT https://insight-hub-web.vercel.app/api/v1/artikel/updateArtikel/{:idArtikel}
-PUT https://insight-hub-web.vercel.app/api/v1/artikel/updateArtikel/1
+# PUT https://insight-hub-api.vercel.app/api/v1/artikel/updateArtikel/{:idArtikel}
+PUT https://insight-hub-api.vercel.app/api/v1/artikel/updateArtikel/1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExNDY1OTUwLCJleHAiOjE3MTE1NTIzNTB9.1quHOrWjV1Hr4RL59I71PN6Ny4gunZWrj-Bj_x36j-o
 
@@ -144,7 +149,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiO
 }
 ###DELETE ARTIKEL 
 # DELETE /api/v1/artikel/delete/:id
-DELETE https://insight-hub-web.vercel.app/api/v1/artikel/delete/4
+DELETE https://insight-hub-api.vercel.app/api/v1/artikel/delete/4
 
 
 # Mencari Artikel
@@ -152,37 +157,37 @@ DELETE https://insight-hub-web.vercel.app/api/v1/artikel/delete/4
 
 # example
 ###Mencari Artikel Berdasarkan Kategori
-GET https://insight-hub-web.vercel.app/api/v1/search-artikel/search?kategori=Teknologi
+GET https://insight-hub-api.vercel.app/api/v1/search-artikel/search?kategori=Teknologi
 
 ###Mencari Artikel Berdasarkan Judul
-GET https://insight-hub-web.vercel.app/api/v1/search-artikel/search?judul=ok
+GET https://insight-hub-api.vercel.app/api/v1/search-artikel/search?judul=ok
 
 ###Mencari Artikel Berdasarkan AuthorId
-GET https://insight-hub-web.vercel.app/api/v1/search-artikel/search?authorId=1
+GET https://insight-hub-api.vercel.app/api/v1/search-artikel/search?authorId=1
 
 
 ### Menyimpan Artikel
 # POST /api/v1/artikel/save/{artikelId}
-# POST https://insight-hub-web.vercel.app/api/v1/artikel/save/{artikelId}
+# POST https://insight-hub-api.vercel.app/api/v1/artikel/save/{artikelId}
 # Authorization: Bearer <token didapat saat login user dan token akan nonAktif > 1 days
-# POST https://insight-hub-web.vercel.app/api/v1/artikel/save/1
-POST https://insight-hub-web.vercel.app/api/v1/artikel/save/1
+# POST https://insight-hub-api.vercel.app/api/v1/artikel/save/1
+POST https://insight-hub-api.vercel.app/api/v1/artikel/save/1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sImlhdCI6MTcxMTUyNjk3MCwiZXhwIjoxNzExNjEzMzcwfQ.VWGMlr9QsffuR6lv_et_OnU4o5bqE5WLRjJLcwkBmV4
 
 ### Mendapatkan Artikel yang Disimpan oleh Pengguna
 # GET /api/v1/artikel/saved
 # Authorization: Bearer <token didapat saat login user dan token akan nonAktif > 1 days
-# GET https://insight-hub-web.vercel.app/api/v1/artikel/saved
-GET https://insight-hub-web.vercel.app/api/v1/artikel/saved
+# GET https://insight-hub-api.vercel.app/api/v1/artikel/saved
+GET https://insight-hub-api.vercel.app/api/v1/artikel/saved
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sImlhdCI6MTcxMTUyNjk3MCwiZXhwIjoxNzExNjEzMzcwfQ.VWGMlr9QsffuR6lv_et_OnU4o5bqE5WLRjJLcwkBmV4
 
 ### Memberikan Rating pada Artikel
 # Gantikan {artikelId} dengan ID artikel yang ingin diberi rating dan isi nilai dengan nilai rating (1-5).
 # Authorization: Bearer <token didapat saat login user dan token akan nonAktif > 1 days
-# POST https://insight-hub-web.vercel.app/api/v1/artikel/rating/{artikelId}
-POST https://insight-hub-web.vercel.app/api/v1/artikel/rate/1
+# POST https://insight-hub-api.vercel.app/api/v1/artikel/rating/{artikelId}
+POST https://insight-hub-api.vercel.app/api/v1/artikel/rate/1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJqZW5pLnJpc2thYWFhQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExNTI3NTk5LCJleHAiOjE3MTE2MTM5OTl9.7en1DQMMFCyFl2Sa_71TvuWRXWd_KAPNxomZ00ux6cI
 
@@ -192,8 +197,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6I
 
 ### Melaporkan Artikel
 # Gantikan {artikelId} dengan ID artikel yang ingin dilaporkan dan isi alasan dengan alasan pelaporan.
-# POST https://insight-hub-web.vercel.app/api/v1/artikel/report/{artikelId}
-POST https://insight-hub-web.vercel.app/api/v1/artikel/report/1
+# POST https://insight-hub-api.vercel.app/api/v1/artikel/report/{artikelId}
+POST https://insight-hub-api.vercel.app/api/v1/artikel/report/1
 Content-Type: application/json
 # Authorization: Bearer <token didapat saat login user dan token akan nonAktif > 1 days
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJqZW5pLnJpc2thYWFhQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExNTI4MjQyLCJleHAiOjE3MTE2MTQ2NDJ9.Avn5bIKEqtpE8RPhK1qn7-hEzPwhf4kdfDU6DW4Tjkg

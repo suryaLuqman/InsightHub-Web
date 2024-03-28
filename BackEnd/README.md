@@ -5,7 +5,7 @@
 
 
 ## How To Use
-### Base url : `https://insight-hub-web.vercel.app`
+### Base url : `https://insight-hub-api.vercel.app/`
 - [User Authentication](#user-authentication)
   - [Register User](#register-user)
   - [User Login](#user-login)
