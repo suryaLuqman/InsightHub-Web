@@ -1,0 +1,72 @@
+<!-- login.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="loginEmail">Email:</label>
+        <input type="email" id="loginEmail" name="email" required><br><br>
+        
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" name="password" required><br><br>
+        
+        <button type="submit">Login</button>
+        <a href="/api/v1/auth/forgot-password" class="forgot-password">Lupa Password?</a>
+    </form>
+
+    <form>
+        <div id="notificationContainer"></div>
+    </form>
+    <script>
+            const socket = io(); 
+
+    
+            socket.on('notification', (notificationData) => {
+                
+                const notificationContainer = document.getElementById('notificationContainer');
+                const newNotification = document.createElement('div');
+                newNotification.textContent = 'ini Notifikasi :  ' + notificationData.message;
+                notificationContainer.appendChild(newNotification);
+            });
+        const handleLoginSubmit = async (event) => {
+            event.preventDefault();
+            const loginEmail = document.getElementById('loginEmail').value;
+            const loginPassword = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch('/api/v1/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: loginEmail, password: loginPassword })
+                });
+
+                
+                const data = await response.json();
+                console.log(data);
+                if (data.status) {
+                    alert(data.message); 
+                    const notificationData = {
+                    type: 'login',
+                    message: 'Selamat, berhasil login',
+                    };
+                    socket.emit('notification', notificationData);
+                } else {
+                    alert(data.message); 
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', handleLoginSubmit);
+    </script>
+</body>
+</html>
