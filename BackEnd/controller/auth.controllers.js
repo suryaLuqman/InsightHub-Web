@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const prisma = require('../libs/prisma');
 const nodemailer=require('../libs/nodemailer');
-const { createUserSchema, createAdminSchema, loginSchema ,forgotPasswordSchema, changePasswordSchema} = require('../validation/auth.validations');
+const { createUserSchema,createSUSchema, createAdminSchema, loginSchema ,forgotPasswordSchema, changePasswordSchema} = require('../validation/auth.validations');
 
 const authenticateUser = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -181,9 +181,9 @@ const registerUser = async (req, res, next) => {
 
 const registerSU = async (req, res, next) => {
   try {
-    const { email, password, nama } = req.body;
+    const { email, password, username } = req.body;
     // console.log("ini req body", req.body);
-    if (!email || !password || !nama) {
+    if (!email || !password || !username) {
       return res.status(400).json({
         success: false,
         message: 'Bad Request',
@@ -192,7 +192,7 @@ const registerSU = async (req, res, next) => {
       });
     }
 
-    const { value, error } = await createUserSchema.validateAsync({ email, password, nama });
+    const { value, error } = await createSUSchema.validateAsync({ email, password, username });
     if (error) {
       return res.status(400).json({
         success: false,
@@ -216,7 +216,7 @@ const registerSU = async (req, res, next) => {
       data: { 
         email, 
         password: hashedPassword, 
-        nama,
+        username,
         roles: { set: ["USER", "ADMIN", "SUPERADMIN"] },
       },
     });
@@ -235,7 +235,7 @@ const registerSU = async (req, res, next) => {
       data: { 
         userId: newUser.id, 
         email: newUser.email,
-        nama: newUser.nama,
+        username: newUser.username,
         roles: newUser.roles
       },
     });
@@ -246,8 +246,8 @@ const registerSU = async (req, res, next) => {
 
 const registerAdmin = async (req, res, next) => {
   try {
-    const { email, password, nama } = req.body;
-    const { value, error } = await createAdminSchema.validateAsync({ email, password, nama });
+    const { email, password, username } = req.body;
+    const { value, error } = await createAdminSchema.validateAsync({ email, password, username });
     if (error) {
       return res.status(400).json({
         success: false,
@@ -280,7 +280,7 @@ const registerAdmin = async (req, res, next) => {
       data: { 
         email, 
         password: hashedPassword, 
-        nama, 
+        username, 
         roles: { set: ["USER", "ADMIN"] }, 
       },
     });

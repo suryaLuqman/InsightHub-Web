@@ -7,10 +7,16 @@ const createUserSchema = joi.object({
   no_hp: joi.string().required(),
 });
 
+const createSUSchema = joi.object({
+  email: joi.string().email().required(),
+  password: joi.string().min(6).required(),
+  username: joi.string().required()
+});
+
 const createAdminSchema = joi.object({
   email: joi.string().email().required(),
   password: joi.string().min(6).required(),
-  nama: joi.string().required(),
+  username: joi.string().required(),
 });
 
 const loginSchema = joi.object({
@@ -40,6 +46,7 @@ const createArtikelSchema = joi.object({
 module.exports = {
   createUserSchema,
   createAdminSchema,
+  createSUSchema,
   loginSchema,
   changePasswordSchema,
   forgotPasswordSchema,

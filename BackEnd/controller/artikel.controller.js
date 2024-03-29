@@ -275,48 +275,50 @@ const updateArtikel = async (req, res, next) => {
 const deleteArtikel = async (req, res, next) => {
   try {
     const artikelId = parseInt(req.params.artikelId);
+    const userId = req.user.id;
 
-    // Temukan artikel berdasarkan ID
     const artikel = await prisma.artikel.findUnique({
-      where: { id: artikelId },
-      include: { author: true }, // Mengambil informasi penulis artikel
+      where: {
+        id: artikelId,
+      },
+      include: {
+        author: true,
+      },
     });
 
-    // Periksa apakah artikel ditemukan
     if (!artikel) {
       return res.status(404).json({
-        success: false,
+        status: false,
         message: 'Artikel not found',
         data: null,
       });
     }
 
-    // Periksa apakah pengguna memiliki izin untuk menghapus artikel (penulis atau admin)
-    if (req.user.id !== artikel.author.id && req.user.roles.indexOf('ADMIN') === -1) {
+ 
+    if (artikel.authorId !== userId && req.user.roles.indexOf('ADMIN') === -1) {
       return res.status(403).json({
-        success: false,
-        message: 'Unauthorized: You do not have permission to delete this article',
+        status: false,
+        message: 'Unauthorized to delete this article',
         data: null,
       });
     }
 
-    // Hapus gambar dari ImageKit menggunakan fileId
-    await imagekit.deleteFile(artikel.fileId);
-
-    // Hapus artikel dari database
     await prisma.artikel.delete({
-      where: { id: artikelId },
+      where: {
+        id: artikelId,
+      },
     });
 
-    res.status(200).json({
-      success: true,
-      message: 'Artikel berhasil dihapus',
+    return res.status(200).json({
+      status: true,
+      message: 'Article deleted successfully',
       data: null,
     });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
+
 
 module.exports = {
   createArtikel,
