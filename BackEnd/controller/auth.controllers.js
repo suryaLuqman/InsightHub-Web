@@ -3,6 +3,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const prisma = require('../libs/prisma');
 const nodemailer=require('../libs/nodemailer');
+const crypto = require('crypto');
+const { imagekit ,deleteFile } = require('../libs/imagekit');
+const path = require('path');
 const { createUserSchema,createSUSchema, createAdminSchema, loginSchema ,forgotPasswordSchema, changePasswordSchema} = require('../validation/auth.validations');
 
 const authenticateUser = (req, res, next) => {
@@ -497,7 +500,7 @@ const getUserProfile = async (req, res, next) => {
 const updateProfile = async (req, res, next) => {
   try {
     const userId = req.user.id; // Ambil ID pengguna yang sedang diautentikasi
-    const { first_name, last_name, no_hp, status } = req.body;
+    const {first_name, status } = req.body;
 
     // Jika ada file foto profil yang diunggah
     if (req.file) {
@@ -515,8 +518,6 @@ const updateProfile = async (req, res, next) => {
         },
         data: {
           first_name,
-          last_name,
-          no_hp,
           status,
           profile_picture: url,
           pictureId: hash,
@@ -530,8 +531,6 @@ const updateProfile = async (req, res, next) => {
         },
         data: {
           first_name,
-          last_name,
-          no_hp,
           status,
         },
       });
