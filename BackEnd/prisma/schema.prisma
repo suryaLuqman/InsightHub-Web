@@ -28,6 +28,8 @@ model UserProfile {
   last_name       String?
   profile_picture String? 
   no_hp           String 
+  status          String
+  pictureId       String?  @unique
   user            User     @relation(fields: [userId], references: [id]) 
   userId          Int      @unique 
 } 
