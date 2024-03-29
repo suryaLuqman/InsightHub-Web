@@ -81,7 +81,7 @@ const login = async (req, res, next) => {
     // Include user ID in the profile object
     const profile = {
       id: user.id,
-      name: user.nama,
+      name: user.username,
       email: user.email,
       roles: user.roles,
       profile: user.profile,
@@ -322,7 +322,7 @@ const forgotPassword = async (req, res, next) => {
       console.log("ini token :", token);
       let url = `http://localhost:3000/api/v1/auth/change-password?token=${token}`;
 
-      let html = `<p>Hi ${user.nama},</p>
+      let html = `<p>Hi ${user.username},</p>
       <p>You have requested to change your password.</p>
       <p>Please click on the link below to change your password:</p>
       <a href="${url}">${url}</a>`;
@@ -398,6 +398,41 @@ const changePassword = async (req, res, next) => {
   }
 };
 
+const getAllUser = async (req, res, next) => {
+  try {
+    const isAdmin = req.user.roles.includes('ADMIN') || req.user.roles.includes('SUPERADMIN');
+    if (!isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: 'Forbidden: Only admins can access ',
+        data: null,
+      });
+    }
+
+    const users = await prisma.user.findMany({
+      where: {
+        NOT: {
+          OR: [
+            { roles: { has: "ADMIN" } },
+            { roles: { has: "SUPERADMIN" } }
+          ]
+        },
+      },
+      include: {
+        profile: true,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'All users retrieved successfully',
+      data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 
 module.exports = {
@@ -407,5 +442,6 @@ module.exports = {
   authenticateUser,
   registerSU,
   changePassword,
-  forgotPassword
+  forgotPassword,
+  getAllUser
 };

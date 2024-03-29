@@ -277,12 +277,16 @@ const deleteArtikel = async (req, res, next) => {
     const artikelId = parseInt(req.params.artikelId);
     const userId = req.user.id;
 
+    // Periksa apakah artikel ada dan apakah pengguna yang menghapus artikel adalah penulis atau admin
     const artikel = await prisma.artikel.findUnique({
       where: {
         id: artikelId,
       },
       include: {
         author: true,
+        savedArtikels: true, // Memuat relasi dengan savedArtikels
+        ratings: true,
+        reports: true,
       },
     });
 
@@ -294,18 +298,24 @@ const deleteArtikel = async (req, res, next) => {
       });
     }
 
- 
-    if (artikel.authorId !== userId && req.user.roles.indexOf('ADMIN') === -1) {
+    // Cek otorisasi
+    if (artikel.authorId !== userId && req.user.roles.indexOf('ADMIN') === -1 && req.user.roles.indexOf('SUPERADMIN') === -1) {
       return res.status(403).json({
         status: false,
         message: 'Unauthorized to delete this article',
         data: null,
       });
     }
-
+    
+    // Hapus artikel bersama dengan data terkait
     await prisma.artikel.delete({
       where: {
         id: artikelId,
+      },
+      include: {
+        savedArtikels: true, // Memuat relasi dengan savedArtikels
+        ratings: true,
+        reports: true,
       },
     });
 
@@ -318,6 +328,7 @@ const deleteArtikel = async (req, res, next) => {
     next(err);
   }
 };
+
 
 
 module.exports = {

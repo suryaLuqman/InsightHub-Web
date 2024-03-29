@@ -7,7 +7,7 @@ POST http://localhost:3000/api/v1/auth/register/user
 Content-Type: application/json
 
 {
-  "email":"haikorskayuui@gmail.com", 
+  "email":"pipiw@gmail.com", 
   "password":"123123", 
   "username":"user1",
   "no_hp":"081281821"
@@ -19,7 +19,7 @@ POST https://insight-hub-api.vercel.app/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email":"haikorskayuui@gmail.com", 
+  "email":"riska.jeen@gmail.com", 
   "password": "123123"
 }
 
@@ -48,9 +48,9 @@ POST https://insight-hub-api.vercel.app/api/v1/auth/register/su
 Content-Type: application/json
 
 {
-  "email":"super01@gmail.com", 
+  "email":"super03@gmail.com", 
   "password":"123123", 
-  "nama":"super1"
+  "username":"super1"
 }
 
 ### Login SUPER ADMIN
@@ -59,7 +59,7 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "super01@gmail.com", 
+  "email": "super03@gmail.com", 
   "password": "123123"
 }
 
@@ -70,12 +70,12 @@ Content-Type: application/json
 POST https://insight-hub-api.vercel.app/api/v1/auth/register/admin
 Content-Type: application/json
 # Authorization: Bearer <token didapat saat login dengan superUser dan token akan nonAktif > 1 days
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJzdXBlcjAxQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiLCJBRE1JTiIsIlNVUEVSQURNSU4iXSwiaWF0IjoxNzExMzU2NjQwLCJleHAiOjE3MTE0NDMwNDB9.BEsIUz7Kltxt7sKvfEPbUIg4fIx16PqkE_VXh2nyg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJzdXBlcjEiLCJlbWFpbCI6InN1cGVyMDNAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiIsIkFETUlOIiwiU1VQRVJBRE1JTiJdLCJwcm9maWxlIjpudWxsLCJpYXQiOjE3MTE3MTE0MDYsImV4cCI6MTcxMTc5NzgwNn0.g7J0bIyQJnpEKKtqOqZuusBgo_yfthIdIT-zIQsP-pg
 
 {
-  "email": "admin01@gmail.com", 
+  "email": "admin03@gmail.com", 
   "password": "123123", 
-  "nama": "admin11"
+  "username": "admin3"
 }
 
 ### Login admin
@@ -84,10 +84,14 @@ POST https://insight-hub-api.vercel.app/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin01@gmail.com", 
+  "email": "admin03@gmail.com", 
   "password": "123123"
 }
 
+###get all user
+GET http://localhost:3000/api/v1/auth/getAlluser
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyaXNrYS5qZWVuQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwicHJvZmlsZSI6eyJpZCI6MiwiZmlyc3RfbmFtZSI6InVzZXIzIiwibGFzdF9uYW1lIjoiRGVmYXVsdCIsInByb2ZpbGVfcGljdHVyZSI6bnVsbCwibm9faHAiOiIwODEyODE4MjEiLCJ1c2VySWQiOjN9LCJpYXQiOjE3MTE3MTE5NzgsImV4cCI6MTcxMTc5ODM3OH0.ca2y01v3BJZFKemFCugFku3GsA1QILa9LGip5C8IOWA
 
 
 ###Membuat kategori Baru
@@ -145,7 +149,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiO
 }
 ###DELETE ARTIKEL 
 # DELETE /api/v1/artikel/delete/:id
-DELETE https://insight-hub-api.vercel.app/api/v1/artikel/delete/4
+DELETE http://localhost:3000/api/v1/artikel/deleteArtikel/9
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyaXNrYS5qZWVuQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwicHJvZmlsZSI6eyJpZCI6MiwiZmlyc3RfbmFtZSI6InVzZXIzIiwibGFzdF9uYW1lIjoiRGVmYXVsdCIsInByb2ZpbGVfcGljdHVyZSI6bnVsbCwibm9faHAiOiIwODEyODE4MjEiLCJ1c2VySWQiOjN9LCJpYXQiOjE3MTE3MTE5NzgsImV4cCI6MTcxMTc5ODM3OH0.ca2y01v3BJZFKemFCugFku3GsA1QILa9LGip5C8IOWA
 
 
 # Mencari Artikel
