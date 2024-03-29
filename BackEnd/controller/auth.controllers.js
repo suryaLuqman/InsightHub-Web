@@ -170,7 +170,7 @@ const registerUser = async (req, res, next) => {
       },
     });
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
       message: 'User registered successfully',
       data: {
