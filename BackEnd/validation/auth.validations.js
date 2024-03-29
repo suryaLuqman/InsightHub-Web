@@ -3,20 +3,21 @@ const joi = require('joi');
 const createUserSchema = joi.object({
   email: joi.string().email().required(),
   password: joi.string().min(6).required(),
-  username: joi.string().required(),
+  nama: joi.string().required(),
   no_hp: joi.string().required(),
+  status:joi.string().required()
 });
 
 const createSUSchema = joi.object({
   email: joi.string().email().required(),
   password: joi.string().min(6).required(),
-  username: joi.string().required()
+  nama: joi.string().required()
 });
 
 const createAdminSchema = joi.object({
   email: joi.string().email().required(),
   password: joi.string().min(6).required(),
-  username: joi.string().required(),
+  nama: joi.string().required(),
 });
 
 const loginSchema = joi.object({
@@ -32,23 +33,11 @@ const changePasswordSchema = joi.object({
   confirm_password: joi.string().min(6).required(),
 });
 
-const createArtikelSchema = joi.object({
-  judul: joi.string().required(),
-  deskripsi: joi.string().required(),
-  link: joi.string().required(),
-  kategoriId: joi.number().required(),
-  file: joi.object({
-    mimetype: joi.string().valid('image/jpeg', 'image/png').required(),
-    buffer: joi.binary().required()
-  }).required()
-});
-
 module.exports = {
   createUserSchema,
   createAdminSchema,
   createSUSchema,
   loginSchema,
   changePasswordSchema,
-  forgotPasswordSchema,
-  createArtikelSchema
+  forgotPasswordSchema
 };

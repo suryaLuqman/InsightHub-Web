@@ -81,10 +81,11 @@ const login = async (req, res, next) => {
     // Include user ID in the profile object
     const profile = {
       id: user.id,
-      name: user.username,
+      name: user.nama,
       email: user.email,
       roles: user.roles,
       profile: user.profile,
+      status:user.status
     };
 
     const token = jwt.sign(profile, process.env.JWT_SECRET, {
@@ -107,8 +108,10 @@ const login = async (req, res, next) => {
 
 const registerUser = async (req, res, next) => {
   try {
-    const { email, password, username, no_hp } = req.body;
-    if (!email || !password || !username || !no_hp) {
+    const { email, password, nama, no_hp, status } = req.body; // Tambahkan status di sini jika ada
+
+    // Pastikan tidak ada data yang kosong
+    if (!email || !password || !nama || !no_hp || !status) {
       return res.status(400).json({
         success: false,
         message: 'Bad Request',
@@ -117,7 +120,7 @@ const registerUser = async (req, res, next) => {
       });
     }
 
-    const { value, error } = await createUserSchema.validateAsync({ email, password, username, no_hp });
+    const { value, error } = await createUserSchema.validateAsync({ email, password, nama, no_hp,status});
     if (error) {
       return res.status(400).json({
         success: false,
@@ -138,7 +141,7 @@ const registerUser = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await prisma.user.create({
-      data: { email, password: hashedPassword, username },
+      data: { email, password: hashedPassword, nama },
     });
 
     if (!newUser) {
@@ -152,14 +155,15 @@ const registerUser = async (req, res, next) => {
     // Create UserProfile for the new user
     await prisma.userProfile.create({
       data: {
-        first_name: username, // Assuming username is the first name
-        last_name: 'Default', // Add a default value for last_name
+        first_name: nama, // Menggunakan nama sebagai nilai default untuk first_name
+        last_name: 'Default', // Menetapkan nilai default untuk last_name
         user: {
           connect: {
             id: newUser.id,
           },
         },
-        no_hp: no_hp, // Include provided phone number
+        no_hp: no_hp, // Menggunakan no_hp dari permintaan
+        status: status // Menggunakan nilai status dari permintaan
       },
     });
 
@@ -169,8 +173,9 @@ const registerUser = async (req, res, next) => {
       data: {
         userId: newUser.id,
         email: newUser.email,
-        username: newUser.username,
+        nama: newUser.nama,
         roles: newUser.roles,
+        status:newUser.status
       },
     });
   } catch (error) {
@@ -179,11 +184,12 @@ const registerUser = async (req, res, next) => {
 };
 
 
+
 const registerSU = async (req, res, next) => {
   try {
-    const { email, password, username } = req.body;
+    const { email, password, nama } = req.body;
     // console.log("ini req body", req.body);
-    if (!email || !password || !username) {
+    if (!email || !password || !nama) {
       return res.status(400).json({
         success: false,
         message: 'Bad Request',
@@ -192,7 +198,7 @@ const registerSU = async (req, res, next) => {
       });
     }
 
-    const { value, error } = await createSUSchema.validateAsync({ email, password, username });
+    const { value, error } = await createSUSchema.validateAsync({ email, password, nama});
     if (error) {
       return res.status(400).json({
         success: false,
@@ -216,8 +222,8 @@ const registerSU = async (req, res, next) => {
       data: { 
         email, 
         password: hashedPassword, 
-        username,
-        roles: { set: ["USER", "ADMIN", "SUPERADMIN"] },
+        nama,
+        roles: { set: ["USER", "ADMIN", "SUPERADMIN"] }
       },
     });
 
@@ -228,6 +234,19 @@ const registerSU = async (req, res, next) => {
         data: null,
       });
     }
+    await prisma.userProfile.create({
+      data: {
+        first_name: nama, // Menggunakan nama sebagai nilai default untuk first_name
+        last_name: 'Default', // Menetapkan nilai default untuk last_name
+        user: {
+          connect: {
+            id: newUser.id,
+          },
+        },
+        no_hp: 'null',
+        status: 'SUPERADMIN' // Menggunakan nilai status dari permintaan
+      },
+    });
 
     return res.status(201).json({
       success: true,
@@ -235,7 +254,7 @@ const registerSU = async (req, res, next) => {
       data: { 
         userId: newUser.id, 
         email: newUser.email,
-        username: newUser.username,
+        nama: newUser.nama,
         roles: newUser.roles
       },
     });
@@ -246,8 +265,8 @@ const registerSU = async (req, res, next) => {
 
 const registerAdmin = async (req, res, next) => {
   try {
-    const { email, password, username } = req.body;
-    const { value, error } = await createAdminSchema.validateAsync({ email, password, username });
+    const { email, password, nama } = req.body;
+    const { value, error } = await createAdminSchema.validateAsync({ email, password, nama });
     if (error) {
       return res.status(400).json({
         success: false,
@@ -280,8 +299,21 @@ const registerAdmin = async (req, res, next) => {
       data: { 
         email, 
         password: hashedPassword, 
-        username, 
+        nama, 
         roles: { set: ["USER", "ADMIN"] }, 
+      },
+    });
+    await prisma.userProfile.create({
+      data: {
+        first_name: nama, // Menggunakan nama sebagai nilai default untuk first_name
+        last_name: 'Default', // Menetapkan nilai default untuk last_name
+        user: {
+          connect: {
+            id: newAdmin.id,
+          },
+        },
+        no_hp: 'null',
+        status: 'ADMIN' // Menggunakan nilai status dari permintaan
       },
     });
 
@@ -322,7 +354,7 @@ const forgotPassword = async (req, res, next) => {
       console.log("ini token :", token);
       let url = `http://localhost:3000/api/v1/auth/change-password?token=${token}`;
 
-      let html = `<p>Hi ${user.username},</p>
+      let html = `<p>Hi ${user.nama},</p>
       <p>You have requested to change your password.</p>
       <p>Please click on the link below to change your password:</p>
       <a href="${url}">${url}</a>`;
@@ -433,6 +465,94 @@ const getAllUser = async (req, res, next) => {
   }
 };
 
+const getUserProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    // Temukan profil pengguna
+    const userProfile = await prisma.userProfile.findUnique({
+      where: {
+        userId: userId,
+      },
+    });
+
+    if (!userProfile) {
+      return res.status(404).json({
+        success: false,
+        message: 'User profile not found',
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'User profile retrieved successfully',
+      data: userProfile,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id; // Ambil ID pengguna yang sedang diautentikasi
+    const { first_name, last_name, no_hp, status } = req.body;
+
+    // Jika ada file foto profil yang diunggah
+    if (req.file) {
+      const strFile = req.file.buffer.toString('base64');
+      const hash = crypto.createHash('sha256').update(strFile).digest('hex');
+      const { url } = await imagekit.upload({
+        fileName: Date.now() + path.extname(req.file.originalname),
+        file: strFile,
+      });
+
+      // Update foto profil dan pictureId
+      await prisma.userProfile.update({
+        where: {
+          userId: userId,
+        },
+        data: {
+          first_name,
+          last_name,
+          no_hp,
+          status,
+          profile_picture: url,
+          pictureId: hash,
+        },
+      });
+    } else {
+      // Jika tidak ada file foto profil yang diunggah, hanya update informasi profil
+      await prisma.userProfile.update({
+        where: {
+          userId: userId,
+        },
+        data: {
+          first_name,
+          last_name,
+          no_hp,
+          status,
+        },
+      });
+    }
+
+    // Mengambil profil pengguna yang sudah diperbarui
+    const updatedProfile = await prisma.userProfile.findUnique({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'User profile updated successfully',
+      data: updatedProfile,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 
 module.exports = {
@@ -443,5 +563,7 @@ module.exports = {
   registerSU,
   changePassword,
   forgotPassword,
-  getAllUser
+  getAllUser,
+  getUserProfile,
+  updateProfile
 };

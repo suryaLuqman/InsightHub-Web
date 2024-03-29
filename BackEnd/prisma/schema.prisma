@@ -12,7 +12,7 @@ model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   password  String
-  username  String
+  nama    String
   profile   UserProfile?
   roles     Role[]   @default([USER])
   articles  Artikel[] // Ubah menjadi hubungan banyak-ke-banyak
@@ -28,7 +28,7 @@ model UserProfile {
   last_name       String?
   profile_picture String? 
   no_hp           String 
-  status          String
+  status          String?
   pictureId       String?  @unique
   user            User     @relation(fields: [userId], references: [id]) 
   userId          Int      @unique 

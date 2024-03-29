@@ -7,19 +7,20 @@ POST http://localhost:3000/api/v1/auth/register/user
 Content-Type: application/json
 
 {
-  "email":"pipiw@gmail.com", 
+  "email":"pipoou@gmail.com", 
   "password":"123123", 
-  "username":"user1",
-  "no_hp":"081281821"
+  "nama":"user1",
+  "no_hp":"081281821",
+  "status":"ok"
 }
 
 ### Login user
 # POST /api/v1/auth/login 
-POST https://insight-hub-api.vercel.app/api/v1/auth/login
+POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email":"riska.jeen@gmail.com", 
+  "email":"pipoou@gmail.com", 
   "password": "123123"
 }
 
@@ -44,13 +45,13 @@ Content-Type: application/json
 
 ### regis SUPERADMIN
 # POST /api/v1/auth/register/su
-POST https://insight-hub-api.vercel.app/api/v1/auth/register/su
+POST http://localhost:3000/api/v1/auth/register/su
 Content-Type: application/json
 
 {
-  "email":"super03@gmail.com", 
+  "email":"supery@gmail.com", 
   "password":"123123", 
-  "username":"super1"
+  "nama":"superapaansi"
 }
 
 ### Login SUPER ADMIN
@@ -59,7 +60,7 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "super03@gmail.com", 
+  "email": "supery@gmail.com", 
   "password": "123123"
 }
 
@@ -67,32 +68,36 @@ Content-Type: application/json
 
 ### regis admin
 # POST /api/v1/auth/register/admin
-POST https://insight-hub-api.vercel.app/api/v1/auth/register/admin
+POST http://localhost:3000/api/v1/auth/register/admin
 Content-Type: application/json
 # Authorization: Bearer <token didapat saat login dengan superUser dan token akan nonAktif > 1 days
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJzdXBlcjEiLCJlbWFpbCI6InN1cGVyMDNAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiIsIkFETUlOIiwiU1VQRVJBRE1JTiJdLCJwcm9maWxlIjpudWxsLCJpYXQiOjE3MTE3MTE0MDYsImV4cCI6MTcxMTc5NzgwNn0.g7J0bIyQJnpEKKtqOqZuusBgo_yfthIdIT-zIQsP-pg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6InN1cGVyYXBhYW5zaSIsImVtYWlsIjoic3VwZXJ5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiLCJBRE1JTiIsIlNVUEVSQURNSU4iXSwicHJvZmlsZSI6eyJpZCI6MiwiZmlyc3RfbmFtZSI6InN1cGVyYXBhYW5zaSIsImxhc3RfbmFtZSI6IkRlZmF1bHQiLCJwcm9maWxlX3BpY3R1cmUiOm51bGwsIm5vX2hwIjoibnVsbCIsInN0YXR1cyI6IlNVUEVSQURNSU4iLCJwaWN0dXJlSWQiOm51bGwsInVzZXJJZCI6NX0sImlhdCI6MTcxMTczMzMzNiwiZXhwIjoxNzExODE5NzM2fQ.XwxB3X8yJdF9WBaKG2G5n0OGgKq7zFRR-eCkAU5bVIU
 
 {
-  "email": "admin03@gmail.com", 
+  "email": "admin02@gmail.com", 
   "password": "123123", 
-  "username": "admin3"
+  "nama": "admin3"
 }
 
 ### Login admin
 # POST /api/v1/auth/login
-POST https://insight-hub-api.vercel.app/api/v1/auth/login
+POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin03@gmail.com", 
+  "email": "admin02@gmail.com", 
   "password": "123123"
 }
 
 ###get all user
 GET http://localhost:3000/api/v1/auth/getAlluser
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyaXNrYS5qZWVuQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwicHJvZmlsZSI6eyJpZCI6MiwiZmlyc3RfbmFtZSI6InVzZXIzIiwibGFzdF9uYW1lIjoiRGVmYXVsdCIsInByb2ZpbGVfcGljdHVyZSI6bnVsbCwibm9faHAiOiIwODEyODE4MjEiLCJ1c2VySWQiOjN9LCJpYXQiOjE3MTE3MTE5NzgsImV4cCI6MTcxMTc5ODM3OH0.ca2y01v3BJZFKemFCugFku3GsA1QILa9LGip5C8IOWA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwibmFtZSI6ImFkbWluMyIsImVtYWlsIjoiYWRtaW4wMkBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwicHJvZmlsZSI6eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImFkbWluMyIsImxhc3RfbmFtZSI6IkRlZmF1bHQiLCJwcm9maWxlX3BpY3R1cmUiOm51bGwsIm5vX2hwIjoibnVsbCIsInN0YXR1cyI6IkFETUlOIiwicGljdHVyZUlkIjpudWxsLCJ1c2VySWQiOjh9LCJpYXQiOjE3MTE3MzM2NTIsImV4cCI6MTcxMTgyMDA1Mn0.yiL0_p2p0ZkGg_PTcOloEiJherzaKP7Nizfjrg7K7f0
 
+###get profile
+GET http://localhost:3000/api/v1/auth/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJwaXBvb3VAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJwcm9maWxlIjp7ImlkIjo1LCJmaXJzdF9uYW1lIjoidXNlcjEiLCJsYXN0X25hbWUiOiJEZWZhdWx0IiwicHJvZmlsZV9waWN0dXJlIjpudWxsLCJub19ocCI6IjA4MTI4MTgyMSIsInN0YXR1cyI6Im9rIiwicGljdHVyZUlkIjpudWxsLCJ1c2VySWQiOjl9LCJpYXQiOjE3MTE3MzM4NTAsImV4cCI6MTcxMTgyMDI1MH0.egm9p5JdbmEob24pAs7U-S5LHLFjXut_2w5p9CRFpe0
 
 ###Membuat kategori Baru
 # POST /api/v1/kategori/add
@@ -149,9 +154,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiO
 }
 ###DELETE ARTIKEL 
 # DELETE /api/v1/artikel/delete/:id
-DELETE http://localhost:3000/api/v1/artikel/deleteArtikel/9
+DELETE http://localhost:3000/api/v1/artikel/deleteArtikel/2
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyaXNrYS5qZWVuQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwicHJvZmlsZSI6eyJpZCI6MiwiZmlyc3RfbmFtZSI6InVzZXIzIiwibGFzdF9uYW1lIjoiRGVmYXVsdCIsInByb2ZpbGVfcGljdHVyZSI6bnVsbCwibm9faHAiOiIwODEyODE4MjEiLCJ1c2VySWQiOjN9LCJpYXQiOjE3MTE3MTE5NzgsImV4cCI6MTcxMTc5ODM3OH0.ca2y01v3BJZFKemFCugFku3GsA1QILa9LGip5C8IOWA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6InN1cGVyYXBhYW5zaSIsImVtYWlsIjoic3VwZXJ5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiLCJBRE1JTiIsIlNVUEVSQURNSU4iXSwicHJvZmlsZSI6eyJpZCI6MiwiZmlyc3RfbmFtZSI6InN1cGVyYXBhYW5zaSIsImxhc3RfbmFtZSI6IkRlZmF1bHQiLCJwcm9maWxlX3BpY3R1cmUiOm51bGwsIm5vX2hwIjoibnVsbCIsInN0YXR1cyI6IlNVUEVSQURNSU4iLCJwaWN0dXJlSWQiOm51bGwsInVzZXJJZCI6NX0sImlhdCI6MTcxMTczMzMzNiwiZXhwIjoxNzExODE5NzM2fQ.XwxB3X8yJdF9WBaKG2G5n0OGgKq7zFRR-eCkAU5bVIU
+
 
 
 # Mencari Artikel

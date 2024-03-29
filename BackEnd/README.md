@@ -38,7 +38,7 @@
 - **Request Body:**
   - `email`: string
   - `password`: string
-  - `username`: string
+  - `nama`: string
   - `no_hp`: string
 
 ### User Login
