@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { imagekit } = require('../libs/imagekit');
+const { imagekit ,deleteFile } = require('../libs/imagekit');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -22,14 +22,17 @@ const authenticate = (req, res, next) => {
 
 const createArtikel = async (req, res, next) => {
   try {
-    if (!req.file) {
+    const { error, value } = createArtikelSchema.validate(req.body);
+
+    if (error) {
       return res.status(400).json({
-        success: false,
-        message: 'No file uploaded',
-        data: null
+        status: false,
+        message: 'Bad Request!',
+        err: error.details[0].message,
+        data: null,
       });
     }
-    const { judul, deskripsi, link, kategoriId } = req.body;
+    const { judul, deskripsi, link, kategoriId } = value;
     const strFile = req.file.buffer.toString('base64');
     
     const hash = crypto.createHash('sha256').update(strFile).digest('hex');
@@ -67,7 +70,7 @@ const createArtikel = async (req, res, next) => {
         data: null,
       });
     }
-    // Cek apakah kategori dengan kategoriId yang diberikan ada dalam database
+
     const existingKategori = await prisma.kategori.findUnique({
       where: {
         id: parseInt(kategoriId),
@@ -271,12 +274,38 @@ const updateArtikel = async (req, res, next) => {
 // Delete Artikel
 const deleteArtikel = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const artikelId = parseInt(req.params.artikelId);
 
+    // Temukan artikel berdasarkan ID
+    const artikel = await prisma.artikel.findUnique({
+      where: { id: artikelId },
+      include: { author: true }, // Mengambil informasi penulis artikel
+    });
+
+    // Periksa apakah artikel ditemukan
+    if (!artikel) {
+      return res.status(404).json({
+        success: false,
+        message: 'Artikel not found',
+        data: null,
+      });
+    }
+
+    // Periksa apakah pengguna memiliki izin untuk menghapus artikel (penulis atau admin)
+    if (req.user.id !== artikel.author.id && req.user.roles.indexOf('ADMIN') === -1) {
+      return res.status(403).json({
+        success: false,
+        message: 'Unauthorized: You do not have permission to delete this article',
+        data: null,
+      });
+    }
+
+    // Hapus gambar dari ImageKit menggunakan fileId
+    await imagekit.deleteFile(artikel.fileId);
+
+    // Hapus artikel dari database
     await prisma.artikel.delete({
-      where: {
-        id: parseInt(id),
-      },
+      where: { id: artikelId },
     });
 
     res.status(200).json({

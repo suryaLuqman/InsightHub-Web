@@ -14,6 +14,6 @@ router.get('/get-all', getAllArtikel);
 router.put('/updateArtikel/:artikelId',image.single('gambar_artikel'),authenticate, updateArtikel);
 
 // Route untuk menghapus artikel berdasarkan ID
-router.delete('/delete/:id', deleteArtikel);
+router.delete('/deleteArtikel/:artikelId', authenticate,deleteArtikel);
 
 module.exports = router;
