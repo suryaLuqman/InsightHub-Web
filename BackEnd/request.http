@@ -105,8 +105,8 @@ POST https://insight-hub-api.vercel.app/api/v1/kategori/add
 Content-Type: application/json
 
 {
-    "nama": "Teknologi",
-    "deskripsi": "Artikel-artikel tentang teknologi informasi"
+    "nama": "Sistem pakar",
+    "deskripsi": "Artikel-artikel tentang kecerdasan buatan"
 }
 
 ###Mengambil semua kategori
