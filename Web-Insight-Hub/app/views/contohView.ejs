@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contoh View</title>
+    <link rel="stylesheet" href="/public/resources/css/style.css">
+</head>
+<body>
+    <h1>Daftar Kategori Artikel</h1>
+    <ul>
+        <% articles.forEach(article => { %>
+            <li>ID: <%= article.id %>, Nama: <%= article.nama %>, Deskripsi: <%= article.deskripsi %></li>
+        <% }); %>
+    </ul>
+</body>
+
+</html>
