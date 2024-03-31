@@ -3,11 +3,11 @@
 ### regis user
 # POST /api/v1/auth/register/user
 # POST http://localhost:3000/api/v1/auth/register/user
-POST http://localhost:3000/api/v1/auth/register/user
+POST https://insight-hub-api.vercel.app/api/v1/auth/register/user
 Content-Type: application/json
 
 {
-  "email":"fxcbcbcbbvbqww@gmail.com", 
+  "email":"oke@gmail.com", 
   "password":"123123", 
   "nama":"user1",
   "no_hp":"081281821",
@@ -16,11 +16,11 @@ Content-Type: application/json
 
 ### Login user
 # POST /api/v1/auth/login 
-POST http://localhost:3000/api/v1/auth/login
+POST https://insight-hub-api.vercel.app/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email":"pvvgvgcgcv@gmail.com",  
+  "email":"oke@gmail.com",  
   "password": "123123"
 }
 
@@ -124,7 +124,7 @@ DELETE https://insight-hub-api.vercel.app/api/v1/kategori/delete/1
 # POST /api/v1/artikel/add
 POST https://insight-hub-api.vercel.app/api/v1/artikel/upload
 Content-Type:application/json
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZW5pLnJpc2thQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzExNDY3MjA3LCJleHAiOjE3MTE1NTM2MDd9.KzEom6BUdns-u1Y9bvXQ2fZyBPq82WyGG8UD64vxUNw
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJva2VAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJwcm9maWxlIjp7ImlkIjoxLCJmaXJzdF9uYW1lIjoidXNlcjEiLCJsYXN0X25hbWUiOiJEZWZhdWx0IiwicHJvZmlsZV9waWN0dXJlIjpudWxsLCJub19ocCI6IjA4MTI4MTgyMSIsInN0YXR1cyI6Im9rIiwicGljdHVyZUlkIjpudWxsLCJ1c2VySWQiOjF9LCJpYXQiOjE3MTE4NDQ4OTgsImV4cCI6MTcxMTkzMTI5OH0.2uLTlEZsvHzN--dBVzXIOlydIfHhPNNm7qtE6AVRMlk
  
 {
   "judul": "okse",
