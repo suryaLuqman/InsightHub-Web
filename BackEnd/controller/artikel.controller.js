@@ -128,6 +128,10 @@ const getAllArtikel = async (req, res, next) => {
 
     // Mendapatkan nilai-nilai rating dari setiap artikel
     const artikelWithAvgRatings = allArtikel.map(artikel => {
+      if (artikel.gambar_artikel === null) {
+      // Skip processing for articles with null gambar_artikel
+      return artikel;
+    }
       const ratings = artikel.ratings.map(rating => rating.nilai);
       const avgRating = ratings.length ? ratings.reduce((acc, curr) => acc + curr) / ratings.length : 0;
       return { ...artikel, avgRating };

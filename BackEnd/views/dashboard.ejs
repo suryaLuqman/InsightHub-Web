@@ -118,7 +118,7 @@
                 <div class="col-6">
                   <% kategori.forEach((item, index) => { %>
                   <% if (index >= halfCount) { %>
-                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 ms-5 <%= index === halfCount ? 'mt-4' : 'mt-3' %>" data-kategoriid="<%= item.id %>"><%= item.nama %></button>
+                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-3 ms-3 <%= index === halfCount ? 'mt-4' : 'mt-3' %>" data-kategoriid="<%= item.id %>"><%= item.nama %></button>
                   <% } %>
                   <% }); %>
                 </div>

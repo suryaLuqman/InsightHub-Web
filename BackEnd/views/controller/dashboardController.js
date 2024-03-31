@@ -29,9 +29,11 @@ exports.dashboard = async (req, res) => {
 
         const artikelData = artikelResponse.data;
         const kategoriData = kategoriResponse.data;
-
+        console.log("artikelData:",artikelData);
+        console.log("lengthData:",artikelData.data.length);
         // Check if there are any articles
-        if (artikelData !== null) {
+        if (!artikelData.data.length === 0) {
+         console.log("articles found.");
             // If there are articles, send article data to view
             return res.render('dashboard', {
                 title: 'InsightHub - Lets Start the journey with us',
@@ -41,6 +43,7 @@ exports.dashboard = async (req, res) => {
                 kategori: kategoriData
             });
         } else {
+         console.log("no articles found.");
             // If there are no articles, render a different view
             return res.render('dashboard_no_artikel', {
                 title: 'InsightHub - Lets Start the journey with us',

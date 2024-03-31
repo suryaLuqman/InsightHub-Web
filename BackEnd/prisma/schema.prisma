@@ -39,7 +39,7 @@ model Artikel {
   judul          String
   deskripsi      String
   link           String
-  gambar_artikel String  @unique
+  gambar_artikel String?  @unique
   fileId         String? @unique
   kategori       Kategori @relation(fields: [kategoriId], references: [id])
   kategoriId     Int

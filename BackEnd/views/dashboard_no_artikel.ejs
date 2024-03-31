@@ -5,11 +5,10 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><% title %></title>
+  <title><%= title %></title>
   <!-- add favicon -->
   <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
   <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/resources/css/style.css" />
   <link rel="stylesheet" href="/resources/css/style.css" />
 
   <!-- fontawesome -->
@@ -19,12 +18,11 @@
 </head>
 
 <body>
-
   <div class="main">
     <!-- nav -->
     <nav class="navbar bg-body-light pb-3" style="border-bottom: 1px solid rgb(240, 237, 237)">
       <div class="container-fluid mx-5">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
           <img src="/resources/images/logo.png" width="250" height="50" />
         </a>
         <form class="group" role="search">
@@ -35,8 +33,9 @@
           <a href="" class="me-4 fs-3">
             <i class="fa-regular fa-bell text-black"></i>
           </a>
-          <a href="">
-            <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" /></a>
+          <a href="/profile/<%= first_name %>">
+            <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
+          </a>
         </form>
       </div>
     </nav>
@@ -47,14 +46,22 @@
           <div class="col-8">
             <p class="fs-2 fw-bold">Highlight</p>
             <div>
-              <p class="" style="
-                                    border-bottom: 3px solid black;
-                                    width: 16%;
-                                    padding-bottom: 10px;
-                                ">
-                <i class="fa-solid fa-pencil mt-4"></i>Tulis Karyamu
-              </p>
+              <a href="/dashboard/<%= first_name %>/addArticle" class="text-1c0c41" style="
+        border-bottom: 2px solid #1c0c41; /* transparan saat normal */
+        width: fit-content;
+        padding-bottom: 5px;
+        display: inline-block; 
+        text-decoration: none;
+        position: relative;
+    ">
+                <i class="fa-solid fa-pencil mt-4" style="font-size: 1.5rem; margin-right: 5px;"></i> <!-- Menambahkan sedikit ruang di sekitar ikon -->
+                Tulis Karyamu
+                <!-- Pseudo-element untuk membuat efek animasi -->
+                <span class="border-animation"></span>
+
+              </a>
             </div>
+
             <hr class="mt-5" />
             <img src="/resources/images/not-found.png" class="img-fluid" alt="" />
           </div>
@@ -75,21 +82,43 @@
             <div class="badge-custom">
               <div class="row">
                 <div class="col-6">
-                  <?php $halfCount = ceil(count($kategori) / 2); ?>
-                  <?php foreach ($kategori as $index => $item) : ?>
-                  <?php if ($index < $halfCount) : ?>
-                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 mt-4 ms-5" data-kategoriid="<?= $item->id ?>"><?= $item->nama ?></button>
-                  <?php endif; ?>
-                  <?php endforeach; ?>
+                  <% const halfCount = Math.ceil(kategori.length / 2); %>
+                  <% kategori.forEach((item, index) => { %>
+                  <% if (index < halfCount) { %>
+                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 mt-4 ms-5" data-kategoriid="<%= item.id %>"><%= item.nama %></button>
+                  <% } %>
+                  <% }); %>
                 </div>
-                <div class="col-6 mt-3">
-                  <?php foreach ($kategori as $index => $item) : ?>
-                  <?php if ($index >= $halfCount) : ?>
-                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 ms-5 <?= $index === $halfCount ? 'mt-4' : 'mt-3' ?>" data-kategoriid="<?= $item->id ?>"><?= $item->nama ?></button>
-                  <?php endif; ?>
-                  <?php endforeach; ?>
+                <div class="col-6">
+                  <% kategori.forEach((item, index) => { %>
+                  <% if (index >= halfCount) { %>
+                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-3 ms-3 <%= index === halfCount ? 'mt-4' : 'mt-3' %>" data-kategoriid="<%= item.id %>"><%= item.nama %></button>
+                  <% } %>
+                  <% }); %>
                 </div>
               </div>
+              <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                  const buttons = document.querySelectorAll('.badge-button');
+                  const articles = document.querySelectorAll('.card');
+
+                  buttons.forEach(button => {
+                    button.addEventListener('click', function() {
+                      const kategoriId = this.dataset.kategoriid;
+
+                      articles.forEach(article => {
+                        const artikelKategoriId = article.dataset.kategoriid;
+
+                        if (artikelKategoriId === kategoriId) {
+                          article.style.display = 'block'; // Tampilkan artikel yang sesuai
+                        } else {
+                          article.style.display = 'none'; // Sembunyikan artikel yang tidak sesuai
+                        }
+                      });
+                    });
+                  });
+                });
+              </script>
               <hr class="ms-5" />
               <p class="text-center">Created by Kelompok 3 KKP Batch 4</p>
             </div>
@@ -98,6 +127,21 @@
       </div>
     </section>
   </div>
+
+
+  <script src="/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+
+  <!-- jQuery (diperlukan oleh Bootstrap) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <!-- Popper.js (diperlukan oleh Bootstrap) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="/resources/js/main.js"></script>
 </body>
 
 </html>
