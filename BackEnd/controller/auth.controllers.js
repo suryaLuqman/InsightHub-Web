@@ -6,6 +6,7 @@ const nodemailer=require('../libs/nodemailer');
 const crypto = require('crypto');
 const { imagekit ,deleteFile } = require('../libs/imagekit');
 const path = require('path');
+const session = require('express-session');
 const { createUserSchema,createSUSchema, createAdminSchema, loginSchema ,forgotPasswordSchema, changePasswordSchema} = require('../validation/auth.validations');
 
 const authenticateUser = (req, res, next) => {
@@ -94,6 +95,18 @@ const login = async (req, res, next) => {
     const token = jwt.sign(profile, process.env.JWT_SECRET, {
       expiresIn: '1d',
     });
+
+    // Inisialisasi objek session jika belum ada
+    req.session = req.session || {};
+
+    // Set informasi pengguna ke dalam sesi
+    req.session.user = {
+      id: user.id,
+      email: user.email,
+      nama: user.nama,
+      token: token,
+      // Tambahkan informasi pengguna lainnya yang Anda inginkan
+    };
 
     return res.status(200).json({
       success: true,
