@@ -26,17 +26,21 @@ app.use(express.static(path.join(__dirname, 'Views')));
 // Set up session middleware
 app.use(session({
     store: new PgSession({
-    prismaClient: prisma,
-    tableName: 'Session', // Nama tabel sesi di database Anda
-  }),
+        pool: prisma.$pool, // Gunakan pool Prisma
+        tableName: 'Session', // Nama tabel sesi di database Anda
+        schemaName: 'public', // Nama skema database Anda
+        createTableIfMissing: true, // Buat tabel jika tidak ada
+        pruneSessionInterval: false, // Matikan pemangkasan sesi (jika diperlukan)
+    }),
     secret: process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { 
-      secure: true,
-      maxAge: 24 * 60 * 60 * 1000 // 1 hari dalam milidetik 
+        secure: true, // Set secure ke true untuk mengirim cookie hanya melalui HTTPS
+        maxAge: 24 * 60 * 60 * 1000 // 1 hari dalam milidetik 
     }
 }));
+
 
 // Set view engine (example using EJS)
 app.set('view engine', 'ejs');
