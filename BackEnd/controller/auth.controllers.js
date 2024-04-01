@@ -139,7 +139,7 @@ const login = async (req, res, next) => {
         data: {
           sid: req.sessionID,
           userId: user.id,
-          expire: req.session.cookie._expire,
+          expire: req.session.cookie._expires,
           sess: req.session,
         },
       });
