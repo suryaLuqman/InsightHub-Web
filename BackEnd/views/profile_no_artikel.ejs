@@ -1,265 +1,243 @@
-<?= $this->extend('layout/template'); ?>
-<?= $this->section('content'); ?>
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="container-fluid">
-   <div class="row">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><% title %></title>
+  <!-- add favicon -->
+  <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
+  <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/resources/css/style.css" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- fontawesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row">
       <!-- Sidebar -->
       <div class="col-md-9 ">
-         <div class="py-4 px-3">
-            <button class="btn btn-light mb-3" onclick="goBack()">
-               <i class="fas fa-arrow-circle-left fa-lg"></i>
-               <span class="ms-2 fs-5">Kembali</span>
-            </button>
+        <div class="py-4 px-3">
+          <button class="btn btn-light mb-3" onclick="history.back()">
+            <i class="fas fa-arrow-circle-left fa-lg"></i> <!-- Menggunakan fa-lg untuk memperbesar ikon -->
+            <span class="ms-2 fs-5">Kembali</span>
+            <!-- Menggunakan ms-2 untuk memberikan jarak dan fs-5 untuk memperbesar teks -->
+          </button>
 
-            <h4 class="mb-4">Informasi Detail</h4>
-            <!-- Tabs -->
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-               <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="postingan-tab" data-bs-toggle="tab" data-bs-target="#postingan" type="button" role="tab" aria-controls="postingan" aria-selected="true">Postingan</button>
-               </li>
-               <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="statistik-tab" data-bs-toggle="tab" data-bs-target="#statistik" type="button" role="tab" aria-controls="statistik" aria-selected="false">Statistik</button>
-               </li>
-            </ul>
-            <!-- Tabs Content -->
-            <div class="tab-content mt-3" id="myTabContent">
-               <div class="tab-pane fade show active" id="postingan" role="tabpanel" aria-labelledby="postingan-tab">
-                  <center>
-                     <img width="70%" src="<?= base_url('resources/images/file.jpg'); ?>" alt="Random Image" class="img-fluid">
-                  </center>
+          <h4 class="mb-4">Informasi Detail</h4>
+          <!-- Tabs -->
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="postingan-tab" data-bs-toggle="tab" data-bs-target="#postingan" type="button" role="tab" aria-controls="postingan" aria-selected="true">Postingan</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="statistik-tab" data-bs-toggle="tab" data-bs-target="#statistik" type="button" role="tab" aria-controls="statistik" aria-selected="false">Statistik</button>
+            </li>
+          </ul>
+          <!-- Tabs Content -->
+          <div class="tab-content mt-3" id="myTabContent">
+            <div class="tab-pane fade show active" id="postingan" role="tabpanel" aria-labelledby="postingan-tab">
+              <center>
+                <img width="70%" src="/resources/images/file.jpg" alt="Random Image" class="img-fluid">
+              </center>
 
-               </div>
-               <div class="tab-pane fade" id="statistik" role="tabpanel" aria-labelledby="statistik-tab">
-                  <div class="container">
-                     <h4 class="mb-4">Statistik Kamu</h4>
-
-                     <div class="row">
-                        <div class="col-md-4">
-                           <div class="kartu">
-                              <div class="card-body">
-                                 <h5 class="mb-4">Total Postingan :</h5>
-                                 <br>
-                                 <h4 class="mb-4">0</h4>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-md-4">
-                           <div class="kartu">
-                              <div class="card-body">
-                                 <h5 class="mb-4">Total Postingan :</h5>
-                                 <br>
-                                 <h4 class="mb-4">0</h4>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-md-4">
-                           <div class="kartu">
-                              <div class="card-body">
-                                 <h5 class="mb-4">Total Postingan :</h5>
-                                 <br>
-                                 <h4 class="mb-4">0</h4>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
             </div>
-         </div>
+            <div class="tab-pane fade" id="statistik" role="tabpanel" aria-labelledby="statistik-tab">
+              <div class="container">
+                <h4 class="mb-4">Statistik Kamu</h4>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="kartu">
+                      <div class="card-body">
+                        <h5 class="mb-4">Total Postingan :</h5>
+                        <br>
+                        <h4 class="mb-4">0</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="kartu">
+                      <div class="card-body">
+                        <h5 class="mb-4">Total Postingan :</h5>
+                        <br>
+                        <h4 class="mb-4">0</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="kartu">
+                      <div class="card-body">
+                        <h5 class="mb-4">Total Postingan :</h5>
+                        <br>
+                        <h4 class="mb-4">0</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- Profile Sidebar -->
       <div class="col-md-3">
-         <div class="py-4 px-3">
-            <h4 class="mb-4">Profile</h4>
-            <!-- Profile Image -->
-            <div class="d-flex align-items-center mb-3">
-               <img src="<?= base_url('resources/images/user.jpg'); ?>" alt="Profile Image" class="rounded-circle me-3">
-               <div class="align-middle">
-                  <div class="d-flex">
-                     <button class="btn btn-sm btn-transparent m-2"><i class="fas fa-upload" style="color: #00f228;"></i> Upload</button>
-                     <button class="btn btn-sm btn-transparent m-0"><i class="fas fa-trash-alt text-danger"></i> Delete</button>
-                  </div>
-               </div>
+        <div class="py-4 px-3">
+          <h4 class="mb-4">Profile</h4>
+          <!-- Profile Image -->
+          <div class="d-flex align-items-center mb-3">
+            <img src="/resources/images/user.jpg" alt="Profile Image" class="rounded-circle me-3">
+            <div class="align-middle">
+              <div class="d-flex">
+                <button class="btn btn-sm btn-transparent m-2"><i class="fas fa-upload" style="color: #00f228;"></i> Upload</button>
+                <button class="btn btn-sm btn-transparent m-0"><i class="fas fa-trash-alt text-danger"></i> Delete</button>
+              </div>
             </div>
-            <!-- Profile Details -->
-            <form>
-               <!-- HTML -->
-               <div class="mb-3">
-                  <div class="input-group">
-                     <input type="text" class="form-control border-end-0" placeholder="Nama">
-                     <span class="input-group-text bg-transparent border-start-0"><i class="fas fa-pen"></i></span>
-                  </div>
-               </div>
-               <div class="mb-3">
-                  <div class="input-group">
-                     <input type="text" class="form-control border-end-0" placeholder="Status">
-                     <span class="input-group-text bg-transparent border-start-0"><i class="far fa-file"></i></span>
-                  </div>
-               </div>
-               <div class="mb-3">
-                  <div class="input-group">
-                     <input type="email" class="form-control border-end-0" placeholder="Email">
-                     <span class="input-group-text bg-transparent border-start-0"></span>
-                  </div>
-               </div>
+          </div>
+          <!-- Profile Details -->
+          <form>
+            <!-- HTML -->
+            <div class="mb-3">
+              <div class="input-group">
+                <input type="text" class="form-control border-end-0" placeholder="Nama">
+                <span class="input-group-text bg-transparent border-start-0"><i class="fas fa-pen"></i></span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="input-group">
+                <input type="text" class="form-control border-end-0" placeholder="Status">
+                <span class="input-group-text bg-transparent border-start-0"><i class="far fa-file"></i></span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="input-group">
+                <input type="email" class="form-control border-end-0" placeholder="Email">
+                <span class="input-group-text bg-transparent border-start-0"></span>
+              </div>
+            </div>
 
-               <!-- Button trigger modal -->
-               <button type="button" class="btn btn-outline-danger me-2 w-100" style="border-radius: 20px;" data-bs-toggle="modal" data-bs-target="#gantiPasswordModal">
-                  Ganti Password
-               </button>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-danger me-2 w-100" style="border-radius: 20px;" data-bs-toggle="modal" data-bs-target="#gantiPasswordModal">
+              Ganti Password
+            </button>
 
-               <!-- Modal -->
-               <div class="modal fade" id="gantiPasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered">
-                     <div class="modal-content">
-                        <div class="modal-header">
-                           <h5 class="modal-title" id="exampleModalLabel">Ganti Password</h5>
-                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Modal -->
+            <div class="modal fade" id="gantiPasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ganti Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="mb-3">
+                        <label for="passwordLama" class="form-label">Password Lama</label>
+                        <div class="input-group">
+                          <input type="password" class="form-control" id="passwordLama" placeholder="Masukkan Password Lama" aria-describedby="togglePasswordLama">
+                          <button class="btn btn-outline-secondary" type="button" id="togglePasswordLama">
+                            <i class="bi bi-eye-slash"></i>
+                          </button>
                         </div>
-                        <div class="modal-body">
-                           <form id="form-ganti-password" action="/changePassword/<?= session()->get('token') ?>" method="POST">
-                              <div class="mb-3">
-                                 <label for="passwordLama" class="form-label">Password Lama</label>
-                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="passwordLama" placeholder="Masukkan Password Lama" aria-describedby="togglePasswordLama">
-                                    <button class="btn btn-outline-secondary" type="button" id="togglePasswordLama">
-                                       <i class="bi bi-eye-slash"></i>
-                                    </button>
-                                 </div>
-                              </div>
-                              <div class="mb-3">
-                                 <label for="passwordBaru" class="form-label">Password Baru</label>
-                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="passwordBaru" placeholder="Masukkan Password Baru" aria-describedby="togglePasswordBaru">
-                                    <button class="btn btn-outline-secondary" type="button" id="togglePasswordBaru">
-                                       <i class="bi bi-eye-slash"></i>
-                                    </button>
-                                 </div>
-                              </div>
-                              <div class="mb-3">
-                                 <label for="konfirmasiPassword" class="form-label">Konfirmasi Password Baru</label>
-                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="konfirmasiPassword" placeholder="Konfirmasi Password Baru" aria-describedby="toggleKonfirmasiPassword">
-                                    <button class="btn btn-outline-secondary" type="button" id="toggleKonfirmasiPassword">
-                                       <i class="bi bi-eye-slash"></i>
-                                    </button>
-                                 </div>
-                              </div>
-                           </form>
-                           <div id="error-message" class="alert alert-danger" style="display: none;"></div>
-                           <div id="success-message" class="alert alert-success" style="display: none;"></div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="passwordBaru" class="form-label">Password Baru</label>
+                        <div class="input-group">
+                          <input type="password" class="form-control" id="passwordBaru" placeholder="Masukkan Password Baru" aria-describedby="togglePasswordBaru">
+                          <button class="btn btn-outline-secondary" type="button" id="togglePasswordBaru">
+                            <i class="bi bi-eye-slash"></i>
+                          </button>
                         </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-primary" id="btn-ganti-password">Ganti Password</button>
-                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      </div>
+                      <div class="mb-3">
+                        <label for="konfirmasiPassword" class="form-label">Konfirmasi Password Baru</label>
+                        <div class="input-group">
+                          <input type="password" class="form-control" id="konfirmasiPassword" placeholder="Konfirmasi Password Baru" aria-describedby="toggleKonfirmasiPassword">
+                          <button class="btn btn-outline-secondary" type="button" id="toggleKonfirmasiPassword">
+                            <i class="bi bi-eye-slash"></i>
+                          </button>
                         </div>
-                     </div>
+                      </div>
+                    </form>
                   </div>
-               </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Ganti Password</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
-               <br><br>
-               <center>
-                  <button type="button" class="btn text-white" style="border-radius: 20px;background-color: #1c2252;">Simpan</button>
-                  <button type="button" class="btn btn-outline-primary text-warning" style="border-radius: 20px;">Cancel</button>
-               </center>
-            </form>
-         </div>
+            <br><br>
+            <center>
+              <button type="button" class="btn text-white" style="border-radius: 20px;background-color: #1c2252;">Simpan</button>
+              <button type="button" class="btn btn-outline-primary text-warning" style="border-radius: 20px;">Cancel</button>
+            </center>
+          </form>
+        </div>
       </div>
-   </div>
-</div>
-<br><br><br><br><br><br>
-<!-- Footer -->
-<!-- Footer -->
-<footer class="bg-dark mt-5" style="height: 170px">
-   <div class="container-fluid">
-      <div class="row mx-5">
-         <div class="col-6">
-            <img src="<?= base_url('resources/images/logo.png'); ?>" class="mt-4" width="450" height="100" />
+    </div>
+  </div>
+  <br><br><br><br><br><br>
+  <!-- Footer -->
+    <footer class="bg-dark mt-5" style="height: 170px">
+      <div class="container-fluid">
+        <div class="row mx-5">
+          <div class="col-6">
+            <img src="/resources/images/logo.png" class="mt-4" width="450" height="100" />
             <p class="text-white ms-5 pt-1">
-               Lets Start the journey withh us
+              Lets Start the journey withh us
             </p>
-         </div>
-         <div class="col-6">
+          </div>
+          <div class="col-6">
             <p class="text-white mt-5 pt-4">
-               Created by
-               <span class="text-footer"> Kelompok 3 KKP MSIB BATCH 4</span> |
-               Copyright &copy;2024
+              Created by
+              <span class="text-footer"> Kelompok 3 KKP MSIB BATCH 4</span> |
+              Copyright &copy;2024
             </p>
-         </div>
+          </div>
+        </div>
       </div>
-   </div>
-</footer>
+    </footer>
 
 
-<!-- Bootstrap Bundle with Popper -->
-</script>
-<!-- Icons -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/icons.min.js">
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
-</script>
-<script>
-   // Function to toggle password visibility
-   function togglePasswordVisibility(inputId, buttonId) {
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+  </script>
+  <!-- Icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/icons.min.js">
+  </script>
+  <script src="/resources/js/main.js"></script>
+  <script>
+    // Function to toggle password visibility
+    function togglePasswordVisibility(inputId, buttonId) {
       const passwordInput = document.getElementById(inputId);
       const toggleButton = document.getElementById(buttonId);
       toggleButton.addEventListener('click', function() {
-         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-         passwordInput.setAttribute('type', type);
-         toggleButton.querySelector('i').classList.toggle('bi-eye');
-         toggleButton.querySelector('i').classList.toggle('bi-eye-slash');
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        toggleButton.querySelector('i').classList.toggle('bi-eye');
+        toggleButton.querySelector('i').classList.toggle('bi-eye-slash');
       });
-   }
+    }
 
-   // Call togglePasswordVisibility function for each password input
-   togglePasswordVisibility('passwordLama', 'togglePasswordLama');
-   togglePasswordVisibility('passwordBaru', 'togglePasswordBaru');
-   togglePasswordVisibility('konfirmasiPassword', 'toggleKonfirmasiPassword');
+    // Call togglePasswordVisibility function for each password input
+    togglePasswordVisibility('passwordLama', 'togglePasswordLama');
+    togglePasswordVisibility('passwordBaru', 'togglePasswordBaru');
+    togglePasswordVisibility('konfirmasiPassword', 'toggleKonfirmasiPassword');
+  </script>
+</body>
 
-   document.getElementById('btn-ganti-password').addEventListener('click', function() {
-      var passwordLama = document.getElementById('passwordLama').value;
-      var passwordBaru = document.getElementById('passwordBaru').value;
-      var konfirmasiPassword = document.getElementById('konfirmasiPassword').value;
-      var errorMessage = document.getElementById('error-message');
-      var successMessage = document.getElementById('success-message');
-
-      // Validasi untuk memeriksa apakah semua input memiliki nilai
-      if (passwordLama === '' || passwordBaru === '' || konfirmasiPassword === '') {
-         errorMessage.textContent = 'Harap isi semua input sebelum mengganti password.';
-         errorMessage.style.display = 'block';
-         successMessage.style.display = 'none';
-         return;
-      }
-
-      // Validasi untuk memeriksa apakah password baru dan konfirmasi password sama
-      if (passwordBaru !== konfirmasiPassword) {
-         errorMessage.textContent = 'Password baru dan konfirmasi password tidak sesuai. Harap periksa kembali.';
-         errorMessage.style.display = 'block';
-         successMessage.style.display = 'none';
-         return;
-      }
-
-      // Kirim data dengan Ajax
-      var formData = new FormData(document.getElementById('form-ganti-password'));
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/ubahPassword', true);
-      xhr.onreadystatechange = function() {
-         if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-               // Jika sukses, tampilkan pesan sukses
-               successMessage.textContent = 'Password berhasil diubah!';
-               successMessage.style.display = 'block';
-               errorMessage.style.display = 'none';
-            } else {
-               // Jika gagal, tampilkan pesan error
-               errorMessage.textContent = 'Terjadi kesalahan saat mengganti password.';
-               errorMessage.style.display = 'block';
-               successMessage.style.display = 'none';
-            }
-         }
-      };
-      xhr.send(formData);
-   });
-</script>
-<?= $this->endSection(); ?>
+</html>

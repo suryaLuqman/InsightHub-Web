@@ -10,7 +10,7 @@ exports.checkSession = async (userId) => {
       orderBy: { expire: 'desc' },
     });
 
-    console.log("sessions:", sessions);
+   //  console.log("sessions:", sessions);
     // Jika tidak ada sesi atau sesi telah kadaluarsa, kembalikan false
     if (!sessions || sessions.length === 0 || sessions[0].expire < new Date()) {
       return false;

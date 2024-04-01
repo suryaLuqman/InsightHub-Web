@@ -28,7 +28,7 @@
       <!-- Sidebar -->
       <div class="col-md-9 ">
         <div class="py-4 px-3">
-          <button class="btn btn-light mb-3">
+          <button class="btn btn-light mb-3" onclick="history.back()">
             <i class="fas fa-arrow-circle-left fa-lg"></i> <!-- Menggunakan fa-lg untuk memperbesar ikon -->
             <span class="ms-2 fs-5">Kembali</span>
             <!-- Menggunakan ms-2 untuk memberikan jarak dan fs-5 untuk memperbesar teks -->
@@ -92,10 +92,6 @@
                   </div>
                 </div>
               </div>
-              <center>
-                <img width="70%" src="/resources/images/file.jpg" alt="Random Image" class="img-fluid">
-              </center>
-
             </div>
             <div class="tab-pane fade" id="statistik" role="tabpanel" aria-labelledby="statistik-tab">
               <div class="container">
@@ -264,6 +260,7 @@
   <!-- Icons -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/icons.min.js">
   </script>
+  <script src="/resources/js/main.js"></script>
   <script>
     // Function to toggle password visibility
     function togglePasswordVisibility(inputId, buttonId) {

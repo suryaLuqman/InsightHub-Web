@@ -17,13 +17,13 @@ exports.getProfilePage = async (req, res) => {
       return res.redirect("/");
     }
 
-       // Baca nilai session
+    // Baca nilai session
     const user = session.sess.user;
     const status = user && user.status;
     const token = user && user.token;
-    console.log("session baca nilai sessiion profile:", user);
-    console.log("status:", status);
-    console.log("token:", token);
+   //  console.log("session baca nilai sessiion profile:", user);
+   //  console.log("status:", status);
+   //  console.log("token:", token);
 
     const userId = session.userId;
 
@@ -57,14 +57,29 @@ exports.getProfilePage = async (req, res) => {
         .status(500)
         .render("error", { error: "Failed to fetch profile or article data." });
     }
+    console.log("length:", artikelData.length);
 
-    // Render the profile page with the retrieved data
-    return res.render("profile", {
-      title: `Insight - ${segment || "Profile"}`,
-      profile: profileData,
-      artikel: artikelData,
-      kategori: kategoriData,
-    });
+    if (artikelData.length > 0) {
+      console.log("articles found.");
+      // If there are articles, send article data to view
+      // Render the profile page with the retrieved data
+      return res.render("profile", {
+        title: `Insight - ${segment || "Profile"}`,
+        profile: profileData,
+        artikel: artikelData,
+        kategori: kategoriData,
+      });
+    } else {
+      console.log("no articles found.");
+      // If there are no articles, render a different view
+      // Render the profile page with the retrieved data
+      return res.render("profile_no_artikel", {
+        title: `Insight - ${segment || "Profile"}`,
+        profile: profileData,
+        artikel: artikelData,
+        kategori: kategoriData,
+      });
+    }
   } catch (error) {
     console.error("Failed to fetch data from API:", error);
     return res
