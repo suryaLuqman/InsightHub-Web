@@ -124,7 +124,6 @@ const login = async (req, res, next) => {
      console.log("existingSession : ", existingSession);
     if (existingSession && existingSession.sid) {
       // Jika session sudah ada, lakukan update
-      // Jika session sudah ada, lakukan update
       await prisma.session.update({
         where: { sid: existingSession.sid },
         data: {

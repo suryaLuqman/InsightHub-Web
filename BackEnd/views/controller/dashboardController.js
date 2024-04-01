@@ -9,25 +9,6 @@ exports.dashboard = async (req, res) => {
   try {
     const { first_name, id } = req.params;
 
-   //  // Ambil session dari database
-   //  let sessions = await prisma.session.findMany({
-   //     where: { userId: Number(id) },
-   //     orderBy: { expire: 'desc' },
-   //  });
-
-   //  console.log("session:", sessions);
-
-   //  // Jika tidak ada session, redirect ke halaman login
-   //  if (!sessions || sessions.length === 0) {
-   //    return res.redirect("/");
-   //  }
-
-   //      // Ambil session dengan 'expire' paling lama
-   //  let session = sessions[0];
-
-   //  // Dapatkan waktu saat ini
-   //  let now = new Date();
-
     // Panggil fungsi checkSession untuk memeriksa sesi
     const session = await checkSession(id);
    console.log("session:", session);
