@@ -124,10 +124,11 @@ const login = async (req, res, next) => {
 
     if (existingSession) {
       // Jika session sudah ada, lakukan update
+      // Jika session sudah ada, lakukan update
       await prisma.session.update({
         where: { sid: existingSession.sid },
         data: {
-          expires: req.session.cookie.expires,
+          expire: req.session.cookie._expire,
           sess: req.session,
         },
       });
@@ -138,7 +139,7 @@ const login = async (req, res, next) => {
         data: {
           sid: req.sessionID,
           userId: user.id,
-          expire: req.session.cookie._expires,
+          expire: req.session.cookie._expire,
           sess: req.session,
         },
       });
