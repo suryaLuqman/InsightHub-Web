@@ -19,8 +19,18 @@ model User {
   ratings   Rating[]
   savedArtikels SavedArtikel[]
   reports   Report[]
+  sessions  Session[]
 }
 
+model Session {
+  id        String   @id @default(uuid())
+  userId    Int
+  expires   DateTime
+  session   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+}
 
 model UserProfile { 
   id              Int      @id @default(autoincrement()) 

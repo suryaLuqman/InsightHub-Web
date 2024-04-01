@@ -8,15 +8,15 @@ exports.dashboard = async (req, res) => {
     const { first_name, id } = req.params;
 
     // Baca nilai session
-    const status = req.session.user.status;
-    const token = req.session.user.token;
-   // console.log("session:", req.session.user);
-   //  console.log("status:", status);
-   //  console.log("token:", token);
+    const status = req.session.user && req.session.user.status;
+    const token = req.session.token;
+    console.log("session:", req.session.user);
+    console.log("status:", status);
+    console.log("token:", token);
 
 
     // If user is not authenticated, redirect to login page
-    if (!req.session.user.token) {
+    if (!token) {
       return res.redirect("/");
     }
 

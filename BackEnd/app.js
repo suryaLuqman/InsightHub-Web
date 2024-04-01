@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const PgSession = require('connect-pg-simple')(session);
+const prisma = require('../BackEnd/libs/prisma');
 const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
@@ -23,11 +25,15 @@ app.use(express.static(path.join(__dirname, 'Views')));
 
 // Set up session middleware
 app.use(session({
+    store: new PgSession({
+    prismaClient: prisma,
+    tableName: 'Session', // Nama tabel sesi di database Anda
+  }),
     secret: process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { 
-      secure: false,
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000 // 1 hari dalam milidetik 
     }
 }));
