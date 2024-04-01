@@ -37,5 +37,11 @@
       "src": "/",
       "dest": "/views/index.ejs"
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/views/(.*)",
+      "destination": "/views/$1.ejs"
+    }
   ]
 }
