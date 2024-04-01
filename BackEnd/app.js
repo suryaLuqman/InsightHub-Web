@@ -6,6 +6,7 @@ const app = express();
 const path = require('path');
 const homeRoute = require('./views/routes/homeRoute');
 const dashboardRoute = require('./views/routes/dashboardRoute');
+const profileRoute = require('./views/routes/profileRoute');
 const morgan = require('morgan');
 const { serverError, notFound,handleErrors } = require('./middleware/error.handling');
 const PORT = process.env.PORT || 3000;
@@ -25,13 +26,18 @@ app.use(session({
     secret: process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { 
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000 // 1 hari dalam milidetik 
+    }
 }));
 
 // Set view engine (example using EJS)
 app.set('view engine', 'ejs');
 app.use(homeRoute);
 app.use(dashboardRoute);
+app.use(profileRoute);
+
 app.use('/api/v1', require('./routes/index.routes'));
 app.use((req, res, next) => {
   // res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500{link web yang diizinkan}');
