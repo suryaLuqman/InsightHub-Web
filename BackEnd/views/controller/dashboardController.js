@@ -1,21 +1,32 @@
 const axios = require("axios");
 require("dotenv").config();
 const session = require("express-session");
+const prisma = require("../../libs/prisma");
 
 // Dashboard controller
 exports.dashboard = async (req, res) => {
   try {
     const { first_name, id } = req.params;
 
+    // Ambil session dari database
+    const session = await prisma.session.findUnique({
+      where: { sid: req.sessionID },
+    });
+
+    // Jika tidak ada session, redirect ke halaman login
+    if (!session) {
+      return res.redirect("/");
+    }
+
     // Baca nilai session
-    const status = req.session.user && req.session.user.status;
-    const token = req.session.token;
-    console.log("session:", req.session.user);
+    const user = session.sess.user;
+    const status = user && user.status;
+    const token = user && user.token;
+    console.log("session:", user);
     console.log("status:", status);
     console.log("token:", token);
 
-
-    // If user is not authenticated, redirect to login page
+    // Jika pengguna tidak diautentikasi, redirect ke halaman login
     if (!token) {
       return res.redirect("/");
     }

@@ -117,14 +117,31 @@ const login = async (req, res, next) => {
     };
 
     // Simpan session ke dalam database
-    await prisma.session.create({
-      data: {
-        sid: req.sessionID,
-        userId: user.id,
-        expire: req.session.cookie._expires,
-        sess: req.session,
-      },
+    // Cek apakah session untuk pengguna ini sudah ada
+    let existingSession = await prisma.session.findUnique({
+      where: { userId: user.id },
     });
+
+    if (existingSession) {
+      // Jika session sudah ada, lakukan update
+      await prisma.session.update({
+        where: { sid: existingSession.sid },
+        data: {
+          expires: req.session.cookie.expires,
+          sess: req.session,
+        },
+      });
+    } else {
+      // Jika session belum ada, buat session baru
+      await prisma.session.create({
+        data: {
+          sid: req.sessionID,
+          userId: user.id,
+          expires: req.session.cookie.expires,
+          sess: req.session,
+        },
+      });
+    }
 
     return res.status(200).json({
       success: true,
