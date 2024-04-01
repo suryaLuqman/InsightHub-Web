@@ -330,7 +330,7 @@
             console.log("document.cookie: ", document.cookie);
 
             // Redirect ke halaman dashboard
-            window.location.href = "/dashboard/" + data.data.profile.profile.first_name;
+            window.location.href = "/dashboard/" + data.data.profile.profile.first_name+"/"+data.data.profile.profile.id;
           } else {
             const Message = data.message;
             const error = data.error;

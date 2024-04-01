@@ -14,7 +14,6 @@
   <!-- fontawesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 </head>
 
 <body>
@@ -47,18 +46,18 @@
             <p class="fs-2 fw-bold">Highlight</p>
             <div>
               <a href="/dashboard/<%= first_name %>/addArticle" class="text-1c0c41" style="
-        border-bottom: 2px solid #1c0c41; /* transparan saat normal */
-        width: fit-content;
-        padding-bottom: 5px;
-        display: inline-block; 
-        text-decoration: none;
-        position: relative;
-    ">
-                <i class="fa-solid fa-pencil mt-4" style="font-size: 1.5rem; margin-right: 5px;"></i> <!-- Menambahkan sedikit ruang di sekitar ikon -->
+                    border-bottom: 2px solid #1c0c41; /* transparan saat normal */
+                    width: fit-content;
+                    padding-bottom: 5px;
+                    display: inline-block;
+                    text-decoration: none;
+                    position: relative;
+                  ">
+                <i class="fa-solid fa-pencil mt-4" style="font-size: 1.5rem; margin-right: 5px"></i>
+                <!-- Menambahkan sedikit ruang di sekitar ikon -->
                 Tulis Karyamu
                 <!-- Pseudo-element untuk membuat efek animasi -->
                 <span class="border-animation"></span>
-
               </a>
             </div>
 
@@ -72,8 +71,8 @@
                   <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
                 </div>
                 <div class="col-8">
-                  <p><%= first_name %></p>
-                  <p class="status"></p>
+                  <p style="margin-top: 0 !important;margin-bottom: 0 !important;"><%= first_name %></p>
+                  <p><%= status %></p>
                 </div>
                 <hr />
               </div>
@@ -82,37 +81,39 @@
             <div class="badge-custom">
               <div class="row">
                 <div class="col-6">
-                  <% const halfCount = Math.ceil(kategori.length / 2); %>
-                  <% kategori.forEach((item, index) => { %>
-                  <% if (index < halfCount) { %>
-                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 mt-4 ms-5" data-kategoriid="<%= item.id %>"><%= item.nama %></button>
-                  <% } %>
-                  <% }); %>
+                  <% const halfCount = Math.ceil(kategori.length / 2); %> <%
+                    kategori.forEach((item, index) => { %> <% if (index <
+                    halfCount) { %>
+                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 mt-4 ms-5" data-kategoriid="<%= item.id %>">
+                    <%= item.nama %>
+                  </button>
+                  <% } %> <% }); %>
                 </div>
                 <div class="col-6">
-                  <% kategori.forEach((item, index) => { %>
-                  <% if (index >= halfCount) { %>
-                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-3 ms-3 <%= index === halfCount ? 'mt-4' : 'mt-3' %>" data-kategoriid="<%= item.id %>"><%= item.nama %></button>
-                  <% } %>
-                  <% }); %>
+                  <% kategori.forEach((item, index) => { %> <% if (index >=
+                    halfCount) { %>
+                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-3 ms-3 <%= index === halfCount ? 'mt-4' : 'mt-3' %>" data-kategoriid="<%= item.id %>">
+                    <%= item.nama %>
+                  </button>
+                  <% } %> <% }); %>
                 </div>
               </div>
               <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                  const buttons = document.querySelectorAll('.badge-button');
-                  const articles = document.querySelectorAll('.card');
+                  const buttons = document.querySelectorAll(".badge-button");
+                  const articles = document.querySelectorAll(".card");
 
-                  buttons.forEach(button => {
-                    button.addEventListener('click', function() {
+                  buttons.forEach((button) => {
+                    button.addEventListener("click", function() {
                       const kategoriId = this.dataset.kategoriid;
 
-                      articles.forEach(article => {
+                      articles.forEach((article) => {
                         const artikelKategoriId = article.dataset.kategoriid;
 
                         if (artikelKategoriId === kategoriId) {
-                          article.style.display = 'block'; // Tampilkan artikel yang sesuai
+                          article.style.display = "block"; // Tampilkan artikel yang sesuai
                         } else {
-                          article.style.display = 'none'; // Sembunyikan artikel yang tidak sesuai
+                          article.style.display = "none"; // Sembunyikan artikel yang tidak sesuai
                         }
                       });
                     });
@@ -127,7 +128,6 @@
       </div>
     </section>
   </div>
-
 
   <script src="/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/resources/bootstrap/js/bootstrap.min.js"></script>

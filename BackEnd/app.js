@@ -20,6 +20,13 @@ app.set('views', path.join(__dirname, 'views'));
 // Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'Views')));
 
+// Set up session middleware
+app.use(session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
 
 // Set view engine (example using EJS)
 app.set('view engine', 'ejs');
@@ -37,15 +44,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
-// Set up session middleware
-app.use(session({
-    secret: process.env.JWT_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-}));
 
 app.use(notFound);
 app.use(serverError);

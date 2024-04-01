@@ -27,15 +27,11 @@ function getCookie(name) {
 
 // Mendapatkan nilai cookie 'status'
 const status = getCookie('status');
-console.log("status:", status);
 const token = getCookie('token');
 
 // Menampilkan nilai cookie 'status' di elemen HTML
 document.addEventListener('DOMContentLoaded', function() {
-  const statusElement = document.querySelector('.status');
-  if (statusElement) {
-    statusElement.textContent = status;
-  }
+
 });
 
 
