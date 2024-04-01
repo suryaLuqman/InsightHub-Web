@@ -26,12 +26,16 @@
       "dest": "app.js"
     },
     {
-      "src": "/(.*)",
+      "src": "/docs",
       "dest": "doc-api.html"
     },
     {
-      "src": "/(.*)",
+      "src": "/views/(.*)",
       "dest": "/views/$1.ejs"
+    },
+    {
+      "src": "/",
+      "dest": "/views/index.ejs"
     }
   ]
 }
