@@ -2,18 +2,36 @@ const axios = require("axios");
 require("dotenv").config();
 const session = require("express-session");
 const prisma = require("../../libs/prisma");
+const { checkSession } = require("../controller/checkSessionController");
 
 // Dashboard controller
 exports.dashboard = async (req, res) => {
   try {
     const { first_name, id } = req.params;
 
-    // Ambil session dari database
-    const session = await prisma.session.findUnique({
-      where: { sid: req.sessionID },
-    });
+   //  // Ambil session dari database
+   //  let sessions = await prisma.session.findMany({
+   //     where: { userId: Number(id) },
+   //     orderBy: { expire: 'desc' },
+   //  });
 
-    // Jika tidak ada session, redirect ke halaman login
+   //  console.log("session:", sessions);
+
+   //  // Jika tidak ada session, redirect ke halaman login
+   //  if (!sessions || sessions.length === 0) {
+   //    return res.redirect("/");
+   //  }
+
+   //      // Ambil session dengan 'expire' paling lama
+   //  let session = sessions[0];
+
+   //  // Dapatkan waktu saat ini
+   //  let now = new Date();
+
+    // Panggil fungsi checkSession untuk memeriksa sesi
+    const session = await checkSession(id);
+   console.log("session:", session);
+    // Jika sesi tidak valid, arahkan pengguna kembali ke halaman login
     if (!session) {
       return res.redirect("/");
     }
