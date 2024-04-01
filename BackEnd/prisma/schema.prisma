@@ -9,85 +9,93 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  nama    String
-  profile   UserProfile?
-  roles     Role[]   @default([USER])
-  articles  Artikel[] // Ubah menjadi hubungan banyak-ke-banyak
-  ratings   Rating[]
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  password      String
+  nama          String
+  roles         Role[]         @default([USER])
+  articles      Artikel[]
+  ratings       Rating[]
+  reports       Report[]
   savedArtikels SavedArtikel[]
-  reports   Report[]
+  sessions      Session[]
+  profile       UserProfile?
+}
+
+model Session {
+  sid     String   @id
+  sess    Json
+  expire  DateTime
+  userId  Int
+  user    User     @relation(fields: [userId], references: [id])
 }
 
 
-model UserProfile { 
-  id              Int      @id @default(autoincrement()) 
-  first_name      String 
+model UserProfile {
+  id              Int     @id @default(autoincrement())
+  first_name      String
   last_name       String?
-  profile_picture String? 
-  no_hp           String 
+  profile_picture String?
+  no_hp           String
   status          String?
-  pictureId       String?  @unique
-  user            User     @relation(fields: [userId], references: [id]) 
-  userId          Int      @unique 
-} 
+  pictureId       String? @unique
+  userId          Int     @unique
+  user            User    @relation(fields: [userId], references: [id])
+}
 
 model Artikel {
-  id             Int       @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   judul          String
   deskripsi      String
   link           String
-  gambar_artikel String  @unique
-  fileId         String? @unique
-  kategori       Kategori @relation(fields: [kategoriId], references: [id])
-  kategoriId     Int
-  author         User     @relation(fields: [authorId], references: [id])
+  gambar_artikel String?        @unique
+  fileId         String?        @unique
+  kategori      Kategori[]     // Relasi banyak-ke-banyak dengan Kategori
+  kategoriId     Int[]
   authorId       Int
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  author         User           @relation(fields: [authorId], references: [id])
   ratings        Rating[]
   reports        Report[]
-  savedArtikels  SavedArtikel[]   // Add the opposite relation field here
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  savedArtikels  SavedArtikel[]
 }
 
-model Kategori { 
-  id       Int       @id @default(autoincrement()) 
-  nama     String 
-  deskripsi String? 
-  articles Artikel[] 
-} 
+model Kategori {
+  id        Int       @id @default(autoincrement())
+  nama      String
+  deskripsi String?
+  articles  Artikel[]  // Relasi banyak-ke-banyak dengan Artikel
+}
 
 model Rating {
   id        Int     @id @default(autoincrement())
   nilai     Int
-  artikel   Artikel @relation(fields: [artikelId], references: [id])
   artikelId Int
-  user      User    @relation(fields: [userId], references: [id])
   userId    Int
+  artikel   Artikel @relation(fields: [artikelId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 }
 
 model Report {
   id        Int     @id @default(autoincrement())
   alasan    String
-  artikel   Artikel @relation(fields: [artikelId], references: [id])
   artikelId Int
-  user      User    @relation(fields: [userId], references: [id])
   userId    Int
+  artikel   Artikel @relation(fields: [artikelId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 }
 
 model SavedArtikel {
-  id       Int      @id @default(autoincrement())
-  user     User     @relation(fields: [userId], references: [id])
-  userId   Int
+  id        Int     @id @default(autoincrement())
+  userId    Int
   artikelId Int
-  artikel  Artikel  @relation(fields: [artikelId], references: [id])
+  artikel   Artikel @relation(fields: [artikelId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 
   @@unique([userId, artikelId])
 }
 
-// Enum untuk Role User
 enum Role {
   ADMIN
   USER

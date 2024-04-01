@@ -32,15 +32,23 @@ const createArtikel = async (req, res, next) => {
         data: null,
       });
     }
+
     const { judul, deskripsi, link, kategoriId } = value;
-    const strFile = req.file.buffer.toString('base64');
-    
-    const hash = crypto.createHash('sha256').update(strFile).digest('hex');
-    
-    const { url} = await imagekit.upload({
-      fileName: Date.now() + path.extname(req.file.originalname),
-      file: strFile,
-    });
+
+    let url;
+    let hash;
+
+    if (req.file) {
+      const strFile = req.file.buffer.toString('base64');
+      hash = crypto.createHash('sha256').update(strFile).digest('hex');
+      
+      const { url: imageUrl } = await imagekit.upload({
+        fileName: Date.now() + path.extname(req.file.originalname),
+        file: strFile,
+      });
+
+      url = imageUrl;
+    }
 
     const existingArtikel = await prisma.artikel.findFirst({
       where: {
@@ -56,60 +64,68 @@ const createArtikel = async (req, res, next) => {
       });
     }
 
-    // Cek apakah hash dari gambar sudah ada dalam database
-    const existingHash = await prisma.artikel.findFirst({
-      where: {
-        fileId: hash,
-      },
-    });
-
-    if (existingHash) {
-      return res.status(400).json({
-        status: false,
-        message: 'Gambar sudah pernah diunggah sebelumnya',
-        data: null,
+    if (hash) {
+      const existingHash = await prisma.artikel.findFirst({
+        where: {
+          fileId: hash,
+        },
       });
+
+      if (existingHash) {
+        return res.status(400).json({
+          status: false,
+          message: 'Gambar sudah pernah diunggah sebelumnya',
+          data: null,
+        });
+      }
     }
 
-    const existingKategori = await prisma.kategori.findUnique({
+    const existingKategori = await prisma.kategori.findMany({
       where: {
-        id: parseInt(kategoriId),
+        id: { in: Array.isArray(kategoriId) ? kategoriId.map(id => parseInt(id)) : [parseInt(kategoriId)] },
       },
     });
 
-    if (!existingKategori) {
+    if (existingKategori.length !== (Array.isArray(kategoriId) ? kategoriId.length : 1)) {
       return res.status(404).json({
         status: false,
-        message: 'Kategori not found',
+        message: 'One or more categories not found',
         data: null,
       });
     }
+
     const artikel = await prisma.artikel.create({
       data: {
         author: { connect: { id: req.user.id } },
         judul,
         deskripsi,
         link,
-        kategori: { connect: { id:parseInt( kategoriId) } },
-        gambar_artikel: url,
-        fileId:hash
-      }
+        kategori: { connect: existingKategori.map(kategori => ({ id: kategori.id })) },
+        gambar_artikel: url || null,
+        fileId: hash || null,
+      },
+      include: {
+        kategori: true, 
+      },
     });
 
     if (!artikel) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request!',
-        err: 'Failed to create article',
+        message: 'Failed to create article',
         data: null,
       });
     }
 
     return res.status(200).json({
       status: true,
-      message: 'OK!',
-      err: null,
-      data: { artikel },
+      message: 'Article created successfully',
+      data: { 
+        artikel: {
+          ...artikel,
+          kategoriId: existingKategori.map(kategori => kategori.id) 
+        }
+      },
     });
   } catch (err) {
     next(err);
@@ -232,9 +248,13 @@ const updateArtikel = async (req, res, next) => {
           judul,
           deskripsi,
           link,
-          kategori: { connect: { id: parseInt(kategoriId) } },
+          kategori: { connect: kategoriId.map(id => ({ id: parseInt(id) })) },
           gambar_artikel: url,
           fileId: hash,
+          kategori: { connect: { id: parseInt(kategoriId) } },
+        },
+        include: {
+          kategori: true, 
         },
       });
     } else {
@@ -248,6 +268,9 @@ const updateArtikel = async (req, res, next) => {
           deskripsi,
           link,
           kategori: { connect: { id: parseInt(kategoriId) } },
+        },
+        include: {
+          kategori: true, 
         },
       });
     }
@@ -263,7 +286,12 @@ const updateArtikel = async (req, res, next) => {
     return res.status(200).json({
       status: true,
       message: 'Article updated successfully',
-      data: { artikel },
+      data: { 
+        artikel: {
+          ...artikel,
+          kategoriId: artikel.kategori.map(kategori => kategori.id) // Menambahkan kategoriId ke dalam data artikel
+        }
+      },
     });
   } catch (err) {
     next(err);
