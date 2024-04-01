@@ -34,7 +34,7 @@ app.use(morgan('dev'));
 // Use middleware to set up routes
 app.use('/contoh', contohRoute);
 app.use(homeRoute);
-app.use('/auth', authRoute);
+app.use(authRoute);
 
 // Set up session middleware
 app.use(session({

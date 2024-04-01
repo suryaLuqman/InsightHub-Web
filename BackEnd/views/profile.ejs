@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><% title %></title>
+  <!-- add favicon -->
+  <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
+  <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/resources/css/style.css" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- fontawesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-md-9 ">
+        <div class="py-4 px-3">
+          <button class="btn btn-light mb-3" onclick="history.back()">
+            <i class="fas fa-arrow-circle-left fa-lg"></i> <!-- Menggunakan fa-lg untuk memperbesar ikon -->
+            <span class="ms-2 fs-5">Kembali</span>
+            <!-- Menggunakan ms-2 untuk memberikan jarak dan fs-5 untuk memperbesar teks -->
+          </button>
+
+          <h4 class="mb-4">Informasi Detail</h4>
+          <!-- Tabs -->
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="postingan-tab" data-bs-toggle="tab" data-bs-target="#postingan" type="button" role="tab" aria-controls="postingan" aria-selected="true">Postingan</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="statistik-tab" data-bs-toggle="tab" data-bs-target="#statistik" type="button" role="tab" aria-controls="statistik" aria-selected="false">Statistik</button>
+            </li>
+          </ul>
+          <!-- Tabs Content -->
+          <div class="tab-content mt-3" id="myTabContent">
+            <div class="tab-pane fade show active" id="postingan" role="tabpanel" aria-labelledby="postingan-tab">
+              <div class="container py-3">
+                <!-- Card Start -->
+                <div class="card">
+                  <div class="row ">
+                    <div class="col-md-5 d-flex justify-content-center align-items-center" style="padding-left: 3%;">
+                      <div id="CarouselTest" class="carousel slide">
+                        <div class="carousel-inner">
+                          <div class="carousel-item active">
+                            <img class="d-block img-fluid" src="https://picsum.photos/450/300?image=1072" alt="">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-7 px-3">
+                      <div class="card-block px-6 mt-4">
+                        <h4 class="card-title text-dark">FITASTY : UI/UX DESIGNER</h4>
+                        <p class="card-text text-dark">
+                          Lorem Ipsum is simply dummy text of the printing and typesetting
+                          industry. Lorem Ipsum has been the industry's standard
+                          dummy text ever since the 1500s, when an unknown printer took a
+                          galley of type and scrambled it to make a type specimen
+                          book. It has survived not only five centuries, but also the leap
+                          into electronic typesetting, remaining essentially
+                          unchanged.
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <p class="card-text text-dark">22 Maret 2024</p>
+                          <div class="dropdown">
+                            <button class="btn btn-link text-dark" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <li><a class="dropdown-item" href="#">Edit</a></li>
+                              <li><a class="dropdown-item text-danger" href="#">Delete</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="statistik" role="tabpanel" aria-labelledby="statistik-tab">
+              <div class="container">
+                <h4 class="mb-4">Statistik Kamu</h4>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="kartu">
+                      <div class="card-body">
+                        <h5 class="mb-4">Total Postingan :</h5>
+                        <br>
+                        <h4 class="mb-4">0</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="kartu">
+                      <div class="card-body">
+                        <h5 class="mb-4">Total Postingan :</h5>
+                        <br>
+                        <h4 class="mb-4">0</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="kartu">
+                      <div class="card-body">
+                        <h5 class="mb-4">Total Postingan :</h5>
+                        <br>
+                        <h4 class="mb-4">0</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Profile Sidebar -->
+      <div class="col-md-3">
+        <div class="py-4 px-3">
+          <h4 class="mb-4">Profile</h4>
+          <!-- Profile Image -->
+          <div class="d-flex align-items-center mb-3">
+            <img src="/resources/images/user.jpg" alt="Profile Image" class="rounded-circle me-3">
+            <div class="align-middle">
+              <div class="d-flex">
+                <button class="btn btn-sm btn-transparent m-2"><i class="fas fa-upload" style="color: #00f228;"></i> Upload</button>
+                <button class="btn btn-sm btn-transparent m-0"><i class="fas fa-trash-alt text-danger"></i> Delete</button>
+              </div>
+            </div>
+          </div>
+          <!-- Profile Details -->
+          <form>
+            <!-- HTML -->
+            <div class="mb-3">
+              <div class="input-group">
+                <input type="text" class="form-control border-end-0" placeholder="Nama">
+                <span class="input-group-text bg-transparent border-start-0"><i class="fas fa-pen"></i></span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="input-group">
+                <input type="text" class="form-control border-end-0" placeholder="Status">
+                <span class="input-group-text bg-transparent border-start-0"><i class="far fa-file"></i></span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="input-group">
+                <input type="email" class="form-control border-end-0" placeholder="Email">
+                <span class="input-group-text bg-transparent border-start-0"></span>
+              </div>
+            </div>
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-danger me-2 w-100" style="border-radius: 20px;" data-bs-toggle="modal" data-bs-target="#gantiPasswordModal">
+              Ganti Password
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="gantiPasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ganti Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="mb-3">
+                        <label for="passwordLama" class="form-label">Password Lama</label>
+                        <div class="input-group">
+                          <input type="password" class="form-control" id="passwordLama" placeholder="Masukkan Password Lama" aria-describedby="togglePasswordLama">
+                          <button class="btn btn-outline-secondary" type="button" id="togglePasswordLama">
+                            <i class="bi bi-eye-slash"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="passwordBaru" class="form-label">Password Baru</label>
+                        <div class="input-group">
+                          <input type="password" class="form-control" id="passwordBaru" placeholder="Masukkan Password Baru" aria-describedby="togglePasswordBaru">
+                          <button class="btn btn-outline-secondary" type="button" id="togglePasswordBaru">
+                            <i class="bi bi-eye-slash"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="konfirmasiPassword" class="form-label">Konfirmasi Password Baru</label>
+                        <div class="input-group">
+                          <input type="password" class="form-control" id="konfirmasiPassword" placeholder="Konfirmasi Password Baru" aria-describedby="toggleKonfirmasiPassword">
+                          <button class="btn btn-outline-secondary" type="button" id="toggleKonfirmasiPassword">
+                            <i class="bi bi-eye-slash"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Ganti Password</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <br><br>
+            <center>
+              <button type="button" class="btn text-white" style="border-radius: 20px;background-color: #1c2252;">Simpan</button>
+              <button type="button" class="btn btn-outline-primary text-warning" style="border-radius: 20px;">Cancel</button>
+            </center>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br><br><br><br><br>
+  <!-- Footer -->
+    <footer class="bg-dark mt-5" style="height: 170px">
+      <div class="container-fluid">
+        <div class="row mx-5">
+          <div class="col-6">
+            <img src="/resources/images/logo.png" class="mt-4" width="450" height="100" />
+            <p class="text-white ms-5 pt-1">
+              Lets Start the journey withh us
+            </p>
+          </div>
+          <div class="col-6">
+            <p class="text-white mt-5 pt-4">
+              Created by
+              <span class="text-footer"> Kelompok 3 KKP MSIB BATCH 4</span> |
+              Copyright &copy;2024
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+  </script>
+  <!-- Icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/icons.min.js">
+  </script>
+  <script src="/resources/js/main.js"></script>
+  <script>
+    // Function to toggle password visibility
+    function togglePasswordVisibility(inputId, buttonId) {
+      const passwordInput = document.getElementById(inputId);
+      const toggleButton = document.getElementById(buttonId);
+      toggleButton.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        toggleButton.querySelector('i').classList.toggle('bi-eye');
+        toggleButton.querySelector('i').classList.toggle('bi-eye-slash');
+      });
+    }
+
+    // Call togglePasswordVisibility function for each password input
+    togglePasswordVisibility('passwordLama', 'togglePasswordLama');
+    togglePasswordVisibility('passwordBaru', 'togglePasswordBaru');
+    togglePasswordVisibility('konfirmasiPassword', 'toggleKonfirmasiPassword');
+  </script>
+</body>
+
+</html>

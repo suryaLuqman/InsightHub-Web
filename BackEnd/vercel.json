@@ -6,7 +6,7 @@
       "use": "@vercel/node"
     },
     {
-      "src": "index.html",
+      "src": "doc-api.html",
       "use": "@vercel/static"
     }
   ],
@@ -22,8 +22,8 @@
       "dest": "app.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "index.html"
+      "src": "/docs/api",
+      "dest": "doc-api.html"
     }
   ]
 }

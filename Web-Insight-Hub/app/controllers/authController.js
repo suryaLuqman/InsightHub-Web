@@ -62,6 +62,7 @@ exports.register = async (req, res) => {
       // Logging the data received from the client
       const data = req.body;
       console.log('Received data from client:', data);
+      console.log('req:', req);
 
       if (!data) {
          console.error("Failed to receive data from client.");
@@ -81,11 +82,21 @@ exports.register = async (req, res) => {
       console.log('postData:', postData);
 
       // Send data to your API
-      const apiUrl = `${baseUrl}/api/v1/auth/register/user`; // Pastikan baseUrl telah didefinisikan sebelumnya
-      const response = await axios.post(apiUrl, postData);
+      const registerEndpoint = '/api/v1/auth/register/user';
+      const apiUrl = baseUrl+registerEndpoint; // Pastikan baseUrl telah didefinisikan sebelumnya
+      // const response = await axios.post(apiUrl, postData);
 
+      const response = await axios({
+         method: 'post',
+         url: apiUrl,
+         data: JSON.stringify(postData),
+         headers: {
+            'Content-Type': `application/json`,
+         },
+      });
       // Check the response from your API
       const responseData = response.data;
+      console.log('responseData:', responseData);
       const statusCode = response.status;
 
       // Handle successful registration

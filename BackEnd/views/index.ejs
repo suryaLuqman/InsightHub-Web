@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><% title %></title>
+  <!-- add favicon -->
+  <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
+  <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/resources/css/style.css" />
+  <link rel="stylesheet" href="/resources/css/style.css" />
+
+  <!-- fontawesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+  <div class="main">
+    <!-- nav -->
+    <nav class="navbar bg-body-light pb-3" style="border-bottom: 1px solid rgb(240, 237, 237)">
+      <div class="container-fluid mx-5">
+        <a class="navbar-brand" href="#">
+          <img src="/resources/images/logo.png" width="250" height="50" />
+        </a>
+        <form class="group" role="search">
+          <input type="text" placeholder="Cari artikel" name="text" class="input-search me-5" />
+          <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+            <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+          </svg>
+          <a href="/api/v1/auth/login" class="btn-custom-login me-2" data-bs-toggle="modal" data-bs-target="#modalLogin">Login for Start</a>
+          <a href="/api/v1/auth/register-user" class="btn-custom-register" data-bs-toggle="modal" data-bs-target="#modalRegister">Sign Up</a>
+        </form>
+      </div>
+    </nav>
+
+    <!-- hero -->
+    <section class="hero-section mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-7 my-auto">
+            <h1>INSIGHTHub</h1>
+            <p class="fs-4">
+              Biarkan hasrat menulis Anda bertemu dengan pembaca yang haus
+              akan ilmu.
+            </p>
+            <p class="fs-5 text-body-secondary">Temukan ide dan wawasan.</p>
+            <div class="start-button">
+              <div class="btn btn-custom-primary">Mulai menulis</div>
+              <div class="btn btn-custom-secondary">Mulai membaca</div>
+            </div>
+          </div>
+          <div class="col-5">
+            <img src="/resources/images/hero.png" alt="" class="img-fluid" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- banner -->
+    <section class="banner-section mt-5" style="height: 200px">
+      <div class="container">
+        <div class="row">
+          <div class="col-2 mt-4">
+            <img src="/resources/images/logo-2.png" class="img-fluid" alt="" />
+          </div>
+          <div class="col-10 my-auto">
+            <p class="fs-5">
+              “There is a peculiar pleasure in the sympathetic feeling which
+              arises from reading the works of great minds. Literature makes
+              us acquainted not only with the thoughts of our contemporaries,
+              but with those of our predecessors, and thus puts us in contact
+              with the best society of all ages.” - William Butcher
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- badge -->
+    <section class="badge-recomend class mt-5">
+      <div class="container">
+        <h4>Rekomendasi Topik Untuk Anda</h4>
+        <div class="badge-artikel">
+          <% kategori.forEach(kategoriItem => { %>
+          <button class="badge-button rounded-pill text-bg-light py-2 px-4 mt-4" data-kategoriid="<%= kategoriItem.id %>">
+            <%= kategoriItem.nama %>
+          </button>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <!-- artikel -->
+    <section class="mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <span class="fs-3 fw-semibold">Kumpulan Artikel</span>
+            <a class="float-end text-decoration-none text-black" href="">Lihat lebih banyak Artikel</a>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <!-- left artikel -->
+          <div class="col-md-6" id="left-artikel">
+            <% if (articles && articles.length) { %>
+            <% articles.slice(0, Math.ceil(articles.length / 2)).forEach(artikelItem => { %>
+            <div class="card mb-4 border-0" data-artikelid="<%= artikelItem.id %>" data-kategoriid="<%= artikelItem.kategoriId %>">
+              <div class="row g-0">
+                <div class="col-md-5">
+                  <img src="<%= artikelItem.gambar_artikel %>" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-7">
+                  <div class="card-body">
+                    <h5 class="card-title"><%= artikelItem.judul %></h5>
+                    <p class="card-text"><%= artikelItem.deskripsi.substring(0, 100) %>...</p>
+                    <div class="row justify-content-end align-items-end">
+                      <div class="col-auto">
+                        <p class="card-text">
+                          <small class="text-muted">Created at <%= new Date(artikelItem.createdAt).toLocaleDateString() %></small><br />
+                          <small class="text-muted">Last updated <%= new Date(artikelItem.updatedAt).toLocaleDateString() %></small>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+            <% } %>
+          </div>
+
+          <!-- right artikel -->
+          <div class="col-md-6" id="right-artikel">
+            <% if (articles && articles.length) { %>
+            <% articles.slice(Math.ceil(articles.length / 2)).forEach(artikelItem => { %>
+            <div class="card mb-4 border-0" data-artikelid="<%= artikelItem.id %>" data-kategoriid="<%= artikelItem.kategoriId %>">
+              <div class="row g-0">
+                <div class="col-md-5">
+                  <img src="<%= artikelItem.gambar_artikel %>" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-7">
+                  <div class="card-body">
+                    <h5 class="card-title"><%= artikelItem.judul %></h5>
+                    <p class="card-text"><%= artikelItem.deskripsi.substring(0, 100) %>...</p>
+                    <div class="row justify-content-end align-items-end">
+                      <div class="col-auto">
+                        <p class="card-text">
+                          <small class="text-muted">Created at <%= new Date(artikelItem.createdAt).toLocaleDateString() %></small><br />
+                          <small class="text-muted">Last updated <%= new Date(artikelItem.updatedAt).toLocaleDateString() %></small>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const buttons = document.querySelectorAll('.badge-button');
+        const articles = document.querySelectorAll('.card');
+
+        buttons.forEach(button => {
+          button.addEventListener('click', function() {
+            const kategoriId = this.dataset.kategoriid;
+
+            articles.forEach(article => {
+              const artikelKategoriId = article.dataset.kategoriid;
+
+              if (artikelKategoriId === kategoriId) {
+                article.style.display = 'block'; // Tampilkan artikel yang sesuai
+              } else {
+                article.style.display = 'none'; // Sembunyikan artikel yang tidak sesuai
+              }
+            });
+          });
+        });
+      });
+    </script>
+
+    <footer class="bg-dark mt-5" style="height: 170px">
+      <div class="container-fluid">
+        <div class="row mx-5">
+          <div class="col-6">
+            <img src="/resources/images/logo.png" class="mt-4" width="450" height="100" />
+            <p class="text-white ms-5 pt-1">
+              Lets Start the journey withh us
+            </p>
+          </div>
+          <div class="col-6">
+            <p class="text-white mt-5 pt-4">
+              Created by
+              <span class="text-footer"> Kelompok 3 KKP MSIB BATCH 4</span> |
+              Copyright &copy;2024
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- modal login-->
+    <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="loginErrorAlert" class="alert alert-danger text-center d-none" role="alert">
+            <!-- Teks pesan kesalahan akan ditampilkan di sini -->
+          </div>
+          <h3 class="text-center">Masuk</h3>
+          <div class="modal-body">
+            <input type="text" id="loginEmail" class="form-control" placeholder="Email" />
+            <input type="password" id="loginPassword" class="form-control mt-3" placeholder="Password" />
+            <button onclick="loginUser()" class="d-block btn btn-login-modal mt-4 register-btn">
+              Masuk
+            </button>
+            <p class="text-center mt-1">or</p>
+            <a href="" class="d-block btn btn-login-modal-google">Masuk Dengan Google</a>
+            <p class="text-center mt-3">
+              Tidak mempunyai akun ?
+              <a class="text-decoration-none" href="api/v1/auth/register-user" data-bs-toggle="modal" data-bs-target="#modalRegister" style="color: #ff7f0a">Daftar</a>
+            </p>
+            <p class="text-center">
+              <a class="text-decoration-none" href="/api/v1/auth/forgot-password" style="color: #ff7f0a">Lupa Password ?
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal register -->
+    <div class="modal fade" id="modalRegister" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="registerErrorAlert" class="alert alert-danger text-center d-none" role="alert">
+            <!-- Teks pesan kesalahan akan ditampilkan di sini -->
+          </div>
+          <h3 class="text-center">Daftar</h3>
+          <div class="modal-body">
+            <input type="text" id="registerEmail" class="form-control tooltip-custom" placeholder="Email" required data-bs-toggle="tooltip" title="Email harus diisi" />
+            <input type="text" id="registerNama" class="form-control mt-3 tooltip-custom" placeholder="Nama" required />
+            <input type="password" id="registerPassword" class="form-control mt-3 tooltip-custom" placeholder="Password" required />
+            <input type="text" id="registerPhone" class="form-control mt-3 tooltip-custom" placeholder="Nomer Telephone" required />
+            <input type="text" id="status" class="form-control mt-3 tooltip-custom" placeholder="Pekerjaan saat ini" required />
+            <button onclick="registerUser()" class="d-block btn btn-login-modal mt-4 register-btn">
+              Daftar
+            </button>
+
+            <p class="text-center mt-1">or</p>
+            <a href="" class="d-block btn btn-login-modal-google">Masuk Dengan Google</a>
+
+            <p class="text-center">
+              Sudah mempunyai akun ?
+              <a class="text-decoration-none" href="/api/v1/auth/login" data-bs-toggle="modal" data-bs-target="#modalLogin" style="color: #ff7f0a">
+                Masuk
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Animasi Loading -->
+    <div id="loadingOverlay" class="overlay d-none">
+      <div class="spinner-border text-1c0c41" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    // login
+    function loginUser() {
+      const email = $("#loginEmail").val().trim();
+      const password = $("#loginPassword").val().trim();
+      console.log("Data yang akan dikirim:", {
+        email,
+        password
+      });
+
+      const formData = {
+        email: email,
+        password: password,
+      };
+
+      // Menampilkan animasi loading
+      $("#loadingOverlay").removeClass("d-none");
+
+      // Mendapatkan url utama dari env
+      const urlAPI = "<%= urlAPI %>";
+      const endPointLogin = "/api/v1/auth/login";
+      const urlLogin = urlAPI + endPointLogin;
+
+      $.ajax({
+        url: urlLogin,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(formData),
+        dataType: "json",
+        success: function(data) {
+          console.log("Data dari server (success):", data);
+          if (data.success) {
+            const token = data.data.token;
+            const status = data.data.profile.profile.status;
+            console.log("Token:", token);
+            // Membuat tanggal kedaluwarsa 1 hari dari sekarang
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + 1);
+
+            // Format tanggal kedaluwarsa menjadi format yang sesuai dengan cookies
+            const expires = expirationDate.toUTCString();
+
+            // Membuat cookies
+            document.cookie = `token=${token};status=${status}; expires=${expires}; path=/`;
+            console.log("document.cookie: ", document.cookie);
+
+            // Redirect ke halaman dashboard
+            window.location.href = "/dashboard/" + data.data.profile.profile.first_name+"/"+data.data.profile.profile.id;
+          } else {
+            const Message = data.message;
+            const error = data.error;
+            const errorMessage = error ? Message + error : Message;
+            console.error("Login error:", errorMessage);
+            $("#registerErrorAlert").text(errorMessage).removeClass("d-none");
+          }
+        },
+        error: function(xhr, status, error) {
+          const errorData = xhr.responseJSON ? xhr.responseJSON : "Login failed. Please try again later.";
+          console.error("Login error:", errorData);
+          console.error("Data dari server (error):", errorData);
+
+          console.log("Data yang akan dikirimkan ke server:", formData);
+
+          if (errorData.error) {
+            $("#loginErrorAlert").html(`<i class="fas fa-exclamation-triangle"></i> ${errorData.message} Error: ${errorData.error}`).removeClass("d-none");
+            console.error("ini jalan if atas 1");
+          } else {
+            $("#loginErrorAlert").html(`<i class="fas fa-exclamation-triangle"></i> ${errorData.message}`).removeClass("d-none");
+            console.error("ini jalan else bawah 1");
+          }
+        },
+        complete: function() {
+          // Sembunyikan animasi loading
+          setTimeout(function() {
+            // Hapus kelas 'd-none' untuk memunculkan spinner
+            $("#loadingOverlay").removeClass("d-none");
+          }, 3000);
+        },
+      });
+    }
+
+    // register
+    function registerUser() {
+      const email = $("#registerEmail").val().trim();
+      const no_hp = $("#registerPhone").val().trim();
+      const password = $("#registerPassword").val().trim();
+      const nama = $("#registerNama").val().trim();
+      const status = $("#status").val().trim();
+
+      if (!email || !no_hp || !password || !nama || !status) {
+        $("#registerErrorAlert").text("Semua kolom harus diisi!.").removeClass("d-none");
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        $("#registerEmail").addClass("is-invalid");
+        $("#registerErrorAlert").text("Format email tidak valid").removeClass("d-none");
+        return;
+      }
+
+      if (password.length < 6) {
+        $("#registerPassword").addClass("is-invalid");
+        $("#registerErrorAlert").text("Password harus terdiri dari minimal 6 karakter").removeClass("d-none");
+        return;
+      }
+
+      const formData = {
+        email: email,
+        nama: nama,
+        password: password,
+        no_hp: no_hp,
+        status: status,
+      };
+
+      const dataLogin = {
+        email: email,
+        password: password,
+      };
+
+      $("#loadingOverlay").removeClass("d-none");
+
+      // const origin = window.location.origin;
+      const urlAPI = "<%= urlAPI %>";
+      const endPointRegister = "/api/v1/auth/register/user";
+      const urlRegister = urlAPI + endPointRegister;
+
+      const endPointLogin = "/api/v1/auth/login";
+      const urlLogin = urlAPI + endPointLogin;
+      console.log("urlAPI:", urlAPI);
+      console.log("URL Register:", urlRegister);
+      console.log("URL Login:", urlLogin);
+
+      $.ajax({
+        url: urlRegister,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(formData),
+        dataType: "json",
+        success: function(data) {
+          console.log("Data dari server (success):", data);
+          if (data.success) {
+            $.ajax({
+              url: urlLogin,
+              method: "POST",
+              contentType: "application/json",
+              data: JSON.stringify(dataLogin),
+              dataType: "json",
+              success: function(data) {
+                console.log("Data dari server (success):", data);
+                if (data.success) {
+                  const token = data.data.token;
+                  const status = data.data.profile.profile.status;
+                  console.log("Token:", token);
+                  // Membuat tanggal kedaluwarsa 1 hari dari sekarang
+                  const expirationDate = new Date();
+                  expirationDate.setDate(expirationDate.getDate() + 1);
+
+                  // Format tanggal kedaluwarsa menjadi format yang sesuai dengan cookies
+                  const expires = expirationDate.toUTCString();
+
+                  // Membuat cookies
+                  document.cookie = `token=${token};status=${status}; expires=${expires}; path=/`;
+                  console.log("document.cookie: ", document.cookie);
+
+                  // Redirect ke halaman dashboard
+                  window.location.href = "/dashboard/" + data.data.profile.profile.first_name+"/"+data.data.profile.profile.id;
+                } else {
+                  const Message = data.message;
+                  const error = data.error;
+                  const errorMessage = error ? Message + error : Message;
+                  console.error("Login error:", errorMessage);
+                  $("#registerErrorAlert").text(errorMessage).removeClass("d-none");
+                }
+              },
+              error: function(xhr, status, error) {
+                const errorData = xhr.responseJSON ? xhr.responseJSON : "Login failed. Please try again later.";
+                console.error("Login error:", errorData);
+                console.error("Data dari server (error):", errorData);
+
+                console.log("Data yang akan dikirimkan ke server:", formData);
+
+                if (errorData.error) {
+                  $("#registerErrorAlert").html(`<i class="fas fa-exclamation-triangle"></i> ${errorData.message} Error: ${errorData.error}`).removeClass("d-none");
+                  console.error("ini jalan if atas 1");
+                } else {
+                  $("#registerErrorAlert").html(`<i class="fas fa-exclamation-triangle"></i> ${errorData.message}`).removeClass("d-none");
+                  console.error("ini jalan else bawah 1");
+                }
+              },
+            });
+          } else {
+            console.log("Data dari server (error):", data);
+            const Message = data.message;
+            const error = data.error;
+            const errorMessage = error ? Message + error : Message;
+            console.error("Registration error:", errorMessage);
+            $("#registerErrorAlert").text(errorMessage).removeClass("d-none");
+          }
+        },
+        error: function(xhr, status, error) {
+          console.log("Data dari server (error):", xhr.responseJSON);
+          console.log("Error:", error);
+          const errorData = xhr.responseJSON ? xhr.responseJSON : "Registration failed. Please try again later.";
+          console.error("Registration error:", errorData);
+
+          console.log("HTTP status code:", xhr.status);
+          console.log("Data yang akan dikirimkan ke server:", formData);
+
+          if (errorData.error) {
+            $("#registerErrorAlert").html(`<i class="fas fa-exclamation-triangle"></i> ${errorData.message} Error: ${errorData.error}`).removeClass("d-none");
+            console.error("ini jalan if atas 2");
+          } else {
+            $("#registerErrorAlert").html(`<i class="fas fa-exclamation-triangle"></i> ${errorData.message}`).removeClass("d-none");
+            console.error("ini jalan else bawah 2");
+          }
+        },
+        complete: function() {
+          setTimeout(function() {
+            $("#loadingOverlay").removeClass("d-none");
+          }, 3000);
+        },
+      });
+    }
+  </script>
+
+
+  <script src="/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+
+  <!-- jQuery (diperlukan oleh Bootstrap) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <!-- Popper.js (diperlukan oleh Bootstrap) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="/resources/js/main.js"></script>
+</body>
+
+</html>

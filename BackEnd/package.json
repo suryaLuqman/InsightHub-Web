@@ -15,9 +15,12 @@
     "@prisma/client": "^5.11.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "connect-pg-simple": "^9.0.1",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
     "express": "^4.19.1",
+    "express-session": "^1.18.0",
     "googleapis": "^134.0.0",
     "imagekit": "^5.0.0",
     "joi": "^17.12.2",
@@ -25,9 +28,11 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.13",
-    "nodemon": "^3.1.0",
     "otp-generator": "^4.0.1",
     "path": "^0.12.7",
     "prisma": "^5.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
