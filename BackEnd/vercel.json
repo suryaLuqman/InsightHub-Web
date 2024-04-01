@@ -38,7 +38,7 @@
       "dest": "/views/index.ejs"
     }
   ],
-  "rewrites": [
+  "rewrites": [ 
     {
       "source": "/views/(.*)",
       "destination": "/views/$1.ejs"
