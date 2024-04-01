@@ -112,10 +112,19 @@ const login = async (req, res, next) => {
       email: user.email,
       nama: user.nama,
       token: token,
-      status: profile.profile.status
+      status: profile.profile.status,
       // Tambahkan informasi pengguna lainnya yang Anda inginkan
     };
 
+    // Simpan session ke dalam database
+    await prisma.session.create({
+      data: {
+        id: req.sessionID,
+        userId: user.id,
+        expires: req.session.cookie.expires,
+        session: req.session,
+      },
+    });
 
     return res.status(200).json({
       success: true,
