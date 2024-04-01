@@ -119,10 +119,10 @@ const login = async (req, res, next) => {
     // Simpan session ke dalam database
     await prisma.session.create({
       data: {
-        id: req.sessionID,
+        sid: req.sessionID,
         userId: user.id,
-        expires: req.session.cookie.expires,
-        session: req.session,
+        expire: req.session.cookie._expires,
+        sess: req.session,
       },
     });
 
