@@ -1,65 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <!-- add favicon -->
+    <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">    <link rel="stylesheet" href="/resources/css/style.css" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title %></title>
-  <!-- add favicon -->
-  <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
-  <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/resources/css/style.css" />
+    <!-- fontawesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <!-- Summernote CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css"
+      rel="stylesheet"
+    />
 
-  <!-- fontawesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
-  <!-- Summernote CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+    <style>
+      body {
+        background-color: #ffffff;
+      }
 
-  <style>
-    body {
-      background-color: #ffffff;
-    }
+      .navbar {
+        background-color: #ff7f0a;
+        /* Warna navbar disesuaikan dengan palet */
+      }
 
-    /* Warna palet digunakan untuk elemen-elemen utama */
-    .btn-primary,
-    .border-dark,
-    .form-control-lg,
-    .alert-success {
-      background-color: #ff7f0a !important;
-      border-color: #1c0c41 !important;
-      color: #1c0c41 !important;
-    }
+      .form-control-lg {
+        background-color: #ffffff !important;
+      }
 
-    .btn-primary:hover {
-      background-color: #1c0c41 !important;
-      border-color: #1c0c41 !important;
-      color: #ffffff !important;
-    }
+      /* Warna palet digunakan untuk elemen-elemen utama */
+      .btn-primary,
+      .border-dark,
+      .alert-success {
+        background-color: #ff7f0a !important;
+        border-color: #1c0c41 !important;
+        color: #1c0c41 !important;
+      }
 
-    .btn-close {
-      color: #1c0c41 !important;
-    }
-  </style>
+      .btn-primary:hover {
+        background-color: #1c0c41 !important;
+        border-color: #1c0c41 !important;
+        color: #ffffff !important;
+      }
 
-</head>
+      .btn-close {
+        color: #1c0c41 !important;
+      }
+    </style>
+  </head>
 
-<body>
-    <nav class="navbar banner-section  bg-body-light pb-3" style="border-bottom: 1px solid rgb(240, 237, 237)">
+  <body>
+    <!-- nav -->
+    <nav
+      class="navbar banner-section bg-body-light pb-3"
+      style="border-bottom: 1px solid rgb(240, 237, 237)"
+    >
       <div class="container-fluid mx-5">
         <a class="navbar-brand" href="/">
           <img src="/resources/images/logo.png" width="250" height="50" />
         </a>
 
         <!-- Modal -->
-        <div class="modal fade" id="articleModal" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
+        <div
+          class="modal fade"
+          id="articleModal"
+          tabindex="-1"
+          aria-labelledby="articleModalLabel"
+          aria-hidden="true"
+        >
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header search-header">
-                <input type="text" placeholder="Cari artikel" id="modalSearchInput" class="input-search me-5" oninput="updateSearchInput(this.value)" />
+                <input
+                  type="text"
+                  placeholder="Cari artikel"
+                  id="modalSearchInput"
+                  class="input-search me-5"
+                  oninput="updateSearchInput(this.value)"
+                />
 
-                <h5 class="modal-title search-title" id="articleModalLabel">Search Result</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title search-title" id="articleModalLabel">
+                  Search Result
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
               <div class="modal-body" id="articleModalBody">
                 <!-- Search Result will be displayed here -->
@@ -70,23 +105,46 @@
 
         <!-- Your Search Form -->
         <form class="group" role="search">
-          <input type="text" placeholder="Cari artikel" name="text" id="searchInput" class="input-search me-5" onclick="showModal()" />
-          <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-            <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+          <input
+            type="text"
+            placeholder="Cari artikel"
+            name="text"
+            id="searchInput"
+            class="input-search me-5"
+            onclick="showModal()"
+          />
+          <svg
+            fill="#000000"
+            width="20px"
+            height="20px"
+            viewBox="0 0 1920 1920"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z"
+              fill-rule="evenodd"
+            ></path>
           </svg>
           <a href="" class="me-4 fs-3">
             <i class="fa-regular fa-bell text-black"></i>
           </a>
           <a href="/profile/<%= first_name %>/<%= id %>">
-            <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
+            <img
+              src="/resources/images/hero.png"
+              width="50"
+              height="50"
+              class="rounded"
+              alt=""
+            />
           </a>
         </form>
-
 
         <script>
           function showModal() {
             // Show the modal
-            var articleModal = new bootstrap.Modal(document.getElementById('articleModal'));
+            var articleModal = new bootstrap.Modal(
+              document.getElementById("articleModal")
+            );
             articleModal.show();
           }
 
@@ -100,13 +158,17 @@
 
             // Here you can use AJAX to fetch search results based on the searchText
             // For simplicity, let's assume you have searchResults variable containing search results
-            var searchResults = artikel.data.filter(article => article.judul.toLowerCase().includes(searchText.toLowerCase()));
+            var searchResults = artikel.data.filter((article) =>
+              article.judul.toLowerCase().includes(searchText.toLowerCase())
+            );
 
             // Generate HTML for search results
-            var searchResultHTML = '';
-            searchResults.forEach(article => {
+            var searchResultHTML = "";
+            searchResults.forEach((article) => {
               searchResultHTML += `
-      <div class="card mb-3 border-0" data-artikelid="${article.id}" data-kategoriid="${article.kategoriId}">
+      <div class="card mb-3 border-0" data-artikelid="${
+        article.id
+      }" data-kategoriid="${article.kategoriId}">
         <div class="card-body">
           <h5 class="card-title">${article.judul}</h5>
           <p class="card-text">${article.deskripsi.substring(0, 50)}...</p>
@@ -116,145 +178,200 @@
             });
 
             // Display search results in modal
-            var modalBody = document.querySelector('#articleModalBody');
+            var modalBody = document.querySelector("#articleModalBody");
             modalBody.innerHTML = `
     <input type="text" placeholder="Cari artikel" id="modalSearchInput" class="input-search me-5" oninput="updateSearchInput(this.value)" value="${searchText}" />
     ${searchResultHTML}
   `;
 
             // Show the modal
-            var articleModal = new bootstrap.Modal(document.getElementById('articleModal'));
+            var articleModal = new bootstrap.Modal(
+              document.getElementById("articleModal")
+            );
             articleModal.show();
           }
         </script>
       </div>
     </nav>
 
-  <main class="container mt-5 py-3">
-    <!-- Bootstrap Alert untuk notifikasi -->
-    <div id="alertSuccess" class="alert alert-success mt-3 d-none" role="alert"></div>
-    <div id="alertError" class="alert alert-danger mt-3 d-none" role="alert"></div>
-    <h3 class="fw-bold">Tulis Karyamu</h3>
-    <form class="mt-4">
-      <hr>
-      <div class="form-group mb-4">
-        <input type="text" class="form-control form-control-lg border border-dark" id="judul" placeholder="Masukkan judul">
-      </div>
-      <div class="form-group mb-4">
-        <input type="text" class="form-control form-control-lg border border-dark" id="kategoriNama" placeholder="Kategori">
-      </div>
-      <div class="form-group mb-4">
-        <input type="text" class="form-control form-control-lg border border-dark" id="kategoriDeskripsi" placeholder="Deskripsi Kategori">
-      </div>
-      <!-- Upload Gambar -->
-      <div class="form-group mb-4">
-        <input type="file" class="form-control-file border border-dark" id="file" accept="image/*">
-        <div id="imagePreview" class="mt-2 d-none">
-          <img src="#" alt="Image Preview" width="100" class="img-thumbnail">
-          <button type="button" class="btn btn-close" id="clearImagePreview">&times;</button>
+    <main class="container mt-5 py-3">
+      <button class="btn btn-light mb-3" onclick="history.back()">
+        <i class="fas fa-arrow-circle-left fa-lg"></i>
+        <!-- Menggunakan fa-lg untuk memperbesar ikon -->
+        <span class="ms-2 fs-5">Kembali</span>
+        <!-- Menggunakan ms-2 untuk memberikan jarak dan fs-5 untuk memperbesar teks -->
+      </button>
+      <!-- Bootstrap Alert untuk notifikasi -->
+      <div
+        id="alertSuccess"
+        class="alert alert-success mt-3 d-none"
+        role="alert"
+      ></div>
+      <div
+        id="alertError"
+        class="alert alert-danger mt-3 d-none"
+        role="alert"
+      ></div>
+
+      <h3 class="fw-bold">Tulis Karyamu</h3>
+      <form class="mt-4">
+        <hr />
+        <div class="form-group mb-4">
+          <input
+            type="text"
+            class="form-control form-control-lg"
+            id="judul"
+            placeholder="Masukkan judul"
+          />
         </div>
-      </div>
-      <!-- Deskripsi dengan Summernote -->
-      <div class="form-group mb-4">
-        <textarea class="form-control form-control-lg border border-dark summernote" id="deskripsi" rows="10" placeholder="Deskripsi"></textarea>
-      </div>
-      <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary rounded-pill">Posting</button>
-      </div>
-    </form>
-  </main>
+        <div class="form-group mb-4">
+          <input
+            type="text"
+            class="form-control form-control-lg"
+            id="kategoriNama"
+            placeholder="Kategori"
+          />
+        </div>
+        <div class="form-group mb-4">
+          <input
+            type="text"
+            class="form-control form-control-lg"
+            id="kategoriDeskripsi"
+            placeholder="Deskripsi Kategori"
+          />
+        </div>
+        <!-- Upload Gambar -->
+        <div class="form-group mb-4">
+          <input
+            type="file"
+            class="form-control-file"
+            id="file"
+            accept="image/*"
+          />
+          <div id="imagePreview" class="mt-2 d-none">
+            <img
+              src="#"
+              alt="Image Preview"
+              width="100"
+              class="img-thumbnail"
+            />
+            <button type="button" class="btn btn-close" id="clearImagePreview">
+              &times;
+            </button>
+          </div>
+        </div>
+        <!-- Deskripsi dengan Summernote -->
+        <div class="form-group mb-4">
+          <textarea
+            class="form-control form-control-lg border border-dark summernote"
+            id="deskripsi"
+            rows="10"
+            placeholder="Deskripsi"
+          ></textarea>
+        </div>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary rounded-pill">
+            Posting
+          </button>
+        </div>
+      </form>
+    </main>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-  <!-- Summernote JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+    <!-- Summernote JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
 
-  <script>
-    $(document).ready(function() {
-      // Initialize Summernote
-      $('.summernote').summernote({
-        height: 300,
-        toolbar: [
-          ['style', ['bold', 'italic', 'underline', 'clear']],
-          ['font', ['strikethrough', 'superscript', 'subscript']],
-          ['fontsize', ['fontsize']],
-          ['color', ['forecolor', 'backcolor']],
-          ['para', ['ul', 'ol', 'paragraph']],
-          ['height', ['height']]
-        ]
-      });
+    <script>
+      $(document).ready(function () {
+        // Initialize Summernote
+        $(".summernote").summernote({
+          height: 300,
+          toolbar: [
+            ["style", ["style"]],
+            ["font", ["bold", "italic", "underline", "clear"]],
+            ["fontname", ["fontname"]],
+            ["color", ["color"]],
+            ["para", ["ul", "ol", "paragraph"]],
+            ["height", ["height"]],
+            ["table", ["table"]],
+            ["insert", ["link", "picture", "video"]],
+            ["view", ["fullscreen", "codeview", "help"]],
+          ],
+        });
 
-      // Image Preview
-      $('#file').change(function() {
-        const file = this.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            $('#imagePreview img').attr('src', e.target.result);
-            $('#imagePreview').removeClass('d-none');
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-
-      // Clear Image Preview
-      $('#clearImagePreview').click(function() {
-        $('#file').val('');
-        $('#imagePreview').addClass('d-none');
-      });
-
-      // Submit Form
-      $('form').submit(function(e) {
-        e.preventDefault(); // Menghentikan pengiriman form secara default
-
-        // Mengambil nilai dari form
-        var judul = $('#judul').val();
-        var kategoriNama = $('#kategoriNama').val();
-        var kategoriDeskripsi = $('#kategoriDeskripsi').val();
-        var deskripsi = $('#deskripsi').val();
-        var file = $('#file')[0].files[0];
-
-        // Membuat objek FormData untuk mengirim data form
-        var formData = new FormData();
-        formData.append('judul', judul);
-        formData.append('link', ''); // Link tidak tersedia dalam form
-        formData.append('deskripsi', deskripsi);
-        formData.append('kategori_nama', kategoriNama);
-        formData.append('kategori_deskripsi', kategoriDeskripsi);
-        formData.append('gambar_artikel', file);
-
-        // Melakukan AJAX POST request
-        $.ajax({
-          url: 'addArticle',
-          type: 'POST',
-          data: formData,
-          contentType: false, // Hindari pengaturan otomatis tipe konten
-          processData: false, // Hindari pemrosesan otomatis data
-          success: function(response) {
-            // Menampilkan pesan sukses
-            $('#alertSuccess').text('Article added successfully.').removeClass('d-none');
-            // Mengosongkan nilai form
-            $('form')[0].reset();
-            // Menghilangkan pesan sukses setelah 3 detik
-            setTimeout(function() {
-              $('#alertSuccess').addClass('d-none');
-            }, 3000);
-          },
-          error: function(xhr, status, error) {
-            // Menampilkan pesan kesalahan
-            $('#alertError').text('Failed to add article. Please try again later.').removeClass('d-none');
-            // Menghilangkan pesan kesalahan setelah 3 detik
-            setTimeout(function() {
-              $('#alertError').addClass('d-none');
-            }, 3000);
+        // Image Preview
+        $("#file").change(function () {
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              $("#imagePreview img").attr("src", e.target.result);
+              $("#imagePreview").removeClass("d-none");
+            };
+            reader.readAsDataURL(file);
           }
         });
+
+        // Clear Image Preview
+        $("#clearImagePreview").click(function () {
+          $("#file").val("");
+          $("#imagePreview").addClass("d-none");
+        });
+
+        // Submit Form
+        $("form").submit(function (e) {
+          e.preventDefault(); // Menghentikan pengiriman form secara default
+
+          // Mengambil nilai dari form
+          var judul = $("#judul").val();
+          var kategoriNama = $("#kategoriNama").val();
+          var kategoriDeskripsi = $("#kategoriDeskripsi").val();
+          var deskripsi = $("#deskripsi").val();
+          var file = $("#file")[0].files[0];
+
+          // Membuat objek FormData untuk mengirim data form
+          var formData = new FormData();
+          formData.append("judul", judul);
+          formData.append("link", ""); // Link tidak tersedia dalam form
+          formData.append("deskripsi", deskripsi);
+          formData.append("kategori_nama", kategoriNama);
+          formData.append("kategori_deskripsi", kategoriDeskripsi);
+          formData.append("gambar_artikel", file);
+
+          // Melakukan AJAX POST request
+          $.ajax({
+            url: "addArticle",
+            type: "POST",
+            data: formData,
+            contentType: false, // Hindari pengaturan otomatis tipe konten
+            processData: false, // Hindari pemrosesan otomatis data
+            success: function (response) {
+              // Menampilkan pesan sukses
+              $("#alertSuccess")
+                .text("Article added successfully.")
+                .removeClass("d-none");
+              // Mengosongkan nilai form
+              $("form")[0].reset();
+              // Menghilangkan pesan sukses setelah 3 detik
+              setTimeout(function () {
+                $("#alertSuccess").addClass("d-none");
+              }, 3000);
+            },
+            error: function (xhr, status, error) {
+              // Menampilkan pesan kesalahan
+              $("#alertError")
+                .text("Failed to add article. Please try again later.")
+                .removeClass("d-none");
+              // Menghilangkan pesan kesalahan setelah 3 detik
+              setTimeout(function () {
+                $("#alertError").addClass("d-none");
+              }, 3000);
+            },
+          });
+        });
       });
-    });
-  </script>
-
-</body>
-
+    </script>
+  </body>
 </html>
