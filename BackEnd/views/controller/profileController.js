@@ -41,7 +41,7 @@ exports.getProfilePage = async (req, res) => {
 
     // Render the profile page with the retrieved data
     return res.render("profile", {
-      title: "User Profile",
+      title: `Insight - ${segment || "Profile"}`,
       profile: profileData,
       artikel: artikelData,
       kategori: kategoriData,
