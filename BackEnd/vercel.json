@@ -8,10 +8,6 @@
     {
       "src": "doc-api.html",
       "use": "@vercel/static"
-    },
-    {
-      "src": "views/**/*.ejs",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -26,22 +22,8 @@
       "dest": "app.js"
     },
     {
-      "src": "/docs",
+      "src": "/docs/api",
       "dest": "doc-api.html"
-    },
-    {
-      "src": "/views/(.*)",
-      "dest": "/views/$1.ejs"
-    },
-    {
-      "src": "/",
-      "dest": "/views/index.ejs"
-    }
-  ],
-  "rewrites": [ 
-    {
-      "source": "/views/(.*)",
-      "destination": "/views/$1.ejs"
     }
   ]
 }
