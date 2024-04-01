@@ -11,7 +11,7 @@ exports.dashboard = async (req, res) => {
 
     // Panggil fungsi checkSession untuk memeriksa sesi
     const session = await checkSession(id);
-   console.log("session:", session);
+   console.log("session checController dasboard:", session);
     // Jika sesi tidak valid, arahkan pengguna kembali ke halaman login
     if (!session) {
       return res.redirect("/");
@@ -21,9 +21,9 @@ exports.dashboard = async (req, res) => {
     const user = session.sess.user;
     const status = user && user.status;
     const token = user && user.token;
-    console.log("session:", user);
-    console.log("status:", status);
-    console.log("token:", token);
+   //  console.log("session baca nilai sessiion:", user);
+   //  console.log("status:", status);
+   //  console.log("token:", token);
 
     // Jika pengguna tidak diautentikasi, redirect ke halaman login
     if (!token) {
@@ -42,8 +42,8 @@ exports.dashboard = async (req, res) => {
 
     const artikelData = artikelResponse.data;
     const kategoriData = kategoriResponse.data;
-    console.log("artikelData:", artikelData);
-    console.log("lengthData:", artikelData.data.length);
+   //  console.log("artikelData:", artikelData);
+   //  console.log("lengthData:", artikelData.data.length);
     // Check if there are any articles
     if (!artikelData.data.length === 0) {
       console.log("articles found.");

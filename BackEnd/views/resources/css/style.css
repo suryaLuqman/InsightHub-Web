@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap");
 
-:root{
-  --color-primary: #2B1260;
-  --color-secondary: #FF7F0A;
+:root {
+  --color-primary: #2b1260;
+  --color-secondary: #ff7f0a;
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
 * {
@@ -15,44 +15,45 @@ html{
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
 }
-.line-bold{
+
+.line-bold {
   background-color: #020202;
   color: #09070e;
   width: 16%;
   height: 5px;
-  
+
   /* border: 2px solid black; */
 }
-.btn-login-modal{
+.btn-login-modal {
   border-radius: 9999px;
   background-color: var(--color-primary);
   color: white;
 }
-.btn-login-modal:hover{
+.btn-login-modal:hover {
   background-color: #1c0c41;
   color: white;
 }
 
-.btn-login-modal-google{
+.btn-login-modal-google {
   border-radius: 9999px;
   color: var(--color-secondary);
   border: solid 1px #333;
 }
-.btn-login-modal-google:hover{
+.btn-login-modal-google:hover {
   color: white;
   background-color: var(--color-secondary);
 }
 
-.btn-custom-login{
-width: 100px;
-padding: 15px 20px;
-background-color: var(--color-primary);
-text-align: center;
-color: white;
-text-decoration: none;
-border-radius: 9999px;
+.btn-custom-login {
+  width: 100px;
+  padding: 15px 20px;
+  background-color: var(--color-primary);
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  border-radius: 9999px;
 }
-.btn-custom-register{
+.btn-custom-register {
   width: 100px;
   padding: 15px 50px;
   border: solid 1px #333;
@@ -64,14 +65,13 @@ border-radius: 9999px;
 
 .group {
   position: relative;
-
- }
- .input-search {
+}
+.input-search {
   width: 150px;
   padding: 10px 0px 10px 40px;
   border-radius: 9999px;
   border: solid 1px #333;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   outline: none;
   opacity: 0.8;
 }
@@ -87,25 +87,24 @@ border-radius: 9999px;
   opacity: 1;
   width: 250px;
 }
- 
-.btn-custom-primary{
+
+.btn-custom-primary {
   background-color: var(--color-primary);
   color: white;
 }
-.btn-custom-secondary{
+.btn-custom-secondary {
   color: var(--color-secondary);
- border-bottom: 1px solid var(--color-secondary);
+  border-bottom: 1px solid var(--color-secondary);
 }
-.banner-section{
-  background-color: #FF7F0A;
+.banner-section {
+  background-color: #ff7f0a;
   color: white;
 }
-.text-footer{
+.text-footer {
   color: var(--color-secondary);
 }
 
-
-.sub-highlight{
+.sub-highlight {
   border-bottom: 2px solid var(--color-primary);
   padding-bottom: 5px;
 }
@@ -116,61 +115,54 @@ border-radius: 9999px;
 }
 
 .card-block {
-    font-size: 1em;
-    position: relative;
-    margin: 0;
-    padding: 1em;
-    border: none;
-    border-top: 1px solid rgba(34, 36, 38, .1);
-    box-shadow: none;
-
+  font-size: 1em;
+  position: relative;
+  margin: 0;
+  padding: 1em;
+  border: none;
+  border-top: 1px solid rgba(34, 36, 38, 0.1);
+  box-shadow: none;
 }
 
 .card {
-    font-size: 1em;
-    overflow: hidden;
-    padding: 5;
-    border: none;
-    border-radius: .28571429rem;
-    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
-    margin-top: 20px;
+  font-size: 1em;
+  overflow: hidden;
+  padding: 5;
+  border: none;
+  border-radius: 0.28571429rem;
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+  margin-top: 20px;
 }
 
-/* CSS */
 #CarouselTest {
-    display: flex;
-    align-items: center;
-    /* Menengahkan gambar secara vertikal */
-    justify-content: center;
-    /* Menengahkan gambar secara horizontal */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .carousel-inner {
-    text-align: center;
-    /* Mengatur teks di tengah */
+  text-align: center;
 }
 
 .carousel-item img {
-    max-width: 100%;
-    /* Maksimalkan lebar gambar */
-    height: auto;
-    /* Sesuaikan tinggi gambar */
+  max-width: 100%;
+  height: auto;
+  border-radius: 0;
 }
 
 .btn {
   margin-top: auto;
 }
 
-.register-btn{
-    width: 100%;
-
+.register-btn {
+  width: 100%;
 }
 
 .alert {
-    background-color: #f74012;
-    color: white; /* Warna teks putih */
-    padding: 10px; /* Padding untuk menjaga teks dari dinding elemen */
-    margin-bottom: 15px; /* Margin bawah untuk menjaga notifikasi terpisah dari elemen lain */
+  background-color: #f74012;
+  color: white; /* Warna teks putih */
+  padding: 10px; /* Padding untuk menjaga teks dari dinding elemen */
+  margin-bottom: 15px; /* Margin bawah untuk menjaga notifikasi terpisah dari elemen lain */
 }
 .overlay {
   position: fixed;
@@ -191,10 +183,10 @@ border-radius: 9999px;
   border-width: 0.5rem; /* Ketebalan border */
 }
 
-.text-1c0c41{
+.text-1c0c41,
+.text-ungu {
   color: #1c0c41;
 }
-
 
 .border-bottom-only {
   border-top: none;
@@ -239,7 +231,7 @@ border-radius: 9999px;
 }
 
 .card img {
-  width: 75%; /* Foto artikel menjadi full width */
+  width: 100%; /* Foto artikel menjadi full width */
   height: auto; /* Tetap menjaga aspek rasio gambar */
   border-radius: 0; /* Hilangkan border-radius yang membuat card */
 }
@@ -248,29 +240,15 @@ border-radius: 9999px;
   text-align: justify; /* Rata kanan dan kiri */
 }
 .article-image {
-    width: 90% !important;
-    border-radius: 10px !important;
+  width: 90% !important;
+  border-radius: 10px !important;
 }
 .article-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow untuk kartu */
   border-radius: 10px; /* Border radius untuk kartu */
 }
 
-.modal-content {
-    border-radius: 20px;
-  }
-  .modal-footer .btn-primary {
-    background-color: darkblue;
-    color: #fff;
-    border-radius: 20px;
-    width: 50%;
-  }
-  .modal-footer .btn-secondary {
-    background-color: #fff;
-    color: #ffc107;
-    border-radius: 20px;
-    width: 50%;
-  }
-  .modal-footer {
-    justify-content: center;
-  }
+a:hover {
+  border-bottom-color: #1c0c41;
+  transition: border-color 0.3s;
+}
