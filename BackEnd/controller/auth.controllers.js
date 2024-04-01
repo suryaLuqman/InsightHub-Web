@@ -118,7 +118,7 @@ const login = async (req, res, next) => {
 
     // Simpan session ke dalam database
     // Cek apakah session untuk pengguna ini sudah ada
-    let existingSession = await prisma.session.findUnique({
+    let existingSession = await prisma.session.findMany({
       where: { userId: user.id },
     });
 
@@ -133,11 +133,12 @@ const login = async (req, res, next) => {
       });
     } else {
       // Jika session belum ada, buat session baru
+      // Simpan session ke dalam database
       await prisma.session.create({
         data: {
           sid: req.sessionID,
           userId: user.id,
-          expires: req.session.cookie.expires,
+          expire: req.session.cookie._expires,
           sess: req.session,
         },
       });
