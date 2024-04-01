@@ -30,7 +30,7 @@
       "dest": "doc-api.html"
     },
     {
-      "src": "/views/(.*)",
+      "src": "/web/(.*)",
       "dest": "/views/$1.ejs"
     }
   ]
