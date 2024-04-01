@@ -18,6 +18,27 @@ function checkCookie(cookieName) {
   return false;
 }
 
+// Fungsi untuk mendapatkan nilai cookie berdasarkan nama
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+// Mendapatkan nilai cookie 'status'
+const status = getCookie('status');
+console.log("status:", status);
+const token = getCookie('token');
+
+// Menampilkan nilai cookie 'status' di elemen HTML
+document.addEventListener('DOMContentLoaded', function() {
+  const statusElement = document.querySelector('.status');
+  if (statusElement) {
+    statusElement.textContent = status;
+  }
+});
+
+
 // Function to handle actions after DOM content is loaded
 document.addEventListener('DOMContentLoaded', function() {
   // Check if token cookie exists

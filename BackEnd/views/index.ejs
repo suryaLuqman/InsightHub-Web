@@ -302,29 +302,41 @@
       $("#loadingOverlay").removeClass("d-none");
 
       // Mendapatkan url utama dari env
-
-
-      const origin = window.location.origin;
-      console.log("Origin:", origin);
+      const urlAPI = "<%= urlAPI %>";
+      const endPointLogin = "/api/v1/auth/login";
+      const urlLogin = urlAPI + endPointLogin;
 
       $.ajax({
-        url: `${origin}/login`,
-        type: "POST",
+        url: urlLogin,
+        method: "POST",
         contentType: "application/json",
         data: JSON.stringify(formData),
         dataType: "json",
         success: function(data) {
           console.log("Data dari server (success):", data);
           if (data.success) {
+            const token = data.data.token;
+            const status = data.data.profile.profile.status;
+            console.log("Token:", token);
+            // Membuat tanggal kedaluwarsa 1 hari dari sekarang
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + 1);
+
+            // Format tanggal kedaluwarsa menjadi format yang sesuai dengan cookies
+            const expires = expirationDate.toUTCString();
+
+            // Membuat cookies
+            document.cookie = `token=${token};status=${status}; expires=${expires}; path=/`;
+            console.log("document.cookie: ", document.cookie);
+
             // Redirect ke halaman dashboard
-            window.location.href =
-              "/dashboard/" + data.data.profile.profile.first_name;
+            window.location.href = "/dashboard/" + data.data.profile.profile.first_name;
           } else {
             const Message = data.message;
             const error = data.error;
             const errorMessage = error ? Message + error : Message;
             console.error("Login error:", errorMessage);
-            $("#loginErrorAlert").text(errorMessage).removeClass("d-none");
+            $("#registerErrorAlert").text(errorMessage).removeClass("d-none");
           }
         },
         error: function(xhr, status, error) {
@@ -332,23 +344,14 @@
           console.error("Login error:", errorData);
           console.error("Data dari server (error):", errorData);
 
-          // Cetak data yang akan dikirimkan ke server pada respon error
           console.log("Data yang akan dikirimkan ke server:", formData);
 
           if (errorData.error) {
-            $("#loginErrorAlert")
-              .html(
-                `<i class="fas fa-exclamation-triangle"></i> ${errorData.message} Error: ${errorData.error}`
-              )
-              .removeClass("d-none");
-            console.error("ini jalan if atas");
+            $("#loginErrorAlert").html(`<i class="fas fa-exclamation-triangle"></i> ${errorData.message} Error: ${errorData.error}`).removeClass("d-none");
+            console.error("ini jalan if atas 1");
           } else {
-            $("#loginErrorAlert")
-              .html(
-                `<i class="fas fa-exclamation-triangle"></i> ${errorData.message}`
-              )
-              .removeClass("d-none");
-            console.error("ini jalan else bawah");
+            $("#loginErrorAlert").html(`<i class="fas fa-exclamation-triangle"></i> ${errorData.message}`).removeClass("d-none");
+            console.error("ini jalan else bawah 1");
           }
         },
         complete: function() {
@@ -432,6 +435,7 @@
                 console.log("Data dari server (success):", data);
                 if (data.success) {
                   const token = data.data.token;
+                  const status = data.data.profile.profile.status;
                   console.log("Token:", token);
                   // Membuat tanggal kedaluwarsa 1 hari dari sekarang
                   const expirationDate = new Date();
@@ -441,7 +445,7 @@
                   const expires = expirationDate.toUTCString();
 
                   // Membuat cookies
-                  document.cookie = `token=${token}; expires=${expires}; path=/`;
+                  document.cookie = `token=${token};status=${status}; expires=${expires}; path=/`;
                   console.log("document.cookie: ", document.cookie);
 
                   // Redirect ke halaman dashboard
