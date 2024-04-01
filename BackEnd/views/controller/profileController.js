@@ -1,30 +1,53 @@
-const axios = require('axios');
-require('dotenv').config();
+const axios = require("axios");
+require("dotenv").config();
+const session = require("express-session");
 
+// Dashboard controller
 exports.getProfilePage = async (req, res) => {
-   try {
-      // kategori
-      const baseUrl = process.env.API; // Mengambil base URL dari variabel lingkungan
-      const endpointKategori = '/api/v1/kategori/get-all'; // End point yang ingin Anda ambil
-      const kategori = baseUrl + endpointKategori; // Menggabungkan base URL dengan end point
-      const responseKategori = await axios.get(kategori);
-      const dataKategori = responseKategori.data;
+  try {
+    const { segment } = req.params;
+    console.log("segment:", segment);
 
-      // artikel
-      const endpointArtikel = '/api/v1/artikel/get-all'; // End point yang ingin Anda ambil
-      const artikel = baseUrl + endpointArtikel; // Menggabungkan base URL dengan end point
-      const responseArtikel = await axios.get(artikel);
-      // console.log(responseArtikel.data.data);
-      const dataArtikel = responseArtikel.data.data;
+    const token = req.session.user.token;
+    const userId = req.session.user.id;
 
-      res.render('index', { 
-         kategori: dataKategori, 
-         title: 'InsightHub - Lets Start the journey with us', 
-         articles: dataArtikel,
-         urlAPI: process.env.API
-      });
+    // Logic to fetch profile data
+    const baseUrl = process.env.API;
+    const profileUrl = `${baseUrl}/api/v1/auth/profile`;
+    const artikelUrl = `${baseUrl}/api/v1/search-artikel/search?authorId=${userId}`;
+    const kategoriUrl = `${baseUrl}/api/v1/kategori/get-all`;
 
-   } catch (error) {
-      console.error('Gagal mengambil data dari API:', error);
-   }
-}
+    const [profileResponse, artikelResponse, kategoriResponse] = await Promise.all([
+      axios.get(profileUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      axios.get(artikelUrl),
+      axios.get(kategoriUrl),
+    ]);
+
+    const profileData = profileResponse.data;
+    const artikelData = artikelResponse.data;
+    const kategoriData = kategoriResponse.data;
+    
+    console.log("profileData:", profileData);
+    console.log("artikelData:", artikelData);
+
+    if (!profileData || !artikelData) {
+      console.log("Failed to fetch profile or article data.");
+      return res.status(500).render("error", { error: "Failed to fetch profile or article data." });
+    }
+
+    // Render the profile page with the retrieved data
+    return res.render("profile", {
+      title: "User Profile",
+      profile: profileData,
+      artikel: artikelData,
+      kategori: kategoriData,
+    });
+  } catch (error) {
+    console.error("Failed to fetch data from API:", error);
+    return res.status(500).render("error", { error: "Failed to fetch data from API." });
+  }
+};
