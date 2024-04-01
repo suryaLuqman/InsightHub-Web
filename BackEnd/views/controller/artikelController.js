@@ -5,7 +5,7 @@ const prisma = require("../../libs/prisma");
 const { checkSession } = require("../controller/checkSessionController");
 
 // Dashboard controller
-exports.dashboard = async (req, res) => {
+exports.getArtikelPage = async (req, res) => {
   try {
     const { first_name, id } = req.params;
 
@@ -32,44 +32,24 @@ exports.dashboard = async (req, res) => {
 
     // Logic to fetch dashboard data based on $first_name
     const baseUrl = process.env.API;
-    const artikelUrl = `${baseUrl}/api/v1/artikel/get-all`;
     const kategoriUrl = `${baseUrl}/api/v1/kategori/get-all`;
 
-    const [artikelResponse, kategoriResponse] = await Promise.all([
-      axios.get(artikelUrl),
+    const [kategoriResponse] = await Promise.all([
       axios.get(kategoriUrl),
     ]);
 
-    const artikelData = artikelResponse.data;
     const kategoriData = kategoriResponse.data;
-   //  console.log("artikelData:", artikelData);
-   //  console.log("lengthData:", artikelData.data.length);
-    // Check if there are any articles
-    if (artikelData.data.length > 0) {
-      console.log("articles found.");
+
       // If there are articles, send article data to view
-      return res.render("dashboard", {
+      return res.render("add-artikel", {
         title: "InsightHub - Lets Start the journey with us",
         first_name: first_name,
         id: id,
         status: status,
         token: token,
-        artikel: artikelData,
         kategori: kategoriData,
       });
-    } else {
-      console.log("no articles found.");
-      // If there are no articles, render a different view
-      return res.render("dashboard_no_artikel", {
-        title: "InsightHub - Lets Start the journey with us",
-        first_name: first_name,
-        id: id,
-        status: status,
-        token: token,
-        artikel: artikelData,
-        kategori: kategoriData,
-      });
-    }
+    
   } catch (error) {
     console.error("Failed to fetch data from API:", error);
     return res

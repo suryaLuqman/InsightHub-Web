@@ -11,7 +11,7 @@ exports.getProfilePage = async (req, res) => {
 
     // Panggil fungsi checkSession untuk memeriksa sesi
     const session = await checkSession(id);
-    console.log("session profile controller:", session);
+   //  console.log("session profile controller:", session);
     // Jika sesi tidak valid, arahkan pengguna kembali ke halaman login
     if (!session) {
       return res.redirect("/");

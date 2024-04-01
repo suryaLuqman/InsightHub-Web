@@ -9,6 +9,7 @@ const path = require('path');
 const homeRoute = require('./views/routes/homeRoute');
 const dashboardRoute = require('./views/routes/dashboardRoute');
 const profileRoute = require('./views/routes/profileRoute');
+const artikelRoute = require('./views/routes/Artikel.View.Routes');
 const morgan = require('morgan');
 const { serverError, notFound,handleErrors } = require('./middleware/error.handling');
 const PORT = process.env.PORT || 3000;
@@ -47,6 +48,7 @@ app.set('view engine', 'ejs');
 app.use(homeRoute);
 app.use(dashboardRoute);
 app.use(profileRoute);
+app.use("/artikel",artikelRoute);
 
 app.use('/api/v1', require('./routes/index.routes'));
 app.use((req, res, next) => {
