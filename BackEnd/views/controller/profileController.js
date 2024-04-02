@@ -21,7 +21,7 @@ exports.getProfilePage = async (req, res) => {
     const user = session.sess.user;
     const status = user && user.status;
     const token = user && user.token;
-   //  console.log("session baca nilai sessiion profile:", user);
+    console.log("session baca nilai sessiion profile:", user);
    //  console.log("status:", status);
    //  console.log("token:", token);
 
@@ -66,8 +66,10 @@ exports.getProfilePage = async (req, res) => {
       return res.render("profile", {
         title: `Insight - ${segment || "Profile"}`,
         profile: profileData,
+        email:user.email,
         artikel: artikelData,
         kategori: kategoriData,
+        urlAPI: process.env.API
       });
     } else {
       console.log("no articles found.");
@@ -76,8 +78,10 @@ exports.getProfilePage = async (req, res) => {
       return res.render("profile_no_artikel", {
         title: `Insight - ${segment || "Profile"}`,
         profile: profileData,
+        email:user.email,
         artikel: artikelData,
         kategori: kategoriData,
+        urlAPI: process.env.API
       });
     }
   } catch (error) {

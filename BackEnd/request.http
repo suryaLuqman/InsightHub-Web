@@ -16,7 +16,7 @@ Content-Type: application/json
 
 ### Login user
 # POST /api/v1/auth/login 
-POST http://localhost:3000/api/v1/auth/login
+POST https://insight-hub-api.vercel.app/api/v1/auth/login
 Content-Type: application/json
 
 {
@@ -89,7 +89,7 @@ Content-Type: application/json
   "password": "123123"
 }
 
-###get all user
+###get all user (fitur admin dengan token admin)
 GET http://localhost:3000/api/v1/auth/getAlluser
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InN1cnlhIiwiZW1haWwiOiJzdXJ5YUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sInByb2ZpbGUiOnsiaWQiOjEsImZpcnN0X25hbWUiOiJzdXJ5YSIsImxhc3RfbmFtZSI6IkRlZmF1bHQiLCJwcm9maWxlX3BpY3R1cmUiOm51bGwsIm5vX2hwIjoiMDk4MTI3Iiwic3RhdHVzIjoibWFoYXNpc3dhIiwicGljdHVyZUlkIjpudWxsLCJ1c2VySWQiOjF9LCJpYXQiOjE3MTE5MzU5NDMsImV4cCI6MTcxMjAyMjM0M30._5hU4BuDIaIy-lEZye8AsIpE3nDwNwcs74GeuVeoxL0

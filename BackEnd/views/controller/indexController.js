@@ -16,7 +16,7 @@ exports.getIndexPage = async (req, res) => {
       const responseArtikel = await axios.get(artikel);
       // console.log(responseArtikel.data.data);
       const dataArtikel = responseArtikel.data.data;
-
+      console.log("artikel: ",dataArtikel);
       res.render('index', { 
          kategori: dataKategori, 
          title: 'InsightHub - Lets Start the journey with us', 
