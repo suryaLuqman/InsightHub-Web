@@ -3,7 +3,7 @@ const prisma = require('../libs/prisma');
 
 const searchArtikel = async (req, res, next) => {
   try {
-    const { kategori, judul, authorId } = req.query;
+    const { kategori, judul, authorId, artikelId } = req.query;
     let searchConditions = {};
 
     if (kategori) {
@@ -26,6 +26,10 @@ const searchArtikel = async (req, res, next) => {
       searchConditions.authorId = parseInt(authorId);
     }
 
+    if (artikelId) {
+      searchConditions.id = parseInt(artikelId);
+    }
+
     const artikel = await prisma.artikel.findMany({
       where: searchConditions,
       include: {
@@ -39,6 +43,11 @@ const searchArtikel = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports = {
+  searchArtikel,
+};
+
 
 module.exports = {
   searchArtikel,
