@@ -34,13 +34,8 @@ Content-Type: application/json
 
 
 ### change password
-<<<<<<< HEAD
 # POST /api/v1/auth/change-password?token={link email params}
 POST http://localhost:3000/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InN1cnlhMTIzIiwiZW1haWwiOiJzdXJ5YUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sInByb2ZpbGUiOnsiaWQiOjEsImZpcnN0X25hbWUiOiJzdXJ5YTEyMyIsImxhc3RfbmFtZSI6IkRlZmF1bHQiLCJwcm9maWxlX3BpY3R1cmUiOm51bGwsIm5vX2hwIjoiMDkxODc3MiIsInN0YXR1cyI6IlRJIGVuZ2luZWVyIiwicGljdHVyZUlkIjpudWxsLCJ1c2VySWQiOjF9LCJpYXQiOjE3MTIwNzI1MzcsImV4cCI6MTcxMjE1ODkzN30.fIA9oSeZrQ0OC2TJ4nJOd3ehsx59LSs0p81bqb5diLg
-=======
-# POST /api/v1/auth/change-password?token={token}
-POST https://insight-hub-api.vercel.app/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJpYXQiOjE3MTEyNzQ0NTksImV4cCI6MTcxMTI3ODA1OX0.8DutF9Lu5WdR-sQ_Pv9jzVmhz-To6U1JqRjkxu06BOQ
->>>>>>> aa2049f01521fc627ea5e7cbd38668189b96f03e
 Content-Type: application/json
 
 {
