@@ -16,11 +16,11 @@ Content-Type: application/json
 
 ### Login user
 # POST /api/v1/auth/login 
-POST https://insight-hub-api.vercel.app/api/v1/auth/login
+POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email":"surya@gmail.com",  
+  "email":"oke@gmail.com",  
   "password": "123123"
 }
 
