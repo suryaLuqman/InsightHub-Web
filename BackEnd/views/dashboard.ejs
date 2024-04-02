@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+  <!-- selecet picker -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
 </head>
 
 <body>
@@ -30,8 +33,12 @@
         <div class="modal fade" id="articleModal" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
-              <div class="modal-header search-header">
-                <input type="text" placeholder="Cari artikel" id="modalSearchInput" class="input-search me-5" oninput="updateSearchInput(this.value)" />
+              <div class="modal-header search_select_box">
+                <select class="selectpicker" data-live-search="true" data-size="auto" data-width="auto" id="modalSearchInput" onchange="updateSearchInput(this.value)">
+                  <option data-tokens="ketchup mustard">Hot Dog, Fries and a Soda</option>
+                  <option data-tokens="mustard">Burger, Shake and a Smile</option>
+                  <option data-tokens="frosting">Sugar, Spice and all things nice</option>
+                </select>
 
                 <h5 class="modal-title search-title" id="articleModalLabel">Search Result</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -42,6 +49,7 @@
             </div>
           </div>
         </div>
+
 
         <!-- Your Search Form -->
         <form class="group" role="search">
@@ -63,7 +71,16 @@
             // Show the modal
             var articleModal = new bootstrap.Modal(document.getElementById('articleModal'));
             articleModal.show();
+
+            // Menambahkan kembali elemen tombol pencarian
+            var modalHeader = document.querySelector('.modal-header');
+            modalHeader.innerHTML += `
+    <input type="text" placeholder="Cari artikel" class="input-search me-5" onclick="showModal()" />
+  `;
+
+            $('.selectpicker').selectpicker(); // Panggil selectpicker() setelah modal ditampilkan
           }
+
 
           function updateSearchInput(value) {
             // Update main search input with value from modal search input
@@ -231,6 +248,10 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin Boostrap select Picker -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
 
   <script src="/resources/js/main.js"></script>
 </body>
