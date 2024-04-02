@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#editButton").removeClass("d-none");
 
     // Mendapatkan url utama dari env
-    const urlAPI = "<%= urlAPI %>";
+   //  const urlAPI = "<%= urlAPI %>";
     const endPointLogin = "/api/v1/auth/test";
     const updateProfile = urlAPI + endPointLogin;
     $.ajax({
@@ -116,3 +116,52 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#editButton").removeClass("d-none");
   });
 });
+
+
+$(document).ready(function () {
+   $("#simpanPassword").click(function (event) {
+      event.preventDefault();
+      const passwordBaru = $("#passwordBaru").val();
+      const konfirmasiPassword = $("#konfirmasiPassword").val();
+      const endPointLogin = "/api/v1/auth/change-password?token=";
+      const updateProfile = urlAPI + endPointLogin;
+
+      // Tampilkan overlay loading saat AJAX sedang berlangsung
+      $("#loadingOverlay").removeClass("d-none");
+
+      $.ajax({
+         url: `${updateProfile}${token}`,
+         type: "POST",
+         data: {
+            passwordBaru: passwordBaru,
+            confirm_password: konfirmasiPassword
+         },
+         dataType: "json",
+         success: function (data) {
+            console.log("Data dari server (success):", data);
+            if (data.success) {
+               // Tampilkan pesan sukses di dalam modal
+              $("#gantiPasswordAlert").append(`<div class="alert alert-success">${data.message}</div>`);
+              setTimeout(function () {
+               //   reload halaman setelah 2 detik
+                  window.location.reload();
+              }, 1000);
+            } else {
+               // Tampilkan pesan error di dalam modal
+              $("#gantiPasswordAlert").append(`<div class="alert alert-danger"> ${data.message} Error: ${data.error}</div>`);
+            }
+         },
+         error: function (xhr, status, error) {
+            const errorData = xhr.responseJSON ? xhr.responseJSON : "Failed to change password. Please try again later.";
+            console.error("Change password error:", errorData);
+            // Tampilkan pesan error di dalam modal
+            $("#gantiPasswordAlert").append(`<div class="alert alert-danger"> ${errorData.message}! &nbsp; Error: ${errorData.error}</div>`);
+         },
+         complete: function () {
+            // Sembunyikan overlay loading setelah AJAX selesai
+            $("#loadingOverlay").addClass("d-none");
+         }
+      });
+   });
+});
+

@@ -19,7 +19,11 @@
 </head>
 
 <body>
-
+  <script>
+    const urlAPI = "<%= urlAPI %>";
+    const token = "<%= token %>";
+    console.log("token:", token);
+  </script>
   <div class="container-fluid">
     <div id="ProfileAlert" class="alert alert-danger text-center d-none" role="alert">
       <!-- Teks pesan kesalahan akan ditampilkan di sini -->
@@ -55,7 +59,6 @@
             <div class="tab-pane fade" id="statistik" role="tabpanel" aria-labelledby="statistik-tab">
               <div class="container">
                 <h4 class="mb-4">Statistik Kamu</h4>
-
                 <div class="row">
                   <div class="col-md-4">
                     <div class="kartu">
@@ -162,8 +165,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
+                    <div id="gantiPasswordAlert">
+                      <!-- Teks pesan kesalahan akan ditampilkan di sini -->
+                    </div>
                     <form>
-                      <div class="mb-3">
+                      <!-- <div class="mb-3">
                         <label for="passwordLama" class="form-label">Password Lama</label>
                         <div class="input-group">
                           <input type="password" class="form-control" id="passwordLama" placeholder="Masukkan Password Lama" aria-describedby="togglePasswordLama">
@@ -171,7 +177,7 @@
                             <i class="bi bi-eye-slash"></i>
                           </button>
                         </div>
-                      </div>
+                      </div> -->
                       <div class="mb-3">
                         <label for="passwordBaru" class="form-label">Password Baru</label>
                         <div class="input-group">
@@ -193,7 +199,7 @@
                     </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn text-white" style="border-radius: 20px;background-color: #1c2252;">Ganti Password</button>
+                    <button type="button" id="simpanPassword" class="btn text-white" style="border-radius: 20px;background-color: #1c2252;">Ganti Password</button>
                     <button type="button" class="btn btn-outline-primary text-warning" style="border-radius: 20px;" data-bs-dismiss="modal">Cancel</button>
 
                   </div>
@@ -267,7 +273,7 @@
     togglePasswordVisibility('passwordBaru', 'togglePasswordBaru');
     togglePasswordVisibility('konfirmasiPassword', 'toggleKonfirmasiPassword');
   </script>
-  
+
 </body>
 
 </html>

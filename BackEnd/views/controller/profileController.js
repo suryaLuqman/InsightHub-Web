@@ -69,7 +69,8 @@ exports.getProfilePage = async (req, res) => {
         email:user.email,
         artikel: artikelData,
         kategori: kategoriData,
-        urlAPI: process.env.API
+        urlAPI: process.env.API,
+        token: token
       });
     } else {
       console.log("no articles found.");
@@ -81,7 +82,8 @@ exports.getProfilePage = async (req, res) => {
         email:user.email,
         artikel: artikelData,
         kategori: kategoriData,
-        urlAPI: process.env.API
+        urlAPI: process.env.API,
+        token: token
       });
     }
   } catch (error) {
