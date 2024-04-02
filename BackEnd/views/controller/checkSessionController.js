@@ -9,7 +9,7 @@ exports.checkSession = async (userId) => {
       where: { userId: Number(userId) },
       orderBy: { expire: 'desc' },
     });
-    console.log("sessions atas:", sessions);
+    // console.log("sessions atas:", sessions);
    //  console.log("sessions:", sessions);
     // Jika tidak ada sesi atau sesi telah kadaluarsa, kembalikan false
     if (!sessions || sessions.length === 0 || sessions[0].expire < new Date()) {
@@ -35,7 +35,7 @@ exports.checkSessionWithoutId = async (nama) => {
       },
       orderBy: { expire: 'desc' },
     });
-    console.log("sessions withoutId:", sessions);
+    // console.log("sessions withoutId:", sessions);
     // Jika tidak ada sesi atau sesi telah kadaluarsa, kembalikan false
     if (!sessions || sessions.length === 0 || sessions[0].expire < new Date()) {
       return false;

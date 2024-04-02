@@ -440,6 +440,8 @@ const forgotPassword = async (req, res, next) => {
 const changePassword = async (req, res, next) => {
   try {
     const { token } = req.query;
+    console.log("token:", token);
+    console.log("ini req.body:", req.body);
 
     if (!token) {
       return res.status(400).json({

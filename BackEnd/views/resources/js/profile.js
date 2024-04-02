@@ -122,7 +122,9 @@ $(document).ready(function () {
    $("#simpanPassword").click(function (event) {
       event.preventDefault();
       const passwordBaru = $("#passwordBaru").val();
+      console.log("passwordBaru:", passwordBaru);
       const konfirmasiPassword = $("#konfirmasiPassword").val();
+      console.log("konfirmasiPassword:", konfirmasiPassword);
       const endPointLogin = "/api/v1/auth/change-password?token=";
       const updateProfile = urlAPI + endPointLogin;
 
@@ -136,7 +138,7 @@ $(document).ready(function () {
             passwordBaru: passwordBaru,
             confirm_password: konfirmasiPassword
          },
-         dataType: "json",
+         dataType: "application/json",
          success: function (data) {
             console.log("Data dari server (success):", data);
             if (data.success) {
@@ -147,6 +149,7 @@ $(document).ready(function () {
                   window.location.reload();
               }, 1000);
             } else {
+               console.log("Data dari server (error atas):", data);
                // Tampilkan pesan error di dalam modal
               $("#gantiPasswordAlert").append(`<div class="alert alert-danger"> ${data.message} Error: ${data.error}</div>`);
             }
@@ -154,6 +157,7 @@ $(document).ready(function () {
          error: function (xhr, status, error) {
             const errorData = xhr.responseJSON ? xhr.responseJSON : "Failed to change password. Please try again later.";
             console.error("Change password error:", errorData);
+            console.error("Data dari server (error) bawah:", errorData);
             // Tampilkan pesan error di dalam modal
             $("#gantiPasswordAlert").append(`<div class="alert alert-danger"> ${errorData.message}! &nbsp; Error: ${errorData.error}</div>`);
          },

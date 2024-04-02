@@ -21,7 +21,7 @@ exports.getProfilePage = async (req, res) => {
     const user = session.sess.user;
     const status = user && user.status;
     const token = user && user.token;
-    console.log("session baca nilai sessiion profile:", user);
+    // console.log("session baca nilai sessiion profile:", user);
    //  console.log("status:", status);
    //  console.log("token:", token);
 
@@ -48,8 +48,8 @@ exports.getProfilePage = async (req, res) => {
     const artikelData = artikelResponse.data;
     const kategoriData = kategoriResponse.data;
 
-    console.log("profileData:", profileData);
-    console.log("artikelData:", artikelData);
+    // console.log("profileData:", profileData);
+    // console.log("artikelData:", artikelData);
 
     if (!profileData || !artikelData) {
       console.log("Failed to fetch profile or article data.");
@@ -57,7 +57,7 @@ exports.getProfilePage = async (req, res) => {
         .status(500)
         .render("error", { error: "Failed to fetch profile or article data." });
     }
-    console.log("length:", artikelData.length);
+    // console.log("length:", artikelData.length);
 
     if (artikelData.length > 0) {
       console.log("articles found.");
