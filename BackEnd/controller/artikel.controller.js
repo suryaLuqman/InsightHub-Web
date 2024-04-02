@@ -138,19 +138,24 @@ const getAllArtikel = async (req, res, next) => {
   try {
     const allArtikel = await prisma.artikel.findMany({
       include: {
-        ratings: true
+        ratings: true,
+        kategori: true // Sertakan kategori dalam hasil query
       }
     });
 
     // Mendapatkan nilai-nilai rating dari setiap artikel
     const artikelWithAvgRatings = allArtikel.map(artikel => {
       if (artikel.gambar_artikel === null) {
-      // Skip processing for articles with null gambar_artikel
-      return artikel;
-    }
+        // Skip processing for articles with null gambar_artikel
+        return artikel;
+      }
       const ratings = artikel.ratings.map(rating => rating.nilai);
       const avgRating = ratings.length ? ratings.reduce((acc, curr) => acc + curr) / ratings.length : 0;
-      return { ...artikel, avgRating };
+      
+      // Mengecek apakah artikel memiliki kategori sebelum memetakan ID kategori
+      const kategoriId = artikel.kategori ? artikel.kategori.map(kategori => kategori.id) : [];
+      
+      return { ...artikel, avgRating, kategoriId };
     });
 
     res.status(200).json({
@@ -162,6 +167,7 @@ const getAllArtikel = async (req, res, next) => {
     next(error);
   }
 };
+
 
 
 
