@@ -7,7 +7,7 @@ POST https://insight-hub-api.vercel.app/api/v1/auth/register/user
 Content-Type: application/json
 
 {
-  "email":"oke@gmail.com", 
+  "email":"suryay@gmail.com", 
   "password":"123123", 
   "nama":"user1",
   "no_hp":"081281821",
@@ -20,28 +20,57 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email":"okeyy@gmail.com",  
-  "password": "123123"
+  "email":"surya@gmail.com",  
+  "password": "user12345"
 }
 
 ### forgot password
-POST https://insight-hub-api.vercel.app/api/v1/auth/forgotPassword
+POST http://localhost:3000/api/v1/auth/forgotPassword
 Content-Type: application/json
 
 {
-    "email": "jeni.riska@gmail.com"
+    "email": "surya@gmail.com"
 }
 
 
 ### change password
 # POST /api/v1/auth/change-password?token={link email params}
-POST https://insight-hub-api.vercel.app/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJqZW5pLnJpc2thYUBnbWFpbC5jb20iLCJpYXQiOjE3MTEyNzQ0NTksImV4cCI6MTcxMTI3ODA1OX0.8DutF9Lu5WdR-sQ_Pv9jzVmhz-To6U1JqRjkxu06BOQ
+POST http://localhost:3000/api/v1/auth/change-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InN1cnlhMTIzIiwiZW1haWwiOiJzdXJ5YUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sInByb2ZpbGUiOnsiaWQiOjEsImZpcnN0X25hbWUiOiJzdXJ5YTEyMyIsImxhc3RfbmFtZSI6IkRlZmF1bHQiLCJwcm9maWxlX3BpY3R1cmUiOm51bGwsIm5vX2hwIjoiMDkxODc3MiIsInN0YXR1cyI6IlRJIGVuZ2luZWVyIiwicGljdHVyZUlkIjpudWxsLCJ1c2VySWQiOjF9LCJpYXQiOjE3MTIwNzI1MzcsImV4cCI6MTcxMjE1ODkzN30.fIA9oSeZrQ0OC2TJ4nJOd3ehsx59LSs0p81bqb5diLg
 Content-Type: application/json
 
 {
   "password":"user12345",
   "confirm_password":"user12345"
 }
+
+
+### PUT / Update profile tanpa foto
+PUT https://insight-hub-api.vercel.app/api/v1/auth/profile/update
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsIm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoic3VyeWF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwicHJvZmlsZSI6eyJpZCI6MTMsImZpcnN0X25hbWUiOiJ1c2VyMSIsImxhc3RfbmFtZSI6IkRlZmF1bHQiLCJwcm9maWxlX3BpY3R1cmUiOm51bGwsIm5vX2hwIjoiMDgxMjgxODIxIiwic3RhdHVzIjoib2siLCJwaWN0dXJlSWQiOm51bGwsInVzZXJJZCI6MTN9LCJpYXQiOjE3MTIwNDMyMDUsImV4cCI6MTcxMjEyOTYwNX0.re9r--qGIy6QqcN5fcshdA_FBfHNkwyeL7zKqOMDJTU
+
+{
+  "first_name":"surcup", //string
+  "status":"pelajar" //strng
+}
+
+### PUT / Update profile dengan foto
+PUT https://insight-hub-api.vercel.app/api/v1/auth/profile/update
+Content-Type: multipart/form-data
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsIm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoic3VyeWF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwicHJvZmlsZSI6eyJpZCI6MTMsImZpcnN0X25hbWUiOiJ1c2VyMSIsImxhc3RfbmFtZSI6IkRlZmF1bHQiLCJwcm9maWxlX3BpY3R1cmUiOm51bGwsIm5vX2hwIjoiMDgxMjgxODIxIiwic3RhdHVzIjoib2siLCJwaWN0dXJlSWQiOm51bGwsInVzZXJJZCI6MTN9LCJpYXQiOjE3MTIwNDMyMDUsImV4cCI6MTcxMjEyOTYwNX0.re9r--qGIy6QqcN5fcshdA_FBfHNkwyeL7zKqOMDJTU
+
+{
+  "first_name":"surcup",
+  "status":"pelajar",
+  "profile_picture":"`upload file gambar`"
+}
+
+
+### Delete poto profil
+DELETE http://localhost:3000/api/v1/auth/profile-picture
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsIm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoic3VyeWF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwicHJvZmlsZSI6eyJpZCI6MTMsImZpcnN0X25hbWUiOiJzdXJ5YWN1YWtzIiwibGFzdF9uYW1lIjoiRGVmYXVsdCIsInByb2ZpbGVfcGljdHVyZSI6Imh0dHBzOi8vaWsuaW1hZ2VraXQuaW8vamVuaXJpc2thLzE3MTIwNDM4NDAxNTNfZUJYUTY1NTdILmpwZWciLCJub19ocCI6IjA4MTI4MTgyMSIsInN0YXR1cyI6Im1haGFzaXN3YSIsInBpY3R1cmVJZCI6IjIyM2IyMGU2YzcyOTYwZDY4ZGMwYmYwYjU2ZGEyZDRkNzgwMzNlZjYxMWU5YTRjNzI4ODIxM2NhNmZmZDlhZjMiLCJ1c2VySWQiOjEzfSwiaWF0IjoxNzEyMDcxNjMyLCJleHAiOjE3MTIxNTgwMzJ9.2j6DqgVCtPuGO0etyjwzoolgIeHi2eXxkUM3KhYAWeI
+
 
 ### regis SUPERADMIN
 # POST /api/v1/auth/register/su
@@ -97,7 +126,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6I
 ###get profile
 GET http://localhost:3000/api/v1/auth/profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InN1cnlhIiwiZW1haWwiOiJzdXJ5YUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sInByb2ZpbGUiOnsiaWQiOjEsImZpcnN0X25hbWUiOiJzdXJ5YSIsImxhc3RfbmFtZSI6IkRlZmF1bHQiLCJwcm9maWxlX3BpY3R1cmUiOm51bGwsIm5vX2hwIjoiMDk4MTI3Iiwic3RhdHVzIjoibWFoYXNpc3dhIiwicGljdHVyZUlkIjpudWxsLCJ1c2VySWQiOjF9LCJpYXQiOjE3MTE5MzU5NDMsImV4cCI6MTcxMjAyMjM0M30._5hU4BuDIaIy-lEZye8AsIpE3nDwNwcs74GeuVeoxL0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsIm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoic3VyeWF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwicHJvZmlsZSI6eyJpZCI6MTMsImZpcnN0X25hbWUiOiJzdXJ5YWN1YWtzIiwibGFzdF9uYW1lIjoiRGVmYXVsdCIsInByb2ZpbGVfcGljdHVyZSI6Imh0dHBzOi8vaWsuaW1hZ2VraXQuaW8vamVuaXJpc2thLzE3MTIwNDM4NDAxNTNfZUJYUTY1NTdILmpwZWciLCJub19ocCI6IjA4MTI4MTgyMSIsInN0YXR1cyI6Im1haGFzaXN3YSIsInBpY3R1cmVJZCI6IjIyM2IyMGU2YzcyOTYwZDY4ZGMwYmYwYjU2ZGEyZDRkNzgwMzNlZjYxMWU5YTRjNzI4ODIxM2NhNmZmZDlhZjMiLCJ1c2VySWQiOjEzfSwiaWF0IjoxNzEyMDcxNjMyLCJleHAiOjE3MTIxNTgwMzJ9.2j6DqgVCtPuGO0etyjwzoolgIeHi2eXxkUM3KhYAWeI
 
 ###Membuat kategori Baru
 # POST /api/v1/kategori/add

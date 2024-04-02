@@ -613,6 +613,33 @@ const updateProfile = async (req, res, next) => {
   }
 };
 
+//deleyte gambar
+const deleteProfilePicture = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    // Mengupdate data gambar profil menjadi null
+    await prisma.userProfile.update({
+      where: {
+        userId: userId,
+      },
+      data: {
+        profile_picture: null,
+        pictureId: null,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile picture deleted successfully",
+      data: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 module.exports = {
   login,
   registerUser,
@@ -624,4 +651,5 @@ module.exports = {
   getAllUser,
   getUserProfile,
   updateProfile,
+  deleteProfilePicture
 };
