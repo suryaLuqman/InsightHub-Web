@@ -5,14 +5,17 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title %></title>
+  <title>
+    <%= title %>
+  </title>
   <!-- add favicon -->
   <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
   <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/resources/css/style.css" />
 
   <!-- fontawesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    crossorigin="anonymous" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <!-- selecet picker -->
@@ -22,6 +25,9 @@
 
 <body>
   <div class="main">
+    <script>
+      const artikel = "<%= JSON.stringify(artikel) %>";
+    </script>
     <!-- nav -->
     <nav class="navbar banner-section  bg-body-light pb-3" style="border-bottom: 1px solid rgb(240, 237, 237)">
       <div class="container-fluid mx-5">
@@ -29,96 +35,145 @@
           <img src="/resources/images/logo.png" width="250" height="50" />
         </a>
 
-        <!-- Modal -->
-        <div class="modal fade" id="articleModal" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header search_select_box">
-                <select class="selectpicker" data-live-search="true" data-size="auto" data-width="auto" id="modalSearchInput" onchange="updateSearchInput(this.value)">
-                  <option data-tokens="ketchup mustard">Hot Dog, Fries and a Soda</option>
-                  <option data-tokens="mustard">Burger, Shake and a Smile</option>
-                  <option data-tokens="frosting">Sugar, Spice and all things nice</option>
-                </select>
+  <!-- Your Search Form -->
+  <form class="group" role="search">
+    <input type="text" placeholder="Cari artikel" name="text" id="searchInput" class="input-search me-5" />
+    <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+      <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+    </svg>
+    <a href="" class="me-4 fs-3">
+      <i class="fa-regular fa-bell text-black"></i>
+    </a>
+    <a href="/profile/<%= first_name %>/<%= id %>">
+      <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
+    </a>
+  </form>
 
-                <h5 class="modal-title search-title" id="articleModalLabel">Search Result</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="input-group">
+    <input type="text" placeholder="Cari artikel" name="text" id="searchInput" class="input-search me-5" />
+    <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+      <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+    </svg>
+        </div>
+        <h5 class="modal-title ms-3" id="searchModalLabel">Cari artikel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Articles will be dynamically loaded here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+  const searchInput = document.getElementById("searchInput");
+  const searchModal = new bootstrap.Modal(document.getElementById("searchModal"));
+
+  // Function to handle search and display modal
+  function handleSearch() {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+
+    // Fetch and display articles based on search term
+    fetchArticles(searchTerm);
+
+    // Show the modal
+    searchModal.show();
+  }
+
+  // Function to fetch articles based on search term
+  function fetchArticles(searchTerm) {
+    // Mock data (replace this with actual API call)
+    const articlesData = {
+      success: true,
+      message: "All Artikel retrieved successfully",
+      data: [{
+        id: 1,
+        judul: "Artikel ilmu ilmu kebenaran part 3",
+        deskripsi: "Isi deskripsi",
+        link: "http://google.com",
+        gambar_artikel: "https://ik.imagekit.io/jeniriska/1712014704714_CUSwmQ12k.png",
+        fileId: "f42f97068ff04a526883b57f48df2548e8a055772a268bc5810f0a1302e15ef8",
+        kategoriId: [3],
+        authorId: 1,
+        createdAt: "2024-04-01T23:38:30.922Z",
+        updatedAt: "2024-04-01T23:38:30.922Z",
+        ratings: [],
+        kategori: [{
+          id: 3,
+          nama: "Sistem pakan",
+          deskripsi: "Artikel-artikel tentang pikiran buatan"
+        }],
+        avgRating: 0
+      },
+      // Other articles data...
+      ]
+    };
+
+    // Filter articles based on search term
+    const filteredArticles = articlesData.data.filter(article => article.judul.toLowerCase().includes(searchTerm));
+
+    // Display articles in modal body
+    const modalBody = document.querySelector(".modal-body");
+    modalBody.innerHTML = ""; // Clear previous content
+
+    if (filteredArticles.length === 0) {
+      modalBody.innerHTML = "<p>No articles found.</p>";
+    } else {
+      filteredArticles.forEach(article => {
+        const articleCard = `
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="${article.gambar_artikel}" class="img-fluid rounded-start" alt="...">
               </div>
-              <div class="modal-body" id="articleModalBody">
-                <!-- Search Result will be displayed here -->
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">${highlightSearchTerm(article.judul, searchTerm)}</h5>
+                  <p class="card-text">${article.deskripsi}</p>
+                  <a href="${article.link}" class="btn btn-primary">Read more</a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        `;
+        modalBody.insertAdjacentHTML("beforeend", articleCard);
+      });
+    }
+  }
 
+  // Function to highlight search term in article title
+  function highlightSearchTerm(title, term) {
+    const regex = new RegExp(term, "gi");
+    return title.replace(regex, match => `<mark>${match}</mark>`);
+  }
 
-        <!-- Your Search Form -->
-        <form class="group" role="search">
-          <input type="text" placeholder="Cari artikel" name="text" id="searchInput" class="input-search me-5" onclick="showModal()" />
-          <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-            <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
-          </svg>
-          <a href="" class="me-4 fs-3">
-            <i class="fa-regular fa-bell text-black"></i>
-          </a>
-          <a href="/profile/<%= first_name %>/<%= id %>">
-            <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
-          </a>
-        </form>
+  // Event listener for form submission
+  document.querySelector("form").addEventListener("submit", function(event) {
+    event.preventDefault();
+    handleSearch();
+  });
 
+  // Event listener for input change
+  searchInput.addEventListener("input", function() {
+    // Update input in modal header
+    document.querySelector("#searchModalLabel").textContent = `Cari artikel: ${searchInput.value}`;
+  });
 
-        <script>
-          function showModal() {
-            // Show the modal
-            var articleModal = new bootstrap.Modal(document.getElementById('articleModal'));
-            articleModal.show();
+  // Event listener for input click to show modal
+  searchInput.addEventListener("click", function() {
+    handleSearch();
+  });
+});
 
-            // Menambahkan kembali elemen tombol pencarian
-            var modalHeader = document.querySelector('.modal-header');
-            modalHeader.innerHTML += `
-    <input type="text" placeholder="Cari artikel" class="input-search me-5" onclick="showModal()" />
-  `;
-
-            $('.selectpicker').selectpicker(); // Panggil selectpicker() setelah modal ditampilkan
-          }
-
-
-          function updateSearchInput(value) {
-            // Update main search input with value from modal search input
-            document.getElementById("searchInput").value = value;
-          }
-
-          function searchArticles() {
-            var searchText = document.getElementById("searchInput").value;
-
-            // Here you can use AJAX to fetch search results based on the searchText
-            // For simplicity, let's assume you have searchResults variable containing search results
-            var searchResults = artikel.data.filter(article => article.judul.toLowerCase().includes(searchText.toLowerCase()));
-
-            // Generate HTML for search results
-            var searchResultHTML = '';
-            searchResults.forEach(article => {
-              searchResultHTML += `
-      <div class="card mb-3 border-0" data-artikelid="${article.id}" data-kategoriId="${article.kategoriId}">
-        <div class="card-body">
-          <h5 class="card-title">${article.judul}</h5>
-          <p class="card-text">${article.deskripsi.substring(0, 50)}...</p>
-        </div>
-      </div>
-    `;
-            });
-
-            // Display search results in modal
-            var modalBody = document.querySelector('#articleModalBody');
-            modalBody.innerHTML = `
-    <input type="text" placeholder="Cari artikel" id="modalSearchInput" class="input-search me-5" oninput="updateSearchInput(this.value)" value="${searchText}" />
-    ${searchResultHTML}
-  `;
-
-            // Show the modal
-            var articleModal = new bootstrap.Modal(document.getElementById('articleModal'));
-            articleModal.show();
-          }
-        </script>
+  </script>
       </div>
     </nav>
 
@@ -136,7 +191,8 @@
         text-decoration: none;
         position: relative;
     ">
-                <i class="fa-solid fa-pencil mt-4" style="font-size: 1.5rem; margin-right: 5px;"></i> <!-- Menambahkan sedikit ruang di sekitar ikon -->
+                <i class="fa-solid fa-pencil mt-4" style="font-size: 1.5rem; margin-right: 5px;"></i>
+                <!-- Menambahkan sedikit ruang di sekitar ikon -->
                 Tulis Karyamu
                 <!-- Pseudo-element untuk membuat efek animasi -->
                 <span class="border-animation"></span>
@@ -180,8 +236,12 @@
                   <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
                 </div>
                 <div class="col-8">
-                  <p style="margin-top: 0 !important;margin-bottom: 0 !important;"><%= first_name %></p>
-                  <p><%= status %></p>
+                  <p style="margin-top: 0 !important;margin-bottom: 0 !important;">
+                    <%= first_name %>
+                  </p>
+                  <p>
+                    <%= status %>
+                  </p>
                 </div>
                 <hr />
               </div>
@@ -190,19 +250,26 @@
             <div class="badge-custom">
               <div class="row">
                 <div class="col-6">
-                  <% const halfCount = Math.ceil(kategori.length / 2); %>
-                  <% kategori.forEach((item, index) => { %>
-                  <% if (index < halfCount) { %>
-                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 mt-4 ms-5" data-kategoriid="<%= item.id %>"><%= item.nama %></button>
-                  <% } %>
-                  <% }); %>
+                  <% const halfCount=Math.ceil(kategori.length / 2); %>
+                    <% kategori.forEach((item, index)=> { %>
+                      <% if (index < halfCount) { %>
+                        <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 mt-4 ms-5"
+                          data-kategoriid="<%= item.id %>">
+                          <%= item.nama %>
+                        </button>
+                        <% } %>
+                          <% }); %>
                 </div>
                 <div class="col-6">
-                  <% kategori.forEach((item, index) => { %>
-                  <% if (index >= halfCount) { %>
-                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-3 ms-3 <%= index === halfCount ? 'mt-4' : 'mt-3' %>" data-kategoriid="<%= item.id %>"><%= item.nama %></button>
-                  <% } %>
-                  <% }); %>
+                  <% kategori.forEach((item, index)=> { %>
+                    <% if (index>= halfCount) { %>
+                      <button
+                        class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-3 ms-3 <%= index === halfCount ? 'mt-4' : 'mt-3' %>"
+                        data-kategoriid="<%= item.id %>">
+                        <%= item.nama %>
+                      </button>
+                      <% } %>
+                        <% }); %>
                 </div>
               </div>
               <hr class="ms-5" />
