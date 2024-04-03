@@ -98,7 +98,7 @@
             var searchResultHTML = '';
             searchResults.forEach(article => {
               searchResultHTML += `
-      <div class="card mb-3 border-0" data-artikelid="${article.id}" data-kategoriid="${article.kategoriId}">
+      <div class="card mb-3 border-0" data-artikelid="${article.id}" data-kategoriId="${article.kategoriId}">
         <div class="card-body">
           <h5 class="card-title">${article.judul}</h5>
           <p class="card-text">${article.deskripsi.substring(0, 50)}...</p>
@@ -146,7 +146,7 @@
 
             <hr class="mt-5" />
             <% artikel.data.forEach(article => { %>
-            <div class="card mb-3 border-0" data-artikelid="<%= article.id %>" data-kategoriid="<%= article.kategoriId %>">
+            <div class="card mb-3 border-0" data-artikelid="<%= article.id %>" data-kategoriId="<%= article.kategoriId %>">
               <div class="row g-0">
                 <div class="col-md-3">
                   <img src="<%= article.gambar_artikel %>" class="img-fluid rounded-start" alt="...">
@@ -205,31 +205,32 @@
                   <% }); %>
                 </div>
               </div>
-              <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                  const buttons = document.querySelectorAll('.badge-button');
-                  const articles = document.querySelectorAll('.card');
-
-                  buttons.forEach(button => {
-                    button.addEventListener('click', function() {
-                      const kategoriId = this.dataset.kategoriid;
-
-                      articles.forEach(article => {
-                        const artikelKategoriId = article.dataset.kategoriid;
-
-                        if (artikelKategoriId === kategoriId) {
-                          article.style.display = 'block'; // Tampilkan artikel yang sesuai
-                        } else {
-                          article.style.display = 'none'; // Sembunyikan artikel yang tidak sesuai
-                        }
-                      });
-                    });
-                  });
-                });
-              </script>
               <hr class="ms-5" />
               <p class="text-center">Created by Kelompok 3 KKP Batch 4</p>
             </div>
+            
+            <script>
+              document.addEventListener("DOMContentLoaded", function() {
+                  const buttons = document.querySelectorAll('.badge-button');
+                  const articles = document.querySelectorAll('.card');
+        
+                  buttons.forEach(button => {
+                      button.addEventListener('click', function() {
+                        const kategoriId = this.dataset.kategoriid;
+        
+                        articles.forEach(article => {
+                          const artikelKategoriId = article.dataset.kategoriid.split(',').map(id => id.trim());
+        
+                          if (artikelKategoriId.includes(kategoriId)) {
+                            article.style.display = 'block'; // Tampilkan artikel yang sesuai
+                          } else {
+                            article.style.display = 'none'; // Sembunyikan artikel yang tidak sesuai
+                          }
+                        });
+                      });
+                    });
+                });
+            </script>
           </div>
         </div>
       </div>

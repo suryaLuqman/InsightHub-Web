@@ -170,25 +170,25 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function() {
-        const buttons = document.querySelectorAll('.badge-button');
-        const articles = document.querySelectorAll('.card');
+          const buttons = document.querySelectorAll('.badge-button');
+          const articles = document.querySelectorAll('.card');
 
-        buttons.forEach(button => {
-          button.addEventListener('click', function() {
-            const kategoriId = this.dataset.kategoriid;
+          buttons.forEach(button => {
+              button.addEventListener('click', function() {
+                const kategoriId = this.dataset.kategoriid;
 
-            articles.forEach(article => {
-              const artikelKategoriId = article.dataset.kategoriid;
+                articles.forEach(article => {
+                  const artikelKategoriId = article.dataset.kategoriid.split(',').map(id => id.trim());
 
-              if (artikelKategoriId === kategoriId) {
-                article.style.display = 'block'; // Tampilkan artikel yang sesuai
-              } else {
-                article.style.display = 'none'; // Sembunyikan artikel yang tidak sesuai
-              }
+                  if (artikelKategoriId.includes(kategoriId)) {
+                    article.style.display = 'block'; // Tampilkan artikel yang sesuai
+                  } else {
+                    article.style.display = 'none'; // Sembunyikan artikel yang tidak sesuai
+                  }
+                });
+              });
             });
-          });
         });
-      });
     </script>
 
     <footer class="bg-dark mt-5" style="height: 170px">
