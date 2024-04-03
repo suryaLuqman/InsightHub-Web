@@ -24,7 +24,7 @@
         <a class="navbar-brand" href="/">
           <img src="/resources/images/logo.png" width="250" height="50" />
         </a>
-        <form class="group" role="search">
+        <form class="group" role="search" data-bs-toggle="modal" data-bs-target="#searchModal">
           <input type="text" placeholder="Cari artikel" name="text" class="input-search me-5" />
           <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
             <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
@@ -36,6 +36,99 @@
             <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
           </a>
         </form>
+
+        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <input type="text" class="form-control mb-3" id="searchInputModal" placeholder="Ketik disini...">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div id="articleList"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <script>
+          document.addEventListener("DOMContentLoaded", function () {
+              const searchInputModal = document.getElementById("searchInputModal");
+              const articleList = document.getElementById("articleList");
+              const searchModal = new bootstrap.Modal(document.getElementById("searchModal")); // tambahkan ini
+      
+              // Function to handle search and display articles
+              function handleSearch() {
+                  const searchTerm = searchInputModal.value.trim().toLowerCase();
+      
+                  // Mock data (replace with actual API call)
+                  const articlesData = [{
+                      id: 1,
+                      judul: "Artikel ilmu ilmu kebenaran part 3",
+                      deskripsi: "Isi deskripsi",
+                      link: "http://google.com",
+                      gambar_artikel: "https://ik.imagekit.io/jeniriska/1712014704714_CUSwmQ12k.png",
+                      fileId: "f42f97068ff04a526883b57f48df2548e8a055772a268bc5810f0a1302e15ef8",
+                      kategoriId: [3],
+                      authorId: 1,
+                      createdAt: "2024-04-01T23:38:30.922Z",
+                      updatedAt: "2024-04-01T23:38:30.922Z",
+                      ratings: [],
+                      kategori: [{
+                          id: 3,
+                          nama: "Sistem pakan",
+                          deskripsi: "Artikel-artikel tentang pikiran buatan"
+                      }],
+                      avgRating: 0
+                  },
+                  // Add more article data here
+                  ];
+      
+                  // Filter articles based on search term
+                  const filteredArticles = articlesData.filter(article => article.judul.toLowerCase().includes(searchTerm));
+      
+                  // Display filtered articles
+                  renderArticles(filteredArticles);
+              }
+      
+              // Function to render articles in modal
+              function renderArticles(articles) {
+                  if (articles.length === 0) {
+                      articleList.innerHTML = "<p>No articles found.</p>";
+                  } else {
+                      articleList.innerHTML = articles.map(article => `
+                          <div class="card mb-3">
+                              <div class="row g-0">
+                                  <div class="col-md-4">
+                                      <img src="${article.gambar_artikel}" class="img-fluid rounded-start" alt="...">
+                                  </div>
+                                  <div class="col-md-8">
+                                      <div class="card-body">
+                                          <h5 class="card-title">${article.judul}</h5>
+                                          <p class="card-text">${article.deskripsi}</p>
+                                          <a href="${article.link}" class="btn btn-primary">Read more</a>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      `).join('');
+                  }
+              }
+      
+              // Event listener for input change
+              searchInputModal.addEventListener("input", handleSearch);
+      
+              // Event listener for input click to show modal
+              searchInputModal.addEventListener("click", function() {
+                  searchModal.show();
+              });
+      
+              // Initial rendering
+              handleSearch();
+          });
+      </script>
+      
+
       </div>
     </nav>
 
@@ -100,25 +193,25 @@
               </div>
               <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                  const buttons = document.querySelectorAll(".badge-button");
-                  const articles = document.querySelectorAll(".card");
-
-                  buttons.forEach((button) => {
-                    button.addEventListener("click", function() {
-                      const kategoriId = this.dataset.kategoriid;
-
-                      articles.forEach((article) => {
-                        const artikelKategoriId = article.dataset.kategoriid;
-
-                        if (artikelKategoriId === kategoriId) {
-                          article.style.display = "block"; // Tampilkan artikel yang sesuai
-                        } else {
-                          article.style.display = "none"; // Sembunyikan artikel yang tidak sesuai
-                        }
+                    const buttons = document.querySelectorAll('.badge-button');
+                    const articles = document.querySelectorAll('.card');
+          
+                    buttons.forEach(button => {
+                        button.addEventListener('click', function() {
+                          const kategoriId = this.dataset.kategoriid;
+          
+                          articles.forEach(article => {
+                            const artikelKategoriId = article.dataset.kategoriid.split(',').map(id => id.trim());
+          
+                            if (artikelKategoriId.includes(kategoriId)) {
+                              article.style.display = 'block'; // Tampilkan artikel yang sesuai
+                            } else {
+                              article.style.display = 'none'; // Sembunyikan artikel yang tidak sesuai
+                            }
+                          });
+                        });
                       });
-                    });
                   });
-                });
               </script>
               <hr class="ms-5" />
               <p class="text-center">Created by Kelompok 3 KKP Batch 4</p>

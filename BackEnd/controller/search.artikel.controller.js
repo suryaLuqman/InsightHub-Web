@@ -44,10 +44,6 @@ const searchArtikel = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  searchArtikel,
-};
-
 
 module.exports = {
   searchArtikel,
