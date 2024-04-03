@@ -5,9 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>
-    <%= title %>
-  </title>
+  <title><%= title %></title>
   <!-- add favicon -->
   <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
   <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css" />
@@ -18,8 +16,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <!-- selecet picker -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css" />
 </head>
 
 <body>
@@ -61,12 +58,83 @@
             <div class="rating">
               <p class="text-center">Rating artikel ini</p>
               <div class="star text-center">
-                <i class="fa-regular fa-star"></i>
-                <i class="fa-regular fa-star"></i>
-                <i class="fa-regular fa-star"></i>
-                <i class="fa-regular fa-star"></i>
-                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star" onclick="confirmRating(1)"></i>
+                <i class="fa-regular fa-star" onclick="confirmRating(2)"></i>
+                <i class="fa-regular fa-star" onclick="confirmRating(3)"></i>
+                <i class="fa-regular fa-star" onclick="confirmRating(4)"></i>
+                <i class="fa-regular fa-star" onclick="confirmRating(5)"></i>
               </div>
+
+              <!-- Bootstrap Modal -->
+              <div class="modal fade" id="ratingConfirmationModal" tabindex="-1" aria-labelledby="ratingConfirmationModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="modal-title" id="ratingConfirmationModalLabel">Konfirmasi Penilaian</h5>
+                        </div>
+                        <div class="col text-end">
+                          <p class="text-muted"><small><span class="text-danger">*</span> Penilaian hanya dapat diberikan 1 kali</small></p>
+                        </div>
+                      </div>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Apakah Anda yakin ingin memberikan rating <span id="ratingValue"></span> bintang?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-primary text-warning" style="border-radius: 20px;" data-bs-dismiss="modal">Batal</button>
+                      <button type="button" class="btn text-white" style="border-radius: 20px;background-color: #1c2252;" onclick="rateArticle()">Ya, Beri Rating</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <script>
+                function confirmRating(starIndex) {
+                  // Set rating value in the modal
+                  document.getElementById("ratingValue").textContent =
+                    starIndex;
+                  // Show the modal
+                  var modal = new bootstrap.Modal(
+                    document.getElementById("ratingConfirmationModal")
+                  );
+                  modal.show();
+                }
+
+                function rateArticle() {
+                  // Get the selected rating
+                  var starIndex = parseInt(
+                    document.getElementById("ratingValue").textContent
+                  );
+                  const stars = document.querySelectorAll(".star i");
+                  for (let i = 0; i < stars.length; i++) {
+                    if (i < starIndex) {
+                      stars[i].classList.add("fa-solid");
+                      stars[i].classList.add("fa-star");
+                    } else {
+                      stars[i].classList.remove("fa-solid");
+                    }
+                  }
+                  // Disable further clicks after rating
+                  disableRating();
+                  // Close the modal
+                  var modal = bootstrap.Modal.getInstance(
+                    document.getElementById("ratingConfirmationModal")
+                  );
+                  modal.hide();
+                }
+
+                function disableRating() {
+                  const stars = document.querySelectorAll(".star i");
+                  for (let i = 0; i < stars.length; i++) {
+                    stars[i].removeAttribute("onclick");
+                  }
+                }
+              </script>
               <p class="text-center mt-2">
                 <a href="" class="text-danger text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalReport">
                   <i class="fa-solid fa-circle-exclamation me-2"></i>Laporkan
