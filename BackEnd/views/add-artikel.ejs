@@ -13,8 +13,8 @@
 
   <!-- fontawesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
-  <!-- Summernote CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet" />
+  <!-- Text Editor Summernotes -->
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 
   <!-- select2 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" />
@@ -75,9 +75,12 @@
     <h3 class="fw-bold">Tulis Karyamu</h3>
     <form id="formArtikel" class="mt-4" action="/artikel/<%= first_name %>/<%= id %>/add-artikel" method="POST" enctype="multipart/form-data">
       <hr />
+      <!-- Judul -->
       <div class="form-group mb-4">
         <input type="text" class="form-control form-control-lg" id="judul" name="judul" placeholder="Masukkan judul" />
       </div>
+
+      <!-- Kategori -->
       <div class="form-group mb-4">
         <select class="form-control form-control-lg kategori" multiple="multiple" id="kategori" name="categories[]" placeholder="Kategori">
           <!-- Generate options dynamically from kategori data -->
@@ -87,12 +90,6 @@
         </select>
       </div>
 
-      <!-- <div>
-        <select class="kategori" multiple="multiple" name="categories[]" id="categories"></select>
-      </div> -->
-      <div class="form-group mb-4">
-        <input type="text" class="form-control form-control-lg" id="kategoriDeskripsi" name="kategoriDeskripsi" placeholder="Deskripsi Kategori" />
-      </div>
       <!-- Upload Gambar -->
       <div class="form-group mb-4">
         <input type="file" class="form-control-file" id="gambar_artikel" name="gambar_artikel" accept="image/*" />
@@ -104,10 +101,12 @@
         </div>
       </div>
       <!-- Deskripsi dengan Summernote -->
+      <hr>
       <div class="form-group mb-4">
         <textarea class="form-control form-control-lg border border-dark summernote" id="deskripsi" name="deskripsi" rows="10" placeholder="Deskripsi"></textarea>
       </div>
-      <!-- Deskripsi dengan Summernote -->
+
+      <!-- Referensi dengan Summernote -->
       <div class="form-group mb-4">
         <textarea class="form-control form-control-lg" id="link" name="link" rows="10" placeholder="Referensi"></textarea>
       </div>
@@ -127,8 +126,8 @@
 
   <!-- Load jQuery before Summernote and Select2 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <!-- Summernote JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+  <!-- Text Editor Summernotes -->
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
   <!-- Select2 JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
   <!-- Bootstrap Bundle JS -->
@@ -143,27 +142,66 @@
     $(document).ready(function() {
       $(".kategori").select2({
         data: kategori, // Menggunakan objek kategori sebagai data untuk Select2
-        tags: true,
+        tags: false,
         placeholder: "Pilih Kategori",
         allowClear: true,
         tokenSeparators: [",", " "],
         maximumSelectionLength: 3,
+        minimumInputLength: 4,
       });
 
       // Inisialisasi Summernote
       $(".summernote").summernote({
         height: 300,
         toolbar: [
+          ['customGroup', ['myText']],
           ["style", ["style"]],
           ["font", ["bold", "italic", "underline", "clear"]],
           ["fontname", ["fontname"]],
           ["color", ["color"]],
           ["para", ["ul", "ol", "paragraph"]],
-          ["height", ["height"]],
-          ["table", ["table"]],
           ["insert", ["link", "picture", "video"]],
           ["view", ["fullscreen", "codeview", "help"]],
         ],
+        buttons: {
+          myText: function(context) {
+            var ui = $.summernote.ui;
+            var button = ui.buttonGroup([
+              ui.button({
+                className: 'note-btn',
+                contents: 'Isi Artikel',
+                tooltip: 'Ketikkan apa yang ingin anda bagikan!',
+                click: function() {
+                  // Aksi yang dilakukan saat teks diklik
+                }
+              })
+            ]);
+            return button.render();
+          }
+        }
+      });
+
+      // Inisialisasi Summernote
+      $("#link").summernote({
+        height: 100,
+        toolbar: [
+          ['customGroup', ['myText']],
+          ["insert", ["link"]],
+        ],
+        buttons: {
+          myText: function(context) {
+            var ui = $.summernote.ui;
+            var button = ui.buttonGroup([
+              ui.button({
+                className: 'note-btn',
+                contents: 'Referensi Artikel ->',
+                tooltip: 'Ctrl+K atau Command+K',
+              })
+            ]);
+            return button.render();
+          }
+        }
+
       });
 
       // Image Preview
