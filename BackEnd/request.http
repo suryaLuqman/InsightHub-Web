@@ -134,7 +134,7 @@ POST https://insight-hub-api.vercel.app/api/v1/kategori/add
 Content-Type: application/json
 
 {
-    "nama": "Sistem Informasi",
+    "nama": "Sistem Informa",
     "deskripsi": "Artikel-artikel tentang pikiran buatan"
 }
 

@@ -21,6 +21,7 @@
     "ejs": "^3.1.9",
     "express": "^4.19.1",
     "express-session": "^1.18.0",
+    "fs": "^0.0.1-security",
     "googleapis": "^134.0.0",
     "imagekit": "^5.0.0",
     "joi": "^17.12.2",
