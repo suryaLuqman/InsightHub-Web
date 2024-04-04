@@ -314,26 +314,7 @@
       function formatArticleSelection(article) {
         return article.text || article.judul;
       }
-
-      // // Atur event handler untuk input pada modalSearchInput
-      // $("#modalSearchInput").on('select2:select', function(e) {
-      //   // Ambil nilai input dari modalSearchInput
-      //   var searchText = e.params.data.text;
-
-      //   // Filter artikel berdasarkan searchText
-      //   var searchResults = artikel.filter(function(article) {
-      //     return article.judul.toLowerCase().includes(searchText.toLowerCase());
-      //   });
-
-      //   // Format hasil pencarian untuk ditampilkan dalam Select2
-      //   var formattedResults = searchResults.map(function(article) {
-      //     return new Option(article.judul, article.id, false, false);
-      //   });
-
-      //   // Update data Select2 dengan hasil pencarian
-      //   $("#modalSearchInput").empty();
-      //   $("#modalSearchInput").append(formattedResults).trigger('change');
-      // });
+      
       $("#modalSearchInput").on('select2:selecting', function(e) {
         // Mencegah Select2 dari mengubah pilihan
         e.preventDefault();
