@@ -92,14 +92,18 @@
 
       <!-- Upload Gambar -->
       <div class="form-group mb-4">
-        <input type="file" class="form-control-file" id="gambar_artikel" name="gambar_artikel" accept="image/*" />
+        <div id="dropzone" class="dropzone">
+          <p>Masukkan gambar cover artikel</p>
+        </div>
+        <input type="file" class="form-control-file d-none" id="gambar_artikel" name="gambar_artikel" accept="image/*" />
         <div id="imagePreview" class="mt-2 d-none">
-          <img src="#" alt="Image Preview" width="100" class="img-thumbnail" />
           <button type="button" class="btn btn-close" id="clearImagePreview">
-            &times;
+            ×
           </button>
+          <img src="#" alt="Image Preview" width="100" class="img-thumbnail" />
         </div>
       </div>
+
       <!-- Deskripsi dengan Summernote -->
       <hr>
       <div class="form-group mb-4">
@@ -205,22 +209,31 @@
       });
 
       // Image Preview
-      $("#gambar_artikel").change(function() {
-        const file = this.files[0];
-        if (file) {
-          const reader = new FileReader();
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
           reader.onload = function(e) {
             $("#imagePreview img").attr("src", e.target.result);
             $("#imagePreview").removeClass("d-none");
+            $("#dropzone").addClass("d-none");
           };
-          reader.readAsDataURL(file);
+          reader.readAsDataURL(input.files[0]);
         }
+      }
+
+      $("#dropzone").click(function() {
+        $("#gambar_artikel").click();
+      });
+
+      $("#gambar_artikel").change(function() {
+        readURL(this);
       });
 
       // Clear Image Preview
       $("#clearImagePreview").click(function() {
         $("#gambar_artikel").val("");
         $("#imagePreview").addClass("d-none");
+        $("#dropzone").removeClass("d-none");
       });
     });
   </script>
