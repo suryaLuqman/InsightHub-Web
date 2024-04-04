@@ -323,14 +323,12 @@
             <button onclick="loginUser()" class="d-block btn btn-login-modal mt-4 register-btn">
               Masuk
             </button>
-            <p class="text-center mt-1">or</p>
-            <a href="" class="d-block btn btn-login-modal-google">Masuk Dengan Google</a>
             <p class="text-center mt-3">
               Tidak mempunyai akun ?
               <a class="text-decoration-none" href="api/v1/auth/register-user" data-bs-toggle="modal" data-bs-target="#modalRegister" style="color: #ff7f0a">Daftar</a>
             </p>
             <p class="text-center">
-              <a class="text-decoration-none" href="/api/v1/auth/forgot-password" style="color: #ff7f0a">Lupa Password ?
+              <a class="text-decoration-none" href="/api/v1/auth/forgotPassword" data-bs-toggle="modal" data-bs-target="#modalForgot" style="color: #ff7f0a">Lupa Password ?
               </a>
             </p>
           </div>
@@ -358,10 +356,6 @@
             <button onclick="registerUser()" class="d-block btn btn-login-modal mt-4 register-btn">
               Daftar
             </button>
-
-            <p class="text-center mt-1">or</p>
-            <a href="" class="d-block btn btn-login-modal-google">Masuk Dengan Google</a>
-
             <p class="text-center">
               Sudah mempunyai akun ?
               <a class="text-decoration-none" href="/api/v1/auth/login" data-bs-toggle="modal" data-bs-target="#modalLogin" style="color: #ff7f0a">
@@ -373,6 +367,35 @@
       </div>
     </div>
 
+    <div class="modal fade" id="modalForgot" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="ForgotPasswordAlert" class="alert alert-danger d-none" role="alert">
+            <!-- Teks pesan kesalahan akan ditampilkan di sini -->
+          </div>
+          <h3 class="text-center">Lupa password</h3>
+          <div class="modal-body">
+            <input type="text" id="inputEmail" class="form-control" placeholder="Email" />
+            <button onclick="forgotPassword()" class="d-block btn btn-login-modal mt-4 register-btn">
+              Kirim Email
+            </button>
+            <p class="text-center mt-3">
+              Tidak mempunyai akun ?
+              <a class="text-decoration-none" href="api/v1/auth/register-user" data-bs-toggle="modal" data-bs-target="#modalRegister" style="color: #ff7f0a">Daftar</a>
+            </p>
+            <p class="text-center">
+              Sudah mempunyai akun ?
+              <a class="text-decoration-none" href="/api/v1/auth/login" data-bs-toggle="modal" data-bs-target="#modalLogin" style="color: #ff7f0a">
+                Masuk
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Animasi Loading -->
     <div id="loadingOverlay" class="overlay d-none">
@@ -669,6 +692,63 @@
 
       });
     }
+
+    function forgotPassword() {
+    const email = $("#inputEmail").val().trim(); // Menggunakan ID yang sesuai dengan elemen input
+
+    if (!email) {
+        $("#ForgotPasswordAlert").text("Kolom email harus diisi!").removeClass("d-none");
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        $("#inputEmail").addClass("is-invalid"); // Menggunakan ID yang sesuai dengan elemen input
+        $("#ForgotPasswordAlert")
+        .text("Format email tidak valid")
+        .removeClass("d-none");
+        return;
+    }
+
+    const formData = {
+        email: email
+    };
+
+    const urlAPI = "<%= urlAPI %>"; // Pastikan variabel urlAPI memiliki nilai yang benar
+    const endpointForgotPassword = "/api/v1/auth/forgotPassword";
+    const urlForgotPassword = urlAPI + endpointForgotPassword;
+
+    $.ajax({
+        url: urlForgotPassword,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(formData),
+        dataType: "json",
+        success: function (data) {
+            console.log("Data dari server (success):", data);
+            if (data.status) {
+              console.log("true")
+                $("#ForgotPasswordAlert")
+                    .removeClass("alert-danger")
+                    .addClass("alert-success")
+                    .html(`<i class="fas fa-check-circle"></i> Silakan periksa email Anda untuk petunjuk selanjutnya.`)
+                    .removeClass("d-none")
+                    .css("background-color", "#28a745");
+            } else {
+                const errorMessage = data.message ? data.message : "Permintaan reset password gagal. Silakan coba lagi.";
+                console.error("Forgot Password error:", errorMessage);
+                $("#forgotPasswordAlert").text(errorMessage).removeClass("d-none");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Forgot Password error:", error);
+            const errorData = xhr.responseJSON ? xhr.responseJSON : "Permintaan reset password gagal. Silakan coba lagi.";
+            console.error("Data dari server (error):", errorData);
+            $("#forgotPasswordAlert").text(errorData.message).removeClass("d-none");
+        }
+    });
+}
+
   </script>
 
 
