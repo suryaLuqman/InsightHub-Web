@@ -43,6 +43,14 @@ exports.getArtikelPage = async (req, res) => {
 
     const kategoriData = kategoriResponse.data;
 
+
+      // artikel
+      const endpointArtikel = '/api/v1/artikel/get-all'; // End point yang ingin Anda ambil
+      const artikel = baseUrl + endpointArtikel; // Menggabungkan base URL dengan end point
+      const responseArtikel = await axios.get(artikel);
+      // console.log(responseArtikel.data.data);
+      const dataArtikel = responseArtikel.data.data;
+
       // If there are articles, send article data to view
       return res.render("add-artikel", {
         title: "InsightHub - Lets Start the journey with us",
@@ -51,6 +59,7 @@ exports.getArtikelPage = async (req, res) => {
         status: status,
         token: token,
         kategori: kategoriData,
+        artikel: dataArtikel,
       });
     
   } catch (error) {

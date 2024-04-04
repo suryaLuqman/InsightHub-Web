@@ -289,3 +289,12 @@ a:hover {
   height: 300px;
   object-fit:contain;
 }
+
+.select2-results__option {
+    color: #000000 !important; /* Ganti dengan warna yang Anda inginkan */
+}
+
+
+.select2.select2-container.select2-container--default{
+    width: 100% !important; /* Ganti dengan lebar yang Anda inginkan */
+}

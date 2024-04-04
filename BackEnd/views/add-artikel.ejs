@@ -35,10 +35,6 @@
           <div class="modal-content">
             <div class="modal-header search-header">
               <input type="text" placeholder="Cari artikel" id="modalSearchInput" class="input-search me-5" oninput="updateSearchInput(this.value)" />
-
-              <h5 class="modal-title search-title" id="articleModalLabel">
-                Search Result
-              </h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="articleModalBody">
@@ -152,6 +148,7 @@
         tokenSeparators: [",", " "],
         maximumSelectionLength: 3,
         minimumInputLength: 4,
+        selectOnClose: true
       });
 
       // Inisialisasi Summernote
@@ -237,6 +234,107 @@
       });
     });
   </script>
+
+  <script>
+    // Function to show modal
+    function showModal() {
+      // Show the modal
+      var articleModal = new bootstrap.Modal(
+        document.getElementById("articleModal")
+      );
+      articleModal.show();
+    }
+
+    function updateSearchInput(value) {
+      // Update main search input with value from modal search input
+      document.getElementById("searchInput").value = value;
+    }
+
+    $(document).ready(function() {
+      // Mendapatkan string JSON dari artikel dan mengonversinya menjadi objek JavaScript
+      const artikelString = `<%= JSON.stringify(artikel) %>`;
+      console.log("artikelString:", artikelString);
+      const artikel = JSON.parse(artikelString.replace(/&#34;/g, '"'));
+      console.log("artikel:", artikel);
+
+      // Memformat data artikel untuk digunakan dengan Select2
+      const select2Data = artikel.map(function(article) {
+        return {
+          id: article.id,
+          text: article.judul,
+          deskripsi: article.deskripsi,
+          createdAt: article.createdAt,
+          updatedAt: article.updatedAt
+        };
+      });
+
+      console.log("select2Data:", select2Data);
+      // Inisialisasi Select2 pada modalSearchInput
+      $("#modalSearchInput").select2({
+        data: select2Data, // Menggunakan data yang diformat untuk Select2
+        tags: false,
+        placeholder: "Pilih Artikel",
+        allowClear: true,
+        tokenSeparators: [",", " "],
+        maximumSelectionLength: 3,
+        minimumInputLength: 3,
+        dropdownParent: $('#articleModal'), // Menyesuaikan posisi dropdown dengan modal
+        templateResult: formatArticle,
+        templateSelection: formatArticleSelection,
+        escapeMarkup: function(markup) {
+          return markup;
+        } // Enable HTML content
+      });
+
+      function formatArticle(article) {
+        if (article.loading) {
+          return article.text;
+        }
+
+        var markup = `
+      <div class='card'>
+        <div class='card-header'>
+          ${article.text}
+        </div>
+        <div class='card-body'>
+          <p class='card-text'>${article.deskripsi.substring(0, 100)}...</p>
+          <p class='card-text text-right'>
+            <small class='text-muted'>Created at: ${article.createdAt}</small><br>
+            <small class='text-muted'>Updated at: ${article.updatedAt}</small>
+          </p>
+        </div>
+      </div>
+    `;
+
+        return markup;
+      }
+
+      function formatArticleSelection(article) {
+        return article.text || article.judul;
+      }
+
+      // Atur event handler untuk input pada modalSearchInput
+      $("#modalSearchInput").on('select2:select', function(e) {
+        // Ambil nilai input dari modalSearchInput
+        var searchText = e.params.data.text;
+
+        // Filter artikel berdasarkan searchText
+        var searchResults = artikel.filter(function(article) {
+          return article.judul.toLowerCase().includes(searchText.toLowerCase());
+        });
+
+        // Format hasil pencarian untuk ditampilkan dalam Select2
+        var formattedResults = searchResults.map(function(article) {
+          return new Option(article.judul, article.id, false, false);
+        });
+
+        // Update data Select2 dengan hasil pencarian
+        $("#modalSearchInput").empty();
+        $("#modalSearchInput").append(formattedResults).trigger('change');
+      });
+    });
+  </script>
+
 </body>
 
 </html>
