@@ -231,7 +231,7 @@
           <div class="col-md-6" id="right-artikel">
             <% if (articles && articles.length) { %>
             <% articles.slice(Math.ceil(articles.length / 2)).forEach(artikelItem => { %>
-            <a href="/artikel/<%= artikelItem.id %>" class="text-decoration-none text-reset">
+            <a href="/artikel/<%= artikelItem.id %>/<%= artikelItem.judul %>" class="text-decoration-none text-reset">
               <!-- Tambahkan link di sini -->
               <div class="card mb-4 border-0" data-artikelid="<%= artikelItem.id %>" data-kategoriid="<%= artikelItem.kategoriId %>">
                 <div class="row g-0">

@@ -34,7 +34,9 @@
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header search-header">
-              <input type="text" placeholder="Cari artikel" id="modalSearchInput" class="input-search me-5" oninput="updateSearchInput(this.value)" />
+              <select id="modalSearchInput" class="input-search me-5" style="width:100%;">
+                <option></option>
+              </select>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="articleModalBody">
@@ -275,8 +277,6 @@
         tags: false,
         placeholder: "Pilih Artikel",
         allowClear: true,
-        tokenSeparators: [",", " "],
-        maximumSelectionLength: 3,
         minimumInputLength: 3,
         dropdownParent: $('#articleModal'), // Menyesuaikan posisi dropdown dengan modal
         templateResult: formatArticle,
