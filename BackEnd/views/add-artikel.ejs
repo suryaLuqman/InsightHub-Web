@@ -291,20 +291,22 @@
           return article.text;
         }
 
+        var articleUrl = '/artikel/' + article.id + '/' + article.text;
+
         var markup = `
-      <div class='card'>
-        <div class='card-header'>
-          ${article.text}
-        </div>
-        <div class='card-body'>
-          <p class='card-text'>${article.deskripsi.substring(0, 100)}...</p>
-          <p class='card-text text-right'>
-            <small class='text-muted'>Created at: ${article.createdAt}</small><br>
-            <small class='text-muted'>Updated at: ${article.updatedAt}</small>
-          </p>
-        </div>
+    <a href="${articleUrl}" class='card' style="text-decoration: none; color: inherit;">
+      <div class='card-header'>
+        ${article.text}
       </div>
-    `;
+      <div class='card-body'>
+        <p class='card-text'>${article.deskripsi.substring(0, 100)}...</p>
+        <p class='card-text text-right'>
+          <small class='text-muted'>Created at: ${article.createdAt}</small><br>
+          <small class='text-muted'>Updated at: ${article.updatedAt}</small>
+        </p>
+      </div>
+    </a>
+  `;
 
         return markup;
       }
@@ -313,25 +315,39 @@
         return article.text || article.judul;
       }
 
-      // Atur event handler untuk input pada modalSearchInput
-      $("#modalSearchInput").on('select2:select', function(e) {
-        // Ambil nilai input dari modalSearchInput
-        var searchText = e.params.data.text;
+      // // Atur event handler untuk input pada modalSearchInput
+      // $("#modalSearchInput").on('select2:select', function(e) {
+      //   // Ambil nilai input dari modalSearchInput
+      //   var searchText = e.params.data.text;
 
-        // Filter artikel berdasarkan searchText
-        var searchResults = artikel.filter(function(article) {
-          return article.judul.toLowerCase().includes(searchText.toLowerCase());
-        });
+      //   // Filter artikel berdasarkan searchText
+      //   var searchResults = artikel.filter(function(article) {
+      //     return article.judul.toLowerCase().includes(searchText.toLowerCase());
+      //   });
 
-        // Format hasil pencarian untuk ditampilkan dalam Select2
-        var formattedResults = searchResults.map(function(article) {
-          return new Option(article.judul, article.id, false, false);
-        });
+      //   // Format hasil pencarian untuk ditampilkan dalam Select2
+      //   var formattedResults = searchResults.map(function(article) {
+      //     return new Option(article.judul, article.id, false, false);
+      //   });
 
-        // Update data Select2 dengan hasil pencarian
-        $("#modalSearchInput").empty();
-        $("#modalSearchInput").append(formattedResults).trigger('change');
+      //   // Update data Select2 dengan hasil pencarian
+      //   $("#modalSearchInput").empty();
+      //   $("#modalSearchInput").append(formattedResults).trigger('change');
+      // });
+      $("#modalSearchInput").on('select2:selecting', function(e) {
+        // Mencegah Select2 dari mengubah pilihan
+        e.preventDefault();
+
+        // Mendapatkan data artikel yang dipilih
+        var article = e.params.args.data;
+
+        // Membuat URL artikel
+        var articleUrl = '/artikel/' + article.id + '/' + article.text;
+
+        // Melakukan redirect ke halaman artikel
+        window.location.href = articleUrl;
       });
+
     });
   </script>
 
