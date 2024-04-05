@@ -6,7 +6,7 @@ const nodemailer = require("../libs/nodemailer");
 const crypto = require("crypto");
 const { imagekit, deleteFile } = require("../libs/imagekit");
 const path = require("path");
-const fs = require('fs');
+const fs = require("fs");
 const session = require("express-session");
 const {
   createUserSchema,
@@ -159,7 +159,6 @@ const login = async (req, res, next) => {
     next(error);
   }
 };
-
 
 const registerUser = async (req, res, next) => {
   try {
@@ -420,63 +419,85 @@ const forgotPassword = async (req, res, next) => {
       );
       console.log("ini token :", token);
       const baseUrl = process.env.API;
-      let url = `${baseUrl}/change-password?token=${token}`;
+      console.log("ini base url :", baseUrl);
+      const url = `http://localhost:3000/change-password?token=${token}`;
 
       // Read the HTML template from the file
       // const templatePath = 'reset_password_template.html';
       // const templateContent = fs.readFileSync(templatePath, 'utf8');
-      console.log("forgot passsword berhasil")
+      console.log("forgot passsword berhasil");
       // Replace placeholders with actual values
-      let html = `<!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Reset Password</title>
-        
-        <!-- Bootstrap CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-        
-        <!-- Font Awesome CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        
-        <style>
-          .social-icons .fab {
-            font-size: 2rem;
-            margin-right: 10px;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <div class="row justify-content-center mt-5">
-            <div class="col-md-6 text-center">
-              <h1>Reset Password</h1>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaGQcjjiPHoedJa7CBICJOE8COi6QdhA5uW4Hy9jZdPQ&s" alt="Email Icon" class="img-fluid mt-3">
-              <p class="mt-3">Reset password</p>
-              <p>Hai ${user.nama},</p>
-              <p>You have requested to reset your password.</p>
-              <p>Please click on the link below to reset your password:</p>
-              <a href="${url}">${url}</a>
-              <p class="mt-3">Once confirmed, this email will be uniquely associated with your account.</p>
-              <div class="social-icons mt-4">
-                <i class="fab fa-facebook-square"></i>
-                <i class="fab fa-instagram-square"></i>
-                <i class="fab fa-youtube-square"></i>
-                <i class="fab fa-twitter-square"></i>
-              </div>
-              <p class="mt-3">insighthub@2024</p>
-            </div>
+      let html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Password</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <style>
+    .email-container {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 5px;
+      margin-top: 50px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+    .email-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .email-header img {
+      width: 70px;
+    }
+    .email-body {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #333;
+    }
+    .email-footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #888;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="email-container">
+          <div class="email-header">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaGQcjjiPHoedJa7CBICJOE8COi6QdhA5uW4Hy9jZdPQ&s" alt="Logo">
+            <h2>Reset Password</h2>
+          </div>
+          <div class="email-body">
+            <p>Dear ${user.nama},</p>
+            <p>You have requested to reset your password. Please click on the button below to reset your password:</p>
+            <a href="${url}" class="btn btn-primary">Reset Password</a>
+            <p>If you did not request this, please ignore this email.</p>
+          </div>
+          <div class="email-footer">
+            <p>© 2024 InsightHub. All rights reserved.</p>
           </div>
         </div>
-        
-        <!-- Bootstrap Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Icons -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/icons.min.js">
-          </script>
-      </body>
-      </html>`;
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/icons.min.js"></script>
+</body>
+</html>`;
 
       await nodemailer.sendEmail(email, "Reset Password Request", html);
 
@@ -696,7 +717,6 @@ const deleteProfilePicture = async (req, res, next) => {
   }
 };
 
-
 module.exports = {
   login,
   registerUser,
@@ -708,5 +728,5 @@ module.exports = {
   getAllUser,
   getUserProfile,
   updateProfile,
-  deleteProfilePicture
+  deleteProfilePicture,
 };
