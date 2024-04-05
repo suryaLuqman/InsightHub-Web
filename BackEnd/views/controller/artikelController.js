@@ -60,6 +60,7 @@ exports.getArtikelPage = async (req, res) => {
         token: token,
         kategori: kategoriData,
         artikel: dataArtikel,
+        baseUrl: process.env.API,
       });
     
   } catch (error) {
