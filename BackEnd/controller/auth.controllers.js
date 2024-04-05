@@ -6,6 +6,7 @@ const nodemailer = require("../libs/nodemailer");
 const crypto = require("crypto");
 const { imagekit, deleteFile } = require("../libs/imagekit");
 const path = require("path");
+const fs = require('fs');
 const session = require("express-session");
 const {
   createUserSchema,
@@ -15,6 +16,7 @@ const {
   forgotPasswordSchema,
   changePasswordSchema,
 } = require("../validation/auth.validations");
+const { Console } = require("console");
 
 const authenticateUser = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -417,17 +419,70 @@ const forgotPassword = async (req, res, next) => {
         { expiresIn: "1h" }
       );
       console.log("ini token :", token);
-      let url = `http://localhost:3000/change-password?token=${token}`;
+      const baseUrl = process.env.API;
+      let url = `${baseUrl}/change-password?token=${token}`;
 
-      let html = `<p>Hi ${user.nama},</p>
-      <p>You have requested to change your password.</p>
-      <p>Please click on the link below to change your password:</p>
-      <a href="${url}">${url}</a>`;
-      await nodemailer.sendEmail(email, "change Password Request", html);
+      // Read the HTML template from the file
+      const templatePath = 'reset_password_template.html';
+      const templateContent = fs.readFileSync(templatePath, 'utf8');
+      console.log("forgot passsword berhasil")
+      // Replace placeholders with actual values
+      let html = `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reset Password</title>
+        
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Font Awesome CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
+        <style>
+          .social-icons .fab {
+            font-size: 2rem;
+            margin-right: 10px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="row justify-content-center mt-5">
+            <div class="col-md-6 text-center">
+              <h1>Reset Password</h1>
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaGQcjjiPHoedJa7CBICJOE8COi6QdhA5uW4Hy9jZdPQ&s" alt="Email Icon" class="img-fluid mt-3">
+              <p class="mt-3">Reset password</p>
+              <p>Hai ${user.nama},</p>
+              <p>You have requested to reset your password.</p>
+              <p>Please click on the link below to reset your password:</p>
+              <a href="${url}">${url}</a>
+              <p class="mt-3">Once confirmed, this email will be uniquely associated with your account.</p>
+              <div class="social-icons mt-4">
+                <i class="fab fa-facebook-square"></i>
+                <i class="fab fa-instagram-square"></i>
+                <i class="fab fa-youtube-square"></i>
+                <i class="fab fa-twitter-square"></i>
+              </div>
+              <p class="mt-3">insighthub@2024</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Icons -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/icons.min.js">
+          </script>
+      </body>
+      </html>`;
+
+      await nodemailer.sendEmail(email, "Reset Password Request", html);
 
       return res.json({
         status: true,
-        message: "Password change link sent to email successfully",
+        message: "Password reset link sent to email successfully",
         err: null,
         data: null,
       });
