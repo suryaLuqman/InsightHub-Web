@@ -428,76 +428,82 @@ const forgotPassword = async (req, res, next) => {
       console.log("forgot passsword berhasil");
       // Replace placeholders with actual values
       let html = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Password</title>
-  
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  
-  <!-- Font Awesome CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
-  <style>
-    .email-container {
-      background-color: #f8f9fa;
-      padding: 20px;
-      border-radius: 5px;
-      margin-top: 50px;
-      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-    }
-    .email-header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .email-header img {
-      width: 70px;
-    }
-    .email-body {
-      font-size: 16px;
-      line-height: 1.5;
-      color: #333;
-    }
-    .email-footer {
-      text-align: center;
-      margin-top: 30px;
-      color: #888;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="email-container">
-          <div class="email-header">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaGQcjjiPHoedJa7CBICJOE8COi6QdhA5uW4Hy9jZdPQ&s" alt="Logo">
-            <h2>Reset Password</h2>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Reset Password</title>
+          
+          <!-- Bootstrap CSS -->
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+          
+          <!-- Font Awesome CSS -->
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+          
+          <style>
+            body {
+              background: #f5f5f5;
+              font-family: Arial, sans-serif;
+            }
+            .email-container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+              background: #ffffff;
+              border-radius: 10px;
+              box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            }
+            .email-header {
+              text-align: center;
+              padding: 20px 0;
+            }
+            .email-header img {
+              width: 70px;
+            }
+            .email-body {
+              padding: 20px;
+              font-size: 16px;
+              line-height: 1.5;
+              color: #333;
+              text-align: center;
+            }
+            .email-body a {
+              display: inline-block;
+              padding: 10px 20px;
+              margin: 20px 0;
+              color: #ffffff;
+              background: #007bff;
+              border-radius: 5px;
+              text-decoration: none;
+            }
+            .email-footer {
+              text-align: center;
+              padding: 20px;
+              color: #888;
+              font-size: 14px;
+              border-top: 1px solid #f5f5f5;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="email-container">
+            <div class="email-header">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaGQcjjiPHoedJa7CBICJOE8COi6QdhA5uW4Hy9jZdPQ&s" alt="Logo">
+              <h2>Reset Password</h2>
+            </div>
+            <div class="email-body">
+              <p>Dear ${user.nama},</p>
+              <p>You have requested to reset your password. Please click on the button below to reset your password:</p>
+              <a href="${url}" class="btn btn-primary">Reset Password</a>
+              <p>If you did not request this, please ignore this email.</p>
+            </div>
+            <div class="email-footer">
+              <p>© 2024 InsightHub. All rights reserved.</p>
+            </div>
           </div>
-          <div class="email-body">
-            <p>Dear ${user.nama},</p>
-            <p>You have requested to reset your password. Please click on the button below to reset your password:</p>
-            <a href="${url}" class="btn btn-primary">Reset Password</a>
-            <p>If you did not request this, please ignore this email.</p>
-          </div>
-          <div class="email-footer">
-            <p>© 2024 InsightHub. All rights reserved.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Bootstrap Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Icons -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/icons.min.js"></script>
-</body>
-</html>`;
+        </body>
+        </html>`;
 
       await nodemailer.sendEmail(email, "Reset Password Request", html);
 
