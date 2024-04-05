@@ -168,7 +168,12 @@
             </div>
 
             <hr class="mt-5" />
-            <% artikel.data.forEach(article => { %>
+            <%
+              // Mengurutkan artikel berdasarkan tanggal pembuatan (createdAt) dari yang paling baru
+              artikel.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+              artikel.data.forEach(article => {
+            %>
             <a href="/artikel/<%= article.id %>/<%= encodeURIComponent(article.judul) %>" class="text-decoration-none text-reset">
               <div class="card mb-3 border-0" data-artikelid="<%= article.id %>" data-kategoriId="<%= article.kategoriId %>">
                 <div class="row g-0">
@@ -178,7 +183,8 @@
                   <div class="col-md-9">
                     <div class="card-body">
                       <h5 class="card-title"><%= article.judul %></h5>
-                      <p class="card-text"><%= article.deskripsi %></p>
+                      <!-- Teks dihapus dari tag HTML menggunakan JavaScript di sisi server -->
+                      <p class="card-text"><%= article.deskripsi.replace(/(<([^>]+)>)/gi, '') %></p>
                       <div class="row justify-content-end align-items-end">
                         <div class="col-auto">
                           <p class="card-text">
@@ -197,6 +203,7 @@
               </div>
             </a>
             <% }); %>
+
 
           </div>
           <div class="col-4">
