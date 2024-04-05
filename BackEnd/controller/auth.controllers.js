@@ -423,8 +423,8 @@ const forgotPassword = async (req, res, next) => {
       let url = `${baseUrl}/change-password?token=${token}`;
 
       // Read the HTML template from the file
-      const templatePath = 'reset_password_template.html';
-      const templateContent = fs.readFileSync(templatePath, 'utf8');
+      // const templatePath = 'reset_password_template.html';
+      // const templateContent = fs.readFileSync(templatePath, 'utf8');
       console.log("forgot passsword berhasil")
       // Replace placeholders with actual values
       let html = `<!DOCTYPE html>
