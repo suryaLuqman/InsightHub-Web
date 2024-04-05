@@ -32,6 +32,21 @@
         </a>
         <div class="row">
           <div class="col-8">
+            <script>
+              // Fungsi untuk menghapus tag HTML
+              function stripHTML(html) {
+                var div = document.createElement("div");
+                div.innerHTML = html;
+                return div.textContent || div.innerText || "";
+              }
+
+              // Menggunakan fungsi tersebut pada deskripsi artikel
+              window.onload = function() {
+                var deskripsiElement = document.getElementById('deskripsi-artikel');
+                deskripsiElement.innerHTML = stripHTML(deskripsiElement.innerHTML);
+              };
+            </script>
+
             <section class="artikel-left-side">
               <h3 class="mt-2" style="color: var(--color-primary)">
                 <%= artikel[0].judul %>
@@ -39,8 +54,14 @@
               <div class="img-artikel text-center mt-5">
                 <img class="img-fluid rounded" src="<%= artikel[0].gambar_artikel %>" alt="<%= artikel[0].judul %>" width="50%" height="200" />
               </div>
-              <p class="mt-5"><%= artikel[0].deskripsi %></p>
+              <p class="mt-5" id="deskripsi-artikel"><%= artikel[0].deskripsi %></p>
+              <p class="mt-5">
+                <a href="<%= artikel[0].link %>" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); text-decoration: none;">
+                  Referensi Artikel
+                </a>
+              </p>
             </section>
+
           </div>
           <div class="col-4">
             <section class="artikel-left-side">
