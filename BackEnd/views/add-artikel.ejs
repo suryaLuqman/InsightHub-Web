@@ -429,83 +429,81 @@
     <script>
       const baseUrl = `<%= baseUrl %>`;
       // Menangkap event submit pada formulir HTML
-      $("#formArtikel").submit(function (event) {
-        // Menghentikan pengiriman formulir agar dapat mengendalikan secara manual
-        event.preventDefault();
+      $(document).ready(function () {
+          $("#formArtikel").submit(function (event) {
+          event.preventDefault();
 
         // Mengambil nilai dari setiap elemen input
-        var judul = $("#judul").val();
-        var deskripsi = $("#deskripsi").val();
-        var link = $("#link").val();
-        var gambar_artikel = $("#gambar_artikel")[0].files[0]; // Mengambil file gambar
-        var kategoriId = $("#kategori").val();
+        const judul = $("#judul").val();
+        const deskripsi = $("#deskripsi").val();
+        const link = $("#link").val();
+        const gambar_artikel = $("#gambar_artikel")[0].files[0];
+        const kategoriId = $("#kategori").val();
 
+        if (!judul || !deskripsi || !link || !gambar_artikel || !kategoriId) {
+         alert("Please fill in all fields.");
+         return;
+       }
         // Membuat FormData untuk mengirim data dengan file gambar
-        var formData = new FormData();
+        const formData = new FormData();
         formData.append("judul", judul);
         formData.append("deskripsi", deskripsi);
         formData.append("link", link);
-        formData.append("kategoriId", kategoriId); // KategoriId sudah berupa string
+        formData.append("kategoriId", kategoriId);
         formData.append("gambar_artikel", gambar_artikel);
 
         // debug cek data
         // Mendapatkan iterator dari FormData
-        var formDataIterator = formData.entries();
-
-        // Menggunakan loop untuk mencetak pasangan key-value dari FormData
-        for (var pair of formDataIterator) {
+        const formDataIterator = formData.entries();
+        for (const pair of formDataIterator) {
           console.log(pair[0] + ": " + pair[1]);
         }
+        console.log("formData:", JSON.stringify(Object.fromEntries(formData)));
 
-        console.log("formData:", JSON.stringify(formData));
       const endPointCreateArtikel = "/api/v1/artikel/upload";
       const creaArtikel = baseUrl + endPointCreateArtikel;
         // Mengirim data ke server menggunakan permintaan POST
         $.ajax({
-          type: "POST",
-          url: creaArtikel,
-          headers: {
+         type: "POST",
+         url: creaArtikel,
+         headers: {
             Authorization: "Bearer <%= token %>",
-          },
-          data: formData,
-          processData: false, // Tetapkan false untuk memastikan FormData tidak diproses
-          success: function (data) {
+         },
+         data: formData,
+         processData: false,
+         contentType: false,
+         success: function (data) {
             console.log("Data dari server (success):", data);
             if (data.status) {
-              // Periksa status dari respons
-              // Tampilkan pesan sukses di dalam modal
-              $("#tambahArtikelAlert").append(
-                `<div class="alert alert-success">${data.message}</div>`
-              );
-              setTimeout(function () {
-                //   reload halaman setelah 2 detik
-                window.location.reload();
-              }, 1000);
+               $("#tambahArtikelAlert")
+               .append(
+                  `<div class="alert alert-success">${data.message}</div>`
+               );
+               setTimeout(function () {
+            window.location.href = "/dashboard"; // Mengarahkan ke dasborad user
+            }, 3000);
             } else {
-              console.log("Data dari server (error atas):", data);
-              // Tampilkan pesan error di dalam modal
-              $("#tambahArtikelAlert").append(
-                `<div class="alert alert-danger"> ${data.message} Error: ${data.err}</div>`
-              );
+               $("#tambahArtikelAlert").append(
+                  `<div class="alert alert-danger"> ${data.message} Error: ${data.err}</div>`
+               );
             }
-          },
-          error: function (xhr, status, error) {
+         },
+         error: function (xhr, status, error) {
             const errorData = xhr.responseJSON
               ? xhr.responseJSON
-              : "Failed to change password. Please try again later.";
-            console.error("upload artikel error:", errorData);
-            console.error("Data dari server (error) bawah:", errorData);
-            // Tampilkan pesan error di dalam modal
+              : "Failed to upload artikel. Please try again later.";
+            console.error("Upload artikel error:", errorData);
+            console.error("Data dari server (error):", errorData);
             $("#tambahArtikelAlert").append(
               `<div class="alert alert-danger"> ${errorData.message}! &nbsp; Error: ${errorData.error}</div>`
             );
-          },
-          complete: function () {
-            // Sembunyikan overlay loading setelah AJAX selesai
+         },
+         complete: function () {
             $("#loadingOverlay").addClass("d-none");
-          },
-        });
+         },
       });
+   });
+});
     </script>
   </body>
 </html>

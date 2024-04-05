@@ -97,6 +97,7 @@ exports.getProfilePage = async (req, res) => {
 exports.getChangePasswordPage = async (req, res) => {
   try {
     const baseUrl = process.env.API;
+    console.log("reset-password jalan");
     return res.render("reset-password", {
       title: "Change Password - InsightHub",
       urlAPI: baseUrl,

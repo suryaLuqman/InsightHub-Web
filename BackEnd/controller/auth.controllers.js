@@ -417,7 +417,7 @@ const forgotPassword = async (req, res, next) => {
         { expiresIn: "1h" }
       );
       console.log("ini token :", token);
-      let url = `http://localhost:3000/api/v1/auth/change-password?token=${token}`;
+      let url = `http://localhost:3000/change-password?token=${token}`;
 
       let html = `<p>Hi ${user.nama},</p>
       <p>You have requested to change your password.</p>
