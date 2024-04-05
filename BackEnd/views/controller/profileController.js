@@ -93,3 +93,18 @@ exports.getProfilePage = async (req, res) => {
       .render("error", { error: "Failed to fetch data from API." });
   }
 };
+
+exports.getChangePasswordPage = async (req, res) => {
+  try {
+    const baseUrl = process.env.API;
+    return res.render("reset-password", {
+      title: "Change Password - InsightHub",
+      urlAPI: baseUrl,
+    });
+  } catch (error) {
+    console.error("Failed to render changePassword page:", error);
+    return res
+      .status(500)
+      .render("error", { error: "Failed to render changePassword page." });
+  }
+}
