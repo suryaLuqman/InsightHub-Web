@@ -265,6 +265,7 @@
       </div>
     </section>
 
+    <!-- kategori  -->
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         const buttons = document.querySelectorAll('.badge-button');
@@ -710,15 +711,14 @@
         $("#ForgotPasswordAlert").text("Kolom email harus diisi!").removeClass("d-none");
         return;
       }
-
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        $("#inputEmail").addClass("is-invalid"); // Menggunakan ID yang sesuai dengan elemen input
-        $("#ForgotPasswordAlert")
-          .text("Format email tidak valid")
-          .removeClass("d-none");
-        return;
-      }
+        if (!emailRegex.test(email)) {
+          $("#inputEmail").addClass("is-invalid"); // Menggunakan ID yang sesuai dengan elemen input
+          $("#ForgotPasswordAlert")
+            .text("Format email tidak valid")
+            .removeClass("d-none");
+          return;
+        }
 
       const formData = {
         email: email
@@ -744,20 +744,34 @@
               .html(`<i class="fas fa-check-circle"></i> Silakan periksa email Anda untuk petunjuk selanjutnya.`)
               .removeClass("d-none")
               .css("background-color", "#28a745");
-          } else {
-            const errorMessage = data.message ? data.message : "Permintaan reset password gagal. Silakan coba lagi.";
-            console.error("Forgot Password error:", errorMessage);
-            $("#forgotPasswordAlert").text(errorMessage).removeClass("d-none");
+            } else {
+              const errorMessage = data.message ? data.message : "Permintaan reset password gagal. Silakan coba lagi.";
+              console.error("Forgot Password error:", errorMessage);
+              $("#ForgotPasswordAlert").text(errorMessage).removeClass("d-none");
+              // Menampilkan alert danger jika email tidak ditemukan
+              if (errorMessage === "Email anda tidak di temukan") {
+                $("#ForgotPasswordAlert")
+                  .addClass("alert-danger")
+                  .html(`<i class="fas fa-exclamation-circle"></i> ${errorMessage}, periksa kembali.`)
+                  .removeClass("d-none");
+              }
+            }
+          },
+          error: function(xhr, status, error) {
+            console.error("Forgot Password error:", error);
+            const errorData = xhr.responseJSON ? xhr.responseJSON : "Permintaan reset password gagal. Silakan coba lagi.";
+            console.error("Data dari server (error):", errorData);
+            $("#ForgotPasswordAlert").text(errorData.message).removeClass("d-none");
+            // Menampilkan alert danger jika email tidak ditemukan
+            if (errorData.message === "Email anda tidak di temukan") {
+              $("#ForgotPasswordAlert")
+                .addClass("alert-danger")
+                .html(`<i class="fas fa-exclamation-circle"></i> ${errorData.message}, periksa kembali.`)
+                .removeClass("d-none");
+            }
           }
-        },
-        error: function(xhr, status, error) {
-          console.error("Forgot Password error:", error);
-          const errorData = xhr.responseJSON ? xhr.responseJSON : "Permintaan reset password gagal. Silakan coba lagi.";
-          console.error("Data dari server (error):", errorData);
-          $("#forgotPasswordAlert").text(errorData.message).removeClass("d-none");
-        }
-      });
-    }
+  });
+}
   </script>
   <script>
     // Function to toggle password visibility
