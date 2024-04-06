@@ -174,27 +174,114 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Masuk</h1> -->
+          <h5 class="modal-title" id="exampleModalLabel">Laporkan Artikel</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p class="text-center mt-3">
-            Apakah konten tersebut mengandung hal sensitif, plagiarisme,
-            semacamnya ?
-          </p>
-
-          <div class="text-center">
-            <button class="btn btn-login-modal px-4">Iya</button>
-            <button class="btn btn-login-modal-google">Tidak</button>
-          </div>
+          <form id="reportForm">
+            <div class="mb-3">
+              <label for="alasan" class="form-label">Alasan Pelaporan</label>
+              <textarea class="form-control" id="alasan" rows="3" placeholder="Tuliskan alasan mengapa Anda melaporkan artikel ini..."></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary" onclick="reportArticle()">Laporkan</button>
         </div>
       </div>
     </div>
   </div>
 
+
   <script src="/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
   <script src="/resources/js/main.js"></script>
+
+  <script>
+    // Fungsi untuk mendapatkan ID artikel dari URL
+    function getArtikelIdFromUrl() {
+      const url = window.location.href;
+      const parts = url.split('/');
+      const idArtikel = parts[parts.indexOf('artikel') + 1];
+
+      console.log("ID artikel:", idArtikel);
+      if (!isNaN(idArtikel)) {
+        return idArtikel;
+      } else {
+        console.error("ID artikel tidak valid.");
+        return null;
+      }
+    }
+    // AJAX untuk memberikan rating artikel
+    function rateArticleAjax(artikelId, ratingValue, token) {
+      $.ajax({
+        url: `http://localhost:3000/api/v1/artikel/rate/${artikelId}`,
+        type: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        data: JSON.stringify({
+          "nilai": ratingValue
+        }),
+        success: function(response) {
+          console.log('Rating berhasil diberikan:', response);
+          // Tambahkan tindakan lanjutan jika diperlukan setelah memberikan rating
+        },
+        error: function(xhr, status, error) {
+          console.error('Gagal memberikan rating:', error);
+          // Tambahkan penanganan kesalahan jika diperlukan
+        }
+      });
+    }
+
+    // AJAX untuk melaporkan artikel
+    function reportArticleAjax(artikelId, alasan, token) {
+      $.ajax({
+        url: `http://localhost:3000/api/v1/artikel/report/${artikelId}`,
+        type: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        data: JSON.stringify({
+          "alasan": alasan
+        }),
+        success: function(response) {
+          console.log('Artikel dilaporkan:', response);
+          // Tambahkan tindakan lanjutan jika diperlukan setelah pelaporan artikel
+        },
+        error: function(xhr, status, error) {
+          console.error('Gagal melaporkan artikel:', error);
+          // Tambahkan penanganan kesalahan jika diperlukan
+        }
+      });
+    }
+     // Fungsi untuk melakukan konfirmasi rating dan memanggil AJAX
+    function rateArticle() {
+      const starIndex = parseInt(
+        document.getElementById("ratingValue").textContent
+      );
+      const artikelId = getArtikelIdFromUrl(); // Menggunakan fungsi untuk mendapatkan ID artikel dari URL
+      const token = "<%= token %>"; // Ganti dengan token yang sesuai
+      console.log("token:", token);
+      rateArticleAjax(artikelId, starIndex, token);
+    }
+
+    // Fungsi untuk melakukan konfirmasi pelaporan dan memanggil AJAX
+    function reportArticle() {
+      const alasan = document.getElementById("alasan").value.trim();
+      if (alasan === "") {
+        alert("Harap isi alasan pelaporan.");
+        return;
+      }
+      const artikelId = getArtikelIdFromUrl(); // Menggunakan fungsi untuk mendapatkan ID artikel dari URL
+      const token = "<%= token %>"; // Ganti dengan token yang sesuai
+      console.log("token:", token);
+      reportArticleAjax(artikelId, alasan, token);
+    }
+  </script>
 </body>
 
 </html>
