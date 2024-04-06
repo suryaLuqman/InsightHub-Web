@@ -23,6 +23,31 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#editButton").addClass("d-none");
   });
 
+// Variabel global untuk menyimpan data URL gambar profil
+var profileImageDataURL;
+
+// Ketika input file berubah, baca file yang dipilih pengguna dan tampilkan sebagai gambar profil
+document.getElementById('profileImageInput').addEventListener('change', function(e) {
+  var file = e.target.files[0];
+  var reader = new FileReader();
+
+  reader.onloadend = function() {
+    document.querySelector('.rounded-circle').src = reader.result;
+    document.getElementById('profileImage').src = reader.result;
+    profileImageDataURL = reader.result; // Simpan data URL gambar profil
+  }
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+});
+
+// Event listener untuk tombol "Upload"
+document.getElementById('uploadPicButton').addEventListener('click', function() {
+  // Klik input file ketika tombol "Upload" diklik
+  document.getElementById('profileImageInput').click();
+});
+
   // Event listener untuk tombol "Simpan"
   saveButton.addEventListener("click", function () {
     // Lakukan pengiriman data yang diperbarui ke server melalui AJAX
@@ -39,6 +64,13 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#buttonGantiPassword").addClass("d-none");
     $("#editButton").removeClass("d-none");
 
+    const formData = {
+      first_name: $("#namaInput").val(),
+      status: $("#statusInput").val(),
+      profile_picture: profileImageDataURL,
+    };
+
+    console.log("Data yang akan dikirimkan ke server:", formData);
     // Mendapatkan url utama dari env
     //  const urlAPI = "<%= urlAPI %>";
     const endPointLogin = "/api/v1/auth/test";
@@ -46,11 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
     $.ajax({
       url: updateProfile,
       type: "POST",
-      data: {
-        first_name: $("#namaInput").val(),
-        status: $("#statusInput").val(),
-        profile_picture: $("#idInput").val(),
-      },
+      data: JSON.stringify(formData),
       success: function (data) {
         console.log("Data dari server (success):", data);
         if (data.success) {
@@ -128,34 +156,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("profileImage").src = "/resources/images/user.jpg";
   });
 });
-
-// Ketika input file berubah, baca file yang dipilih pengguna dan tampilkan sebagai gambar profil
-document
-  .getElementById("profileImageInput")
-  .addEventListener("change", function (e) {
-    var file = e.target.files[0];
-    var reader = new FileReader();
-
-    reader.onloadend = function () {
-      document.querySelector(".rounded-circle").src = reader.result;
-      document.getElementById("profileImage").src = reader.result;
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  });
-
-document
-  .getElementById("deletePicButton")
-  .addEventListener("click", function () {
-    // Hapus gambar profil
-    document.querySelector(".rounded-circle").src =
-      "/resources/images/user.jpg";
-    document.getElementById("profileImage").src = "/resources/images/user.jpg";
-
-    // TODO: Anda perlu menambahkan logika untuk menghapus gambar profil dari server
-  });
 
 $(document).ready(function () {
   $("#simpanPassword").click(function (event) {
