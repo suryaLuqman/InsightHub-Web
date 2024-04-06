@@ -208,6 +208,23 @@
   <script src="/resources/js/main.js"></script>
 
   <script>
+    // Fungsi untuk menyembunyikan semua modal yang aktif
+    function hideAllModals() {
+      var modals = document.querySelectorAll('.modal');
+      modals.forEach(function(modal) {
+        var bootstrapModal = bootstrap.Modal.getInstance(modal);
+        if (bootstrapModal) {
+          bootstrapModal.hide();
+        }
+      });
+    }
+
+    // Fungsi untuk menutup modal-backdrop secara manual
+    function closeBackdrop() {
+      var backdrop = document.querySelector('.modal-backdrop');
+      backdrop.parentNode.removeChild(backdrop);
+    }
+
     // Fungsi untuk mendapatkan ID artikel dari URL
     function getArtikelIdFromUrl() {
       const url = window.location.href;
@@ -224,6 +241,10 @@
     }
     // AJAX untuk memberikan rating artikel
     function rateArticleAjax(artikelId, ratingValue, token) {
+      // Menampilkan animasi loading
+      $("#loadingOverlay").removeClass("d-none");
+      hideAllModals();
+      closeBackdrop();
       $.ajax({
         url: `http://localhost:3000/api/v1/artikel/rate/${artikelId}`,
         type: 'POST',
@@ -293,6 +314,10 @@
 
     // AJAX untuk melaporkan artikel
     function reportArticleAjax(artikelId, alasan, token) {
+      // Menampilkan animasi loading
+      $("#loadingOverlay").removeClass("d-none");
+      hideAllModals();
+      closeBackdrop();
       $.ajax({
         url: `http://localhost:3000/api/v1/artikel/report/${artikelId}`,
         type: 'POST',
@@ -321,9 +346,6 @@
             "failed. Please try again later.";
           console.error("error:", errorData);
           console.error("Data dari server (error):", errorData);
-
-          console.log("Data yang akan dikirimkan ke server:", formData);
-
           if (errorData.error) {
             $("#viewArtikelAlert")
               .html(
