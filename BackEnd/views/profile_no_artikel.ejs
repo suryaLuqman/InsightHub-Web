@@ -59,6 +59,7 @@
             <div class="tab-pane fade" id="statistik" role="tabpanel" aria-labelledby="statistik-tab">
               <div class="container">
                 <h4 class="mb-4">Statistik Kamu</h4>
+
                 <div class="row">
                   <div class="col-md-4">
                     <div class="kartu">
@@ -97,34 +98,39 @@
       <div class="col-md-3">
         <div class="py-4 px-3">
           <h4 class="mb-4">Profile</h4>
+          <!-- Tambahkan input file ke dalam kode HTML Anda -->
+          <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+
           <!-- Profile Image -->
           <div class="d-flex align-items-center mb-3">
             <!-- Use profile picture if available, otherwise use default image -->
-            <!-- Tambahkan style="cursor: pointer" agar kursor menjadi tanda panah saat diarahkan -->
-            <img src="<%= profile.data.profile_picture || '/resources/images/user.jpg' %>" alt="Profile Image" class="rounded-circle me-3" style="cursor: pointer !important; width: 60px;;" data-bs-toggle="modal" data-bs-target="#profileImageModal">
+            <img src="<%= profile.data.profile_picture || '/resources/images/user.jpg' %>" alt="Profile Image" class="rounded-circle me-3" style="cursor: pointer !important; width: 70px !important; height: 60px !important;" data-bs-toggle="modal" data-bs-target="#profileImageModal">
             <div class="align-middle">
               <div class="d-flex">
-                <button class="btn btn-sm btn-transparent m-2"><i class="fas fa-upload" style="color: #00f228;"></i> Upload</button>
-                <button class="btn btn-sm btn-transparent m-0"><i class="fas fa-trash-alt text-danger"></i> Delete</button>
+                <!-- Ketika tombol upload diklik, klik input file -->
+                <button id="uploadPicButton" class="btn btn-sm btn-transparent m-2 d-none" onclick="document.getElementById('profileImageInput').click();"><i class="fas fa-upload" style="color: #00f228;"></i> Upload</button>
+                <button id="deletePicButton" class="btn btn-sm btn-transparent m-0 d-none"><i class="fas fa-trash-alt text-danger"></i> Delete</button>
               </div>
             </div>
           </div>
 
           <!-- Modal for Profile Image -->
           <div class="modal fade" id="profileImageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">Profile Image</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body d-flex align-items-center justify-content-center">
                   <!-- Tampilkan gambar profil dalam ukuran penuh -->
-                  <img src="<%= profile.data.profile_picture || '/resources/images/logo-2.png' %>" alt="Profile Image" class="img-fluid">
+                  <img id="profileImage" src="<%= profile.data.profile_picture || '/resources/images/user.jpg' %>" alt="Profile Image" class="img-fluid">
                 </div>
               </div>
             </div>
           </div>
+
+
 
           <!-- Profile Details -->
           <form>
@@ -133,8 +139,6 @@
               <div class="input-group">
                 <!-- Display first name -->
                 <input type="text" id="namaInput" class="form-control border-end-0 readonly" placeholder="Nama" value="<%= profile.data.first_name %>" readonly>
-                <!-- Tambahkan id "editButton" untuk tombol Edit -->
-                <button id="editButton" class="btn btn-sm btn-transparent m-2"><i class="fas fa-pen"></i> Edit</button>
               </div>
             </div>
             <div class="mb-3">
@@ -151,8 +155,11 @@
               </div>
             </div>
 
+            <!-- Tambahkan id "editButton" untuk tombol Edit -->
+            <button id="editButton" class="btn btn-outline-secondary me-2 w-100"><i class="fas fa-pen"></i> Edit</button>
+
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-outline-danger me-2 w-100" style="border-radius: 20px;" data-bs-toggle="modal" data-bs-target="#gantiPasswordModal">
+            <button type="button" id="buttonGantiPassword" class="btn btn-outline-danger me-2 w-100 d-none" style="border-radius: 20px;" data-bs-toggle="modal" data-bs-target="#gantiPasswordModal">
               Ganti Password
             </button>
 
