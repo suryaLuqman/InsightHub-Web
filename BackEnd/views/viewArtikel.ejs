@@ -242,18 +242,16 @@
             const Message = data.message;
             const error = data.error;
             const errorMessage = error ? Message + error : Message;
-            console.error("Login error:", errorMessage);
+            console.error("error:", errorMessage);
             $("#viewArtikelAlert").text(errorMessage).removeClass("d-none");
           }
         },
         error: function(xhr, status, error) {
           const errorData = xhr.responseJSON ?
             xhr.responseJSON :
-            "Login failed. Please try again later.";
-          console.error("Login error:", errorData);
+            "failed. Please try again later.";
+          console.error("error:", errorData);
           console.error("Data dari server (error):", errorData);
-
-          console.log("Data yang akan dikirimkan ke server:", formData);
 
           if (errorData.error) {
             $("#viewArtikelAlert")
@@ -313,15 +311,15 @@
             const Message = data.message;
             const error = data.error;
             const errorMessage = error ? Message + error : Message;
-            console.error("Login error:", errorMessage);
+            console.error("error:", errorMessage);
             $("#viewArtikelAlert").text(errorMessage).removeClass("d-none");
           }
         },
         error: function(xhr, status, error) {
           const errorData = xhr.responseJSON ?
             xhr.responseJSON :
-            "Login failed. Please try again later.";
-          console.error("Login error:", errorData);
+            "failed. Please try again later.";
+          console.error("error:", errorData);
           console.error("Data dari server (error):", errorData);
 
           console.log("Data yang akan dikirimkan ke server:", formData);
