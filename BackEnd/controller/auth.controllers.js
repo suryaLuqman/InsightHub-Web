@@ -631,15 +631,56 @@ const getUserProfile = async (req, res, next) => {
       });
     }
 
+    // Temukan artikel yang disimpan oleh pengguna
+    const savedArtikels = await prisma.savedArtikel.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        artikel: true,
+      },
+    });
+
+    // Temukan rating pengguna
+    const ratings = await prisma.rating.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        artikel: true,
+      },
+    });
+
+    // Temukan laporan pengguna
+    const reports = await prisma.report.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        artikel: true,
+      },
+    });
+    const userArtikels = await prisma.artikel.findMany({
+      where: {
+        authorId: userId,
+      },
+    });
     return res.status(200).json({
       success: true,
       message: "User profile retrieved successfully",
-      data: userProfile,
+      data: {
+        userProfile: userProfile,
+        savedArtikels: savedArtikels,
+        ratings: ratings,
+        reports: reports,
+        userArtikels: userArtikels,
+      },
     });
   } catch (error) {
     next(error);
   }
 };
+
 
 const updateProfile = async (req, res, next) => {
   try {
