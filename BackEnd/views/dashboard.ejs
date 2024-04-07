@@ -120,7 +120,7 @@
                     renderArticles(data);
                     // Show "Lihat Selengkapnya" button after the first search
                     if (data.length > articlesPerPage) {
-                      loadMoreBtn.setAttribute("href", `http://localhost:3000/artikel/search-artikel/search?judul=${searchTerm}`);
+                      loadMoreBtn.setAttribute("href", `/artikel/search-artikel/search?judul=${searchTerm}`);
                       loadMoreBtn.classList.remove("d-none");
                     } else {
                       loadMoreBtn.classList.add("d-none");
@@ -206,7 +206,7 @@
             // Redirect on Enter key press
             searchInputModal.addEventListener("keyup", function(event) {
               if (event.key === 'Enter') {
-                window.location.href = `/search/${encodeURIComponent(searchInputModal.value.trim())}`;
+                window.location.href = `/artikel/search-artikel/search?judul=${encodeURIComponent(searchInputModal.value.trim())}`;
               }
             });
 

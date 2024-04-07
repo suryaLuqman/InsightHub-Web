@@ -173,7 +173,11 @@ exports.searchArtikel = async (req, res) => {
       // If there are articles, send article data to view
       return res.render("hasil-pencarian", {
         title: "InsightHub - Lets Start the journey with us",
-        artikel: dataArtikel
+        first_name: first_name,
+        id: id,
+        status: status,
+        token: token,
+        artikel: dataArtikel,
       });
 
   } catch (error) {
