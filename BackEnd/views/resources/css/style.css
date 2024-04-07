@@ -44,6 +44,11 @@ html {
   background-color: var(--color-secondary);
 }
 
+.modal-body p {
+  color: black; /* Atur warna teks menjadi hitam */
+}
+
+
 .btn-custom-login {
   width: 100px;
   padding: 15px 20px;
