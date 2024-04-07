@@ -49,6 +49,12 @@ html {
 }
 
 
+/* Tambahkan gaya untuk lebar tetap badge */
+.badge-fixed-width {
+  width: max-content; /* Atur lebar badge sesuai kebutuhan Anda */
+}
+
+
 .btn-custom-login {
   width: 100px;
   padding: 15px 20px;

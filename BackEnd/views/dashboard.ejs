@@ -306,7 +306,7 @@
                   <% const halfCount=Math.ceil(kategori.length / 2); %>
                   <% kategori.forEach((item, index)=> { %>
                   <% if (index < halfCount) { %>
-                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 mt-4 ms-5" data-kategoriid="<%= item.id %>">
+                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 mt-4 ms-5 badge-fixed-width" data-kategoriid="<%= item.id %>">
                     <%= item.nama %>
                   </button>
                   <% } %>
@@ -315,7 +315,7 @@
                 <div class="col-6">
                   <% kategori.forEach((item, index)=> { %>
                   <% if (index>= halfCount) { %>
-                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-3 ms-3 <%= index === halfCount ? 'mt-4' : 'mt-3' %>" data-kategoriid="<%= item.id %>">
+                  <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 ms-4 mt-4 badge-fixed-width" data-kategoriid="<%= item.id %>">
                     <%= item.nama %>
                   </button>
                   <% } %>
@@ -325,6 +325,7 @@
               <hr class="ms-5" />
               <p class="text-center">Created by Kelompok 3 KKP Batch 4</p>
             </div>
+
 
             <script>
               document.addEventListener("DOMContentLoaded", function() {
