@@ -142,23 +142,38 @@
               if (!articles || articles.length === 0) {
                 modalBody.innerHTML = "<p>No articles found.</p>";
               } else {
+                // Urutkan artikel berdasarkan tanggal pembuatan (createdAt) dari yang terbaru ke yang terlama
+                articles.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
                 articles.slice(0, articlesPerPage).forEach(article => {
                   const card = document.createElement('div');
                   card.classList.add('card', 'mb-3');
                   card.style.cursor = "pointer";
+
+                  const createdAt = new Date(article.createdAt).toLocaleDateString();
+                  const updatedAt = new Date(article.updatedAt).toLocaleDateString();
+
                   card.innerHTML = `
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img src="${article.gambar_artikel}" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">${article.judul}</h5>
-                <p class="card-text">${article.deskripsi}</p>
-              </div>
-            </div>
-          </div>
-        `;
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src="${article.gambar_artikel}" class="img-fluid rounded-start" alt="...">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title">${article.judul}</h5>
+                          <p class="card-text">${article.deskripsi}</p>
+                          <div class="row justify-content-end align-items-end">
+                            <div class="col-auto">
+                              <p class="card-text">
+                                <small class="text-muted">Created at ${createdAt}</small><br />
+                                <small class="text-muted">Last updated ${updatedAt}</small>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `;
                   // Add event listener to redirect to article link when card is clicked
                   card.addEventListener('click', function() {
                     window.location.href = `/artikel/${article.id}/${encodeURIComponent(article.judul)}`;
