@@ -1,8 +1,8 @@
-require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const prisma = require("../libs/prisma");
 const nodemailer = require("../libs/nodemailer");
+require("dotenv").config();
 const crypto = require("crypto");
 const { imagekit, deleteFile } = require("../libs/imagekit");
 const path = require("path");
