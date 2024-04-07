@@ -48,7 +48,7 @@ exports.getProfilePage = async (req, res) => {
     const artikelData = artikelResponse.data;
     const kategoriData = kategoriResponse.data;
 
-    // console.log("profileData:", profileData);
+    console.log("profileData:", profileData);
     // console.log("artikelData:", artikelData);
 
     if (!profileData || !artikelData) {
