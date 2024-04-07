@@ -224,32 +224,20 @@
       <div class="container">
         <div class="row mt-5">
           <div class="col-8">
-            <p class="fs-2 fw-bold">Highlight</p>
-            <div>
-              <a href="/artikel/<%= first_name %>/<%= id %>/add-artikel" class="text-1c0c41" style="
-        border-bottom: 2px solid #1c0c41; /* transparan saat normal */
-        width: fit-content;
-        padding-bottom: 5px;
-        display: inline-block; 
-        text-decoration: none;
-        position: relative;
-    ">
-                <i class="fa-solid fa-pencil mt-4" style="font-size: 1.5rem; margin-right: 5px;"></i>
-                <!-- Menambahkan sedikit ruang di sekitar ikon -->
-                Tulis Karyamu
-                <!-- Pseudo-element untuk membuat efek animasi -->
-                <span class="border-animation"></span>
-
-              </a>
-            </div>
-
+            <p class="fs-2 fw-bold">Hasil Pencarian</p>
             <hr class="mt-5" />
-            <%
+            <% if (artikel.length === 0) { %>
+            <figure class="figure">
+              <img src="/resources/images/pesan-404.png" class="figure-img img-fluid">
+              <figcaption class="figure-caption text-center fw-bold">Tidak dapat menemukan hasil pencarian</figcaption>
+            </figure>
+            <% } else { %>
+            <% 
               // Mengurutkan artikel berdasarkan tanggal pembuatan (createdAt) dari yang paling baru
-              artikel.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+              artikel.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-              artikel.data.forEach(article => {
-            %>
+              artikel.forEach(article => {
+              %>
             <a href="/artikel/<%= article.id %>/<%= encodeURIComponent(article.judul) %>" class="text-decoration-none text-reset">
               <div class="card mb-3 border-0" data-artikelid="<%= article.id %>" data-kategoriId="<%= article.kategoriId %>">
                 <div class="row g-0">
@@ -279,6 +267,7 @@
               </div>
             </a>
             <% }); %>
+            <% } %>
 
 
           </div>
@@ -299,7 +288,7 @@
                 <hr />
               </div>
             </div>
-            <h2 class="ms-5 fs-4">Topik Rekomendasi</h2>
+            <h2 class="ms-5 fs-4">Kategori Pencarian</h2>
             <div class="badge-custom">
               <div class="row">
                 <div class="col-6">

@@ -3,6 +3,7 @@ require("dotenv").config();
 const session = require("express-session");
 const prisma = require("../../libs/prisma");
 const { checkSession } = require("../controller/checkSessionController");
+const getUserProfile = require("../controller/getUserProfileController");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
@@ -14,7 +15,7 @@ exports.getArtikelPage = async (req, res) => {
 
     // Panggil fungsi checkSession untuk memeriksa sesi
     const session = await checkSession(id);
-   // console.log("session checController dasboard:", session);
+    // console.log("session checController dasboard:", session);
     // Jika sesi tidak valid, arahkan pengguna kembali ke halaman login
     if (!session) {
       return res.redirect("/");
@@ -24,9 +25,9 @@ exports.getArtikelPage = async (req, res) => {
     const user = session.sess.user;
     const status = user && user.status;
     const token = user && user.token;
-   //  console.log("session baca nilai sessiion:", user);
-   //  console.log("status:", status);
-   //  console.log("token:", token);
+    //  console.log("session baca nilai sessiion:", user);
+    //  console.log("status:", status);
+    //  console.log("token:", token);
 
     // Jika pengguna tidak diautentikasi, redirect ke halaman login
     if (!token) {
@@ -37,32 +38,28 @@ exports.getArtikelPage = async (req, res) => {
     const baseUrl = process.env.API;
     const kategoriUrl = `${baseUrl}/api/v1/kategori/get-all`;
 
-    const [kategoriResponse] = await Promise.all([
-      axios.get(kategoriUrl),
-    ]);
+    const [kategoriResponse] = await Promise.all([axios.get(kategoriUrl)]);
 
     const kategoriData = kategoriResponse.data;
 
+    // artikel
+    const endpointArtikel = "/api/v1/artikel/get-all"; // End point yang ingin Anda ambil
+    const artikel = baseUrl + endpointArtikel; // Menggabungkan base URL dengan end point
+    const responseArtikel = await axios.get(artikel);
+    // console.log(responseArtikel.data.data);
+    const dataArtikel = responseArtikel.data.data;
 
-      // artikel
-      const endpointArtikel = '/api/v1/artikel/get-all'; // End point yang ingin Anda ambil
-      const artikel = baseUrl + endpointArtikel; // Menggabungkan base URL dengan end point
-      const responseArtikel = await axios.get(artikel);
-      // console.log(responseArtikel.data.data);
-      const dataArtikel = responseArtikel.data.data;
-
-      // If there are articles, send article data to view
-      return res.render("add-artikel", {
-        title: "InsightHub - Lets Start the journey with us",
-        first_name: first_name,
-        id: id,
-        status: status,
-        token: token,
-        kategori: kategoriData,
-        artikel: dataArtikel,
-        baseUrl: process.env.API,
-      });
-    
+    // If there are articles, send article data to view
+    return res.render("add-artikel", {
+      title: "InsightHub - Lets Start the journey with us",
+      first_name: first_name,
+      id: id,
+      status: status,
+      token: token,
+      kategori: kategoriData,
+      artikel: dataArtikel,
+      baseUrl: process.env.API,
+    });
   } catch (error) {
     console.error("Failed to fetch data from API:", error);
     return res
@@ -71,17 +68,16 @@ exports.getArtikelPage = async (req, res) => {
   }
 };
 
-
 // Controller untuk membuat artikel baru
 exports.createArtikel = async (req, res) => {
   try {
     const { first_name, id } = req.params; // Mengambil nilai first_name dan id dari parameter rute
-    const { judul, deskripsi, link, kategori_nama, kategori_deskripsi } = req.body; // Mengambil data artikel dari body permintaan
+    const { judul, deskripsi, link, kategori_nama, kategori_deskripsi } =
+      req.body; // Mengambil data artikel dari body permintaan
     console.log("isi body:", req.body);
     // Mengambil gambar artikel dari form (jika ada)
     const gambar_artikel = req.file;
 
-    
     // Panggil fungsi checkSession untuk memeriksa sesi
     const session = await checkSession(id);
 
@@ -156,21 +152,75 @@ exports.createArtikel = async (req, res) => {
   }
 };
 
-
 // controller search artikel
 exports.searchArtikel = async (req, res) => {
   try {
+    const judul = req.query.judul;
+    const baseUrl = process.env.API;
 
-      const judul = req.query.judul;    
-      console.log("Judul:", judul);
-      const baseUrl = process.env.API;
-      const endpointArtikel = `/api/v1/search-artikel/search?judul=${judul}`; // End point yang ingin Anda ambil
-      const artikel = baseUrl + endpointArtikel; // Menggabungkan base URL dengan end point
-      const responseArtikel = await axios.get(artikel);
-      // console.log(responseArtikel.data.data);
-      const dataArtikel = responseArtikel.data.data;
+    // Artikel
+    const endpointArtikel = `/api/v1/search-artikel/search?judul=${judul}`; // End point yang ingin Anda ambil
+    const artikelUrl = baseUrl + endpointArtikel; // Menggabungkan base URL dengan end point
+    // console.log("artikelUrl:", artikelUrl);
+    const responseArtikel = await axios.get(artikelUrl);
+    const dataArtikel = responseArtikel.data;
 
-      // If there are articles, send article data to view
+    // Kategori
+    let dataKategori = [];
+    dataArtikel.forEach((artikel) => {
+      dataKategori = dataKategori.concat(artikel.kategori);
+    });
+
+    // Remove duplicates
+    dataKategori = [...new Set(dataKategori.map(JSON.stringify))].map(
+      JSON.parse
+    );
+
+    // console.log("dataKategori:", dataKategori);
+
+    // console.log("req rawHeaders: ", req.rawHeaders);
+    // Find the index of 'Cookie' in the rawHeaders array
+    const cookieIndex = req.rawHeaders.indexOf("Cookie");
+    if (cookieIndex !== -1) {
+      const cookie = req.rawHeaders[cookieIndex + 1];
+      // console.log("Cookie:", cookie);
+
+      // Use a regular expression to extract the token value from the cookie string
+      const tokenMatch = cookie.match(/token=([^;]*)/);
+      if (tokenMatch) {
+        const token = tokenMatch[1];
+        // console.log("Token:", token);
+
+        const userProfile = await getUserProfile.getUserProfile(token);
+        // console.log("userProfile:", userProfile);
+        const first_name = userProfile.data.userProfile.first_name;
+        const id = userProfile.data.userProfile.id;
+        const status = userProfile.data.userProfile.status;
+        // console.log("artikel:", dataArtikel);
+        // If there are articles, send article data to view
+        return res.render("hasil-pencarian", {
+          title: "InsightHub - Lets Start the journey with us",
+          first_name: first_name,
+          id: id,
+          status: status,
+          token: token,
+          artikel: dataArtikel,
+          kategori: dataKategori,
+        });
+      } else {
+        console.log("Token not found");
+        return res.render("search-artikel", {
+          title: "InsightHub - Lets Start the journey with us",
+          first_name: "user",
+          id: null,
+          status: "pembaca",
+          token: null,
+          artikel: dataArtikel,
+          kategori: dataKategori,
+        });
+      }
+    } else {
+      console.log("Cookie not found");
       return res.render("hasil-pencarian", {
         title: "InsightHub - Lets Start the journey with us",
         first_name: first_name,
@@ -179,11 +229,11 @@ exports.searchArtikel = async (req, res) => {
         token: token,
         artikel: dataArtikel,
       });
-
+    }
   } catch (error) {
     console.error("Failed to fetch data from API:", error);
     return res
       .status(500)
       .render("error", { error: "Failed to fetch data from API." });
   }
-}
+};
