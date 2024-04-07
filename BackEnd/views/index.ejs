@@ -10,7 +10,6 @@
   <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
   <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/resources/css/style.css" />
-  <link rel="stylesheet" href="/resources/css/style.css" />
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -28,14 +27,16 @@
         <a class="navbar-brand" href="#">
           <img src="/resources/images/logo.png" width="250" height="50" />
         </a>
-        <form class="group" role="search" data-bs-toggle="modal" data-bs-target="#searchModal">
-          <input type="text" placeholder="Cari artikel" name="text" class="input-search me-5" />
+        <form class="group" role="search">
+          <input type="text" placeholder="Cari artikel" name="text" class="input-search me-5" data-bs-toggle="modal" data-bs-target="#searchModal" />
           <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
             <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
           </svg>
           <a href="/api/v1/auth/login" class="btn-custom-login me-2" data-bs-toggle="modal" data-bs-target="#modalLogin">Login for Start</a>
           <a href="/api/v1/auth/register-user" class="btn-custom-register" data-bs-toggle="modal" data-bs-target="#modalRegister">Sign Up</a>
         </form>
+
+        <!-- search Modal -->
         <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -43,89 +44,170 @@
                 <input type="text" class="form-control mb-3" id="searchInputModal" placeholder="Ketik disini...">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body">
-                <div id="articleList"></div>
+              <div class="modal-body" id="modalBody">
+                <!-- Added id for modal body -->
+                <!-- Article list will be rendered here -->
               </div>
+              <div class="text-center">
+                <div id="loading" class="spinner-border d-none" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+              <a id="loadMoreBtn" class="btn btn-primary d-none" href="#">Lihat Selengkapnya</a>
             </div>
           </div>
         </div>
 
         <script>
+          // Fungsi debounce
+          function debounce(func, delay) {
+            let timer;
+            return function() {
+              const context = this;
+              const args = arguments;
+              clearTimeout(timer);
+              timer = setTimeout(() => {
+                func.apply(context, args);
+              }, delay);
+            };
+          }
+
           document.addEventListener("DOMContentLoaded", function() {
             const searchInputModal = document.getElementById("searchInputModal");
-            const articleList = document.getElementById("articleList");
-            const searchModal = new bootstrap.Modal(document.getElementById("searchModal")); // tambahkan ini
+            const loading = document.getElementById("loading");
+            const loadMoreBtn = document.getElementById("loadMoreBtn");
+            const searchModal = new bootstrap.Modal(document.getElementById("searchModal"));
+            const modalBody = document.getElementById("modalBody");
 
-            // Function to handle search and display articles
+            let page = 1;
+            const articlesPerPage = 3;
+
+            // Fungsi handleSearch yang dibungkus dengan debounce
+            const delayedSearch = debounce(handleSearch, 500); // Waktu jeda 500ms
+
             function handleSearch() {
+              // Membersihkan modal body sebelum mengirimkan data ke AJAX
+              modalBody.innerHTML = '';
+              loadMoreBtn.classList.add("d-none");
               const searchTerm = searchInputModal.value.trim().toLowerCase();
+              console.log("Search term:", searchTerm);
 
-              // Mock data (replace with actual API call)
-              const articlesData = [{
-                  id: 1,
-                  judul: "Artikel ilmu ilmu kebenaran part 3",
-                  deskripsi: "Isi deskripsi",
-                  link: "http://google.com",
-                  gambar_artikel: "https://ik.imagekit.io/jeniriska/1712014704714_CUSwmQ12k.png",
-                  fileId: "f42f97068ff04a526883b57f48df2548e8a055772a268bc5810f0a1302e15ef8",
-                  kategoriId: [3],
-                  authorId: 1,
-                  createdAt: "2024-04-01T23:38:30.922Z",
-                  updatedAt: "2024-04-01T23:38:30.922Z",
-                  ratings: [],
-                  kategori: [{
-                    id: 3,
-                    nama: "Sistem pakan",
-                    deskripsi: "Artikel-artikel tentang pikiran buatan"
-                  }],
-                  avgRating: 0
-                },
-                // Add more article data here
-              ];
+              if (searchTerm === "") {
+                // Handle empty search term if needed
+                return;
+              }
 
-              // Filter articles based on search term
-              const filteredArticles = articlesData.filter(article => article.judul.toLowerCase().includes(searchTerm));
+              // Show loading spinner
+              loading.classList.remove("d-none");
 
-              // Display filtered articles
-              renderArticles(filteredArticles);
+              fetch(`https://insight-hub-api.vercel.app/api/v1/search-artikel/search?judul=${searchTerm}`)
+                .then(response => response.json())
+                .then(data => {
+                  console.log('Data fetched:', data);
+                  if (data && data.length > 0) {
+                    renderArticles(data);
+                    // Show "Lihat Selengkapnya" button after the first search
+                    if (data.length > articlesPerPage) {
+                      loadMoreBtn.setAttribute("href", `http://localhost:3000/artikel/search-artikel/search?judul=${searchTerm}`);
+                      loadMoreBtn.classList.remove("d-none");
+                    } else {
+                      loadMoreBtn.classList.add("d-none");
+                    }
+                  } else {
+                    // Jika tidak ada hasil, tampilkan pesan di modal body
+                    modalBody.innerHTML = "<p>No articles found.</p>";
+                    // Sembunyikan tombol "Lihat Selengkapnya" jika tidak ada hasil
+                    loadMoreBtn.classList.add("d-none");
+                  }
+                })
+                .catch(error => {
+                  console.error('Error fetching articles:', error);
+                  // Handle error
+                  // Misalnya, tampilkan pesan kesalahan di modal body
+                  modalBody.innerHTML = "<p>Error fetching articles. Please try again later.</p>";
+                  // Sembunyikan tombol "Lihat Selengkapnya" jika terjadi kesalahan
+                  loadMoreBtn.classList.add("d-none");
+                })
+                .finally(() => {
+                  // Hide loading spinner
+                  loading.classList.add("d-none");
+                });
             }
 
-            // Function to render articles in modal
             function renderArticles(articles) {
-              if (articles.length === 0) {
-                articleList.innerHTML = "<p>No articles found.</p>";
+              // Clear modal body before rendering new articles
+              modalBody.innerHTML = '';
+
+              if (!articles || articles.length === 0) {
+                modalBody.innerHTML = "<p>No articles found.</p>";
               } else {
-                articleList.innerHTML = articles.map(article => `
-                          <div class="card mb-3">
-                              <div class="row g-0">
-                                  <div class="col-md-4">
-                                      <img src="${article.gambar_artikel}" class="img-fluid rounded-start" alt="...">
-                                  </div>
-                                  <div class="col-md-8">
-                                      <div class="card-body">
-                                          <h5 class="card-title">${article.judul}</h5>
-                                          <p class="card-text">${article.deskripsi}</p>
-                                          <a href="${article.link}" class="btn btn-primary">Read more</a>
-                                      </div>
-                                  </div>
-                              </div>
+                // Urutkan artikel berdasarkan tanggal pembuatan (createdAt) dari yang terbaru ke yang terlama
+                articles.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                articles.slice(0, articlesPerPage).forEach(article => {
+                  const card = document.createElement('div');
+                  card.classList.add('card', 'mb-3');
+                  card.style.cursor = "pointer";
+
+                  const createdAt = new Date(article.createdAt).toLocaleDateString();
+                  const updatedAt = new Date(article.updatedAt).toLocaleDateString();
+
+                  card.innerHTML = `
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src="${article.gambar_artikel}" class="img-fluid rounded-start" alt="...">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title">${article.judul}</h5>
+                          <p class="card-text">${article.deskripsi}</p>
+                          <div class="row justify-content-end align-items-end">
+                            <div class="col-auto">
+                              <p class="card-text">
+                                <small class="text-muted">Created at ${createdAt}</small><br />
+                                <small class="text-muted">Last updated ${updatedAt}</small>
+                              </p>
+                            </div>
                           </div>
-                      `).join('');
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                  // Add event listener to redirect to article link when card is clicked
+                  card.addEventListener('click', function() {
+                    window.location.href = `/artikel/${article.id}/${encodeURIComponent(article.judul)}`;
+                  });
+                  modalBody.appendChild(card);
+                });
               }
             }
 
-            // Event listener for input change
-            searchInputModal.addEventListener("input", handleSearch);
+            // Update search on input change with debounce
+            searchInputModal.addEventListener("input", delayedSearch);
 
-            // Event listener for input click to show modal
+            // Show modal on input click
             searchInputModal.addEventListener("click", function() {
               searchModal.show();
             });
 
-            // Initial rendering
-            handleSearch();
+            // Redirect on Enter key press
+            searchInputModal.addEventListener("keyup", function(event) {
+              if (event.key === 'Enter') {
+                window.location.href = `/search/${encodeURIComponent(searchInputModal.value.trim())}`;
+              }
+            });
+
+            // Show more articles on button click
+            loadMoreBtn.addEventListener("click", function() {
+              page++;
+              handleSearch();
+            });
+
+            // Initially hide "Lihat Selengkapnya" button
+            loadMoreBtn.classList.add("d-none");
           });
         </script>
+
 
       </div>
     </nav>
@@ -333,10 +415,10 @@
             </button>
             <p class="text-center mt-3">
               Tidak mempunyai akun ?
-              <a class="text-decoration-none" href="api/v1/auth/register-user" data-bs-toggle="modal" data-bs-target="#modalRegister" style="color: #ff7f0a">Daftar</a>
+              <a class="text-decoration-none show-modal" href="api/v1/auth/register-user" data-bs-toggle="modal" data-bs-target="#modalRegister" style="color: #ff7f0a">Daftar</a>
             </p>
             <p class="text-center">
-              <a class="text-decoration-none" href="/api/v1/auth/forgotPassword" data-bs-toggle="modal" data-bs-target="#modalForgot" style="color: #ff7f0a">Lupa Password ?
+              <a class="text-decoration-none show-modal" href="/api/v1/auth/forgotPassword" data-bs-toggle="modal" data-bs-target="#modalForgot" style="color: #ff7f0a">Lupa Password ?
               </a>
             </p>
           </div>
@@ -369,7 +451,7 @@
             </button>
             <p class="text-center">
               Sudah mempunyai akun ?
-              <a class="text-decoration-none" href="/api/v1/auth/login" data-bs-toggle="modal" data-bs-target="#modalLogin" style="color: #ff7f0a">
+              <a class="text-decoration-none show-modal" href="/api/v1/auth/login" data-bs-toggle="modal" data-bs-target="#modalLogin" style="color: #ff7f0a">
                 Masuk
               </a>
             </p>
@@ -378,6 +460,7 @@
       </div>
     </div>
 
+    <!-- Modal Forgot Password -->
     <div class="modal fade" id="modalForgot" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -395,11 +478,11 @@
             </button>
             <p class="text-center mt-3">
               Tidak mempunyai akun ?
-              <a class="text-decoration-none" href="api/v1/auth/register-user" data-bs-toggle="modal" data-bs-target="#modalRegister" style="color: #ff7f0a">Daftar</a>
+              <a class="text-decoration-none show-modal" href="api/v1/auth/register-user" data-bs-toggle="modal" data-bs-target="#modalRegister" style="color: #ff7f0a">Daftar</a>
             </p>
             <p class="text-center">
               Sudah mempunyai akun ?
-              <a class="text-decoration-none" href="/api/v1/auth/login" data-bs-toggle="modal" data-bs-target="#modalLogin" style="color: #ff7f0a">
+              <a class="text-decoration-none show-modal" href="/api/v1/auth/login" data-bs-toggle="modal" data-bs-target="#modalLogin" style="color: #ff7f0a">
                 Masuk
               </a>
             </p>
@@ -416,6 +499,32 @@
     </div>
   </div>
   <script>
+    // modal fix
+
+    function hideAllModals() {
+      var modals = document.querySelectorAll('.modal');
+      modals.forEach(function(modal) {
+        var bootstrapModal = bootstrap.Modal.getInstance(modal);
+        if (bootstrapModal) {
+          bootstrapModal.hide();
+        }
+      });
+    }
+
+    // Fungsi untuk menutup modal-backdrop secara manual
+    function closeBackdrop() {
+      var backdrop = document.querySelector('.modal-backdrop');
+      backdrop.parentNode.removeChild(backdrop);
+    }
+
+    $('.show-modal').click(function() {
+      hideAllModals();
+      closeBackdrop();
+    });
+
+
+
+
     // login
     function loginUser() {
       const email = $("#loginEmail").val().trim();
@@ -712,18 +821,20 @@
         return;
       }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          $("#inputEmail").addClass("is-invalid"); // Menggunakan ID yang sesuai dengan elemen input
-          $("#ForgotPasswordAlert")
-            .text("Format email tidak valid")
-            .removeClass("d-none");
-          return;
-        }
+      if (!emailRegex.test(email)) {
+        $("#inputEmail").addClass("is-invalid"); // Menggunakan ID yang sesuai dengan elemen input
+        $("#ForgotPasswordAlert")
+          .text("Format email tidak valid")
+          .removeClass("d-none");
+        return;
+      }
 
       const formData = {
         email: email
       };
 
+      // Menampilkan animasi loading
+      $("#loadingOverlay").removeClass("d-none");
       const urlAPI = "<%= urlAPI %>"; // Pastikan variabel urlAPI memiliki nilai yang benar
       const endpointForgotPassword = "/api/v1/auth/forgotPassword";
       const urlForgotPassword = urlAPI + endpointForgotPassword;
@@ -744,34 +855,54 @@
               .html(`<i class="fas fa-check-circle"></i> Silakan periksa email Anda untuk petunjuk selanjutnya.`)
               .removeClass("d-none")
               .css("background-color", "#28a745");
-            } else {
-              const errorMessage = data.message ? data.message : "Permintaan reset password gagal. Silakan coba lagi.";
-              console.error("Forgot Password error:", errorMessage);
-              $("#ForgotPasswordAlert").text(errorMessage).removeClass("d-none");
-              // Menampilkan alert danger jika email tidak ditemukan
-              if (errorMessage === "Email anda tidak di temukan") {
-                $("#ForgotPasswordAlert")
-                  .addClass("alert-danger")
-                  .html(`<i class="fas fa-exclamation-circle"></i> ${errorMessage}, periksa kembali.`)
-                  .removeClass("d-none");
-              }
-            }
-          },
-          error: function(xhr, status, error) {
-            console.error("Forgot Password error:", error);
-            const errorData = xhr.responseJSON ? xhr.responseJSON : "Permintaan reset password gagal. Silakan coba lagi.";
-            console.error("Data dari server (error):", errorData);
-            $("#ForgotPasswordAlert").text(errorData.message).removeClass("d-none");
+          } else {
+            const errorMessage = data.message ? data.message : "Permintaan reset password gagal. Silakan coba lagi.";
+            console.error("Forgot Password error:", errorMessage);
+            $("#ForgotPasswordAlert").text(errorMessage).removeClass("d-none");
             // Menampilkan alert danger jika email tidak ditemukan
-            if (errorData.message === "Email anda tidak di temukan") {
+            if (errorMessage === "Email anda tidak di temukan") {
               $("#ForgotPasswordAlert")
-                .addClass("alert-danger")
-                .html(`<i class="fas fa-exclamation-circle"></i> ${errorData.message}, periksa kembali.`)
+                .css("background-color", "#dc3545")
+                .html(`<i class="fas fa-exclamation-circle"></i> ${errorMessage}, periksa kembali.`)
                 .removeClass("d-none");
             }
           }
-  });
-}
+        },
+        error: function(xhr, status, error) {
+          console.error("Forgot Password error:", error);
+          const errorData = xhr.responseJSON ? xhr.responseJSON : "Permintaan reset password gagal. Silakan coba lagi.";
+          console.error("Data dari server (error):", errorData);
+          $("#ForgotPasswordAlert").text(errorData.message).removeClass("d-none");
+          // Menampilkan alert danger jika email tidak ditemukan
+          if (errorData.message === "Email anda tidak di temukan") {
+            $("#ForgotPasswordAlert")
+              .html(`<i class="fas fa-exclamation-circle"></i> ${errorData.message}, periksa kembali.`)
+              .removeClass("d-none")
+              .css("background-color", "#dc3545");;
+          }
+        },
+        complete: function(xhr, status) {
+          if (status === 'success') {
+            // setTimeout(function() {
+            // Hapus kelas 'd-none' untuk memunculkan spinner selama 3 detik jika berhasil
+            // $("#loadingOverlay").removeClass("d-none");
+            setTimeout(function() {
+              $("#loadingOverlay").addClass("d-none");
+            }, 5000);
+            // }, 0); // Timeout 0 ms agar dijalankan setelah penyelesaian AJAX
+          } else {
+            // Hapus kelas 'd-none' untuk memunculkan spinner selama 1 detik jika gagal
+            // setTimeout(function() {
+            //   $("#loadingOverlay").removeClass("d-none");
+            setTimeout(function() {
+              $("#loadingOverlay").addClass("d-none");
+            }, 500);
+            // }, 0);
+          }
+        }
+
+      });
+    }
   </script>
   <script>
     // Function to toggle password visibility

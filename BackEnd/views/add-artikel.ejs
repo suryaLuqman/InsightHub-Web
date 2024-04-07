@@ -1,437 +1,401 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= title %></title>
-    <!-- add favicon -->
-    <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/resources/css/style.css" />
 
-    <!-- fontawesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      crossorigin="anonymous"
-    />
-    <!-- Text Editor Summernotes -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <!-- add favicon -->
+  <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/resources/css/style.css" />
 
-    <!-- select2 -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css"
-    />
-  </head>
+  <!-- fontawesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
+  <!-- Text Editor Summernotes -->
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet" />
 
-  <body>
-    <!-- nav -->
-    <nav
-      class="navbar banner-section bg-body-light pb-3"
-      style="border-bottom: 1px solid rgb(240, 237, 237)"
-    >
-      <div class="container-fluid mx-5">
-        <a class="navbar-brand" href="/">
-          <img src="/resources/images/logo.png" width="250" height="50" />
+  <!-- select2 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" />
+</head>
+
+<body>
+  <!-- nav -->
+  <nav class="navbar banner-section bg-body-light pb-3" style="border-bottom: 1px solid rgb(240, 237, 237)">
+    <div class="container-fluid mx-5">
+      <a class="navbar-brand" href="/">
+        <img src="/resources/images/logo.png" width="250" height="50" />
+      </a>
+
+      <!-- Your Search Form -->
+      <form class="group" role="search">
+        <input type="text" placeholder="Cari artikel" name="text" id="searchInput" class="input-search me-5" data-bs-toggle="modal" data-bs-target="#searchModal" />
+        <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+          <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+        </svg>
+        <a href="" class="me-4 fs-3">
+          <i class="fa-regular fa-bell text-black"></i>
         </a>
+        <a href="/profile/<%= first_name %>/<%= id %>">
+          <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
+        </a>
+      </form>
 
-        <!-- Modal -->
-        <div
-          class="modal fade"
-          id="articleModal"
-          tabindex="-1"
-          aria-labelledby="articleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header search-header">
-                <select
-                  id="modalSearchInput"
-                  class="input-search me-5"
-                  style="width: 100%"
-                >
-                  <option></option>
-                </select>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body" id="articleModalBody">
-                <!-- Search Result will be displayed here -->
+      <!-- search Modal -->
+      <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <input type="text" class="form-control mb-3" id="searchInputModal" placeholder="Ketik disini...">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+              <!-- Added id for modal body -->
+              <!-- Article list will be rendered here -->
+            </div>
+            <div class="text-center">
+              <!-- Animasi Loading -->
+              <div class="spinner-container d-none" id="loadingSpinner">
+                <div class="spinner-border text-1c0c41" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
               </div>
             </div>
+            <a id="loadMoreBtn" class="btn btn-primary d-none" href="#">Lihat Selengkapnya</a>
           </div>
-        </div>
-
-        <!-- Your Search Form -->
-        <form class="group" role="search">
-          <input
-            type="text"
-            placeholder="Cari artikel"
-            name="text"
-            id="searchInput"
-            class="input-search me-5"
-            onclick="showModal()"
-          />
-          <svg
-            fill="#000000"
-            width="20px"
-            height="20px"
-            viewBox="0 0 1920 1920"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z"
-              fill-rule="evenodd"
-            ></path>
-          </svg>
-          <a href="" class="me-4 fs-3">
-            <i class="fa-regular fa-bell text-black"></i>
-          </a>
-          <a href="/profile/<%= first_name %>/<%= id %>">
-            <img
-              src="/resources/images/hero.png"
-              width="50"
-              height="50"
-              class="rounded"
-              alt=""
-            />
-          </a>
-        </form>
-      </div>
-    </nav>
-
-    <main class="container mt-5 py-3">
-      <button class="btn btn-light mb-3" onclick="history.back()">
-        <i class="fas fa-arrow-circle-left fa-lg"></i>
-        <span class="ms-2 fs-5">Kembali</span>
-      </button>
-
-      <div id="tambahArtikelAlert"></div>
-
-      <h3 class="fw-bold">Tulis Karyamu</h3>
-      <form
-        id="formArtikel"
-        class="mt-4"
-        action="/artikel/<%= first_name %>/<%= id %>/add-artikel"
-        method="POST"
-        enctype="multipart/form-data"
-      >
-        <hr />
-        <!-- Judul -->
-        <div class="form-group mb-4">
-          <input
-            type="text"
-            class="form-control form-control-lg"
-            id="judul"
-            name="judul"
-            placeholder="Masukkan judul"
-          />
-        </div>
-
-        <!-- Kategori -->
-        <div class="form-group mb-4">
-          <select
-            class="form-control form-control-lg kategori"
-            multiple="multiple"
-            id="kategori"
-            name="categories[]"
-            placeholder="Kategori"
-          >
-            <!-- Generate options dynamically from kategori data -->
-            <% kategori.forEach(kat => { %>
-            <option value="<%= kat.id %>"><%= kat.nama %></option>
-            <% }); %>
-          </select>
-        </div>
-
-        <!-- Upload Gambar -->
-        <div class="form-group mb-4">
-          <div id="dropzone" class="dropzone">
-            <p>Masukkan gambar cover artikel</p>
-          </div>
-          <input
-            type="file"
-            class="form-control-file d-none"
-            id="gambar_artikel"
-            name="gambar_artikel"
-            accept="image/*"
-          />
-          <div id="imagePreview" class="mt-2 d-none">
-            <button type="button" class="btn btn-close" id="clearImagePreview">
-              ×
-            </button>
-            <img
-              src="#"
-              alt="Image Preview"
-              width="100"
-              class="img-thumbnail"
-            />
-          </div>
-        </div>
-
-        <!-- Deskripsi dengan Summernote -->
-        <hr />
-        <div class="form-group mb-4">
-          <textarea
-            class="form-control form-control-lg border border-dark summernote"
-            id="deskripsi"
-            name="deskripsi"
-            rows="10"
-            placeholder="Deskripsi"
-          ></textarea>
-        </div>
-
-        <!-- Referensi dengan Summernote -->
-        <div class="form-group mb-4">
-          <textarea
-            class="form-control form-control-lg"
-            id="link"
-            name="link"
-            rows="10"
-            placeholder="Referensi"
-          ></textarea>
-        </div>
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary rounded-pill">
-            Posting
-          </button>
-        </div>
-      </form>
-      <!-- Animasi Loading -->
-      <div id="loadingOverlay" class="overlay d-none">
-        <div class="spinner-border text-1c0c41" role="status">
-          <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-    </main>
 
-    <!-- Load jQuery before Summernote and Select2 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <!-- Text Editor Summernotes -->
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-    <!-- Select2 JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
-    <!-- Bootstrap Bundle JS -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-      crossorigin="anonymous"
-    ></script>
-
-    <script>
-      // Mendapatkan string JSON dari kategori dan mengonversinya menjadi objek JavaScript
-      const kategoriString = `<%= JSON.stringify(kategori) %>`;
-      const kategori = JSON.parse(kategoriString.replace(/&#34;/g, '"'));
-      // console.log(kategori);
-      // Memastikan bahwa kategori sudah didefinisikan sebelum digunakan
-      $(document).ready(function () {
-        $(".kategori").select2({
-          data: kategori, // Menggunakan objek kategori sebagai data untuk Select2
-          tags: false,
-          placeholder: "Pilih Kategori",
-          allowClear: true,
-          tokenSeparators: [",", " "],
-          maximumSelectionLength: 3,
-          minimumInputLength: 4,
-          selectOnClose: true,
-        });
-
-        // Inisialisasi Summernote
-        $(".summernote").summernote({
-          height: 300,
-          toolbar: [
-            ["customGroup", ["myText"]],
-            ["style", ["style"]],
-            ["font", ["bold", "italic", "underline", "clear"]],
-            ["fontname", ["fontname"]],
-            ["color", ["color"]],
-            ["para", ["ul", "ol", "paragraph"]],
-            ["insert", ["link", "picture", "video"]],
-            ["view", ["fullscreen", "codeview", "help"]],
-          ],
-          buttons: {
-            myText: function (context) {
-              var ui = $.summernote.ui;
-              var button = ui.buttonGroup([
-                ui.button({
-                  className: "note-btn",
-                  contents: "Isi Artikel",
-                  tooltip: "Ketikkan apa yang ingin anda bagikan!",
-                  click: function () {
-                    // Aksi yang dilakukan saat teks diklik
-                  },
-                }),
-              ]);
-              return button.render();
-            },
-          },
-        });
-
-        // Inisialisasi Summernote
-        $("#link").summernote({
-          height: 100,
-          toolbar: [
-            ["customGroup", ["myText"]],
-            ["insert", ["link"]],
-          ],
-          buttons: {
-            myText: function (context) {
-              var ui = $.summernote.ui;
-              var button = ui.buttonGroup([
-                ui.button({
-                  className: "note-btn",
-                  contents: "Referensi Artikel ->",
-                  tooltip: "Ctrl+K atau Command+K",
-                }),
-              ]);
-              return button.render();
-            },
-          },
-        });
-
-        // Image Preview
-        function readURL(input) {
-          if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-              $("#imagePreview img").attr("src", e.target.result);
-              $("#imagePreview").removeClass("d-none");
-              $("#dropzone").addClass("d-none");
-            };
-            reader.readAsDataURL(input.files[0]);
-          }
-        }
-
-        $("#dropzone").click(function () {
-          $("#gambar_artikel").click();
-        });
-
-        $("#gambar_artikel").change(function () {
-          readURL(this);
-        });
-
-        // Clear Image Preview
-        $("#clearImagePreview").click(function () {
-          $("#gambar_artikel").val("");
-          $("#imagePreview").addClass("d-none");
-          $("#dropzone").removeClass("d-none");
-        });
-      });
-    </script>
-
-    <script>
-      // Function to show modal
-      function showModal() {
-        // Show the modal
-        var articleModal = new bootstrap.Modal(
-          document.getElementById("articleModal")
-        );
-        articleModal.show();
-      }
-
-      function updateSearchInput(value) {
-        // Update main search input with value from modal search input
-        document.getElementById("searchInput").value = value;
-      }
-
-      $(document).ready(function () {
-        // Mendapatkan string JSON dari artikel dan mengonversinya menjadi objek JavaScript
-        const artikelString = `<%= JSON.stringify(artikel) %>`;
-        // console.log("artikelString:", artikelString);
-        const artikel = JSON.parse(artikelString.replace(/&#34;/g, '"'));
-        // console.log("artikel:", artikel);
-
-        // Memformat data artikel untuk digunakan dengan Select2
-        const select2Data = artikel.map(function (article) {
-          return {
-            id: article.id,
-            text: article.judul,
-            deskripsi: article.deskripsi,
-            createdAt: article.createdAt,
-            updatedAt: article.updatedAt,
+      <script>
+        // Fungsi debounce
+        function debounce(func, delay) {
+          let timer;
+          return function() {
+            const context = this;
+            const args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+              func.apply(context, args);
+            }, delay);
           };
-        });
+        }
 
-        // console.log("select2Data:", select2Data);
-        // Inisialisasi Select2 pada modalSearchInput
-        $("#modalSearchInput").select2({
-          data: select2Data, // Menggunakan data yang diformat untuk Select2
-          tags: false,
-          placeholder: "Pilih Artikel",
-          allowClear: true,
-          minimumInputLength: 3,
-          dropdownParent: $("#articleModal"), // Menyesuaikan posisi dropdown dengan modal
-          templateResult: formatArticle,
-          templateSelection: formatArticleSelection,
-          escapeMarkup: function (markup) {
-            return markup;
-          }, // Enable HTML content
-        });
+        document.addEventListener("DOMContentLoaded", function() {
+          const searchInputModal = document.getElementById("searchInputModal");
+          // const loading = document.getElementById("loading");
+          const loadMoreBtn = document.getElementById("loadMoreBtn");
+          const searchModal = new bootstrap.Modal(document.getElementById("searchModal"));
+          const modalBody = document.getElementById("modalBody");
 
-        function formatArticle(article) {
-          if (article.loading) {
-            return article.text;
+          let page = 1;
+          const articlesPerPage = 3;
+
+          // Fungsi handleSearch yang dibungkus dengan debounce
+          const delayedSearch = debounce(handleSearch, 500); // Waktu jeda 500ms
+
+          function handleSearch() {
+            // Membersihkan modal body sebelum mengirimkan data ke AJAX
+            modalBody.innerHTML = '';
+            loadMoreBtn.classList.add("d-none");
+            const searchTerm = searchInputModal.value.trim().toLowerCase();
+            console.log("Search term:", searchTerm);
+
+            if (searchTerm === "") {
+              // Handle empty search term if needed
+              return;
+            }
+
+            // Show loading spinner
+            // loading.classList.remove("d-none");
+            $("#loadingSpinner").removeClass("d-none");
+            fetch(`https://insight-hub-api.vercel.app/api/v1/search-artikel/search?judul=${searchTerm}`)
+              .then(response => response.json())
+              .then(data => {
+                console.log('Data fetched:', data);
+                if (data && data.length > 0) {
+                  renderArticles(data);
+                  // Show "Lihat Selengkapnya" button after the first search
+                  if (data.length > articlesPerPage) {
+                    loadMoreBtn.setAttribute("href", `http://localhost:3000/artikel/search-artikel/search?judul=${searchTerm}`);
+                    loadMoreBtn.classList.remove("d-none");
+                  } else {
+                    loadMoreBtn.classList.add("d-none");
+                  }
+                } else {
+                  // Jika tidak ada hasil, tampilkan pesan di modal body
+                  modalBody.innerHTML = "<p>No articles found.</p>";
+                  // Sembunyikan tombol "Lihat Selengkapnya" jika tidak ada hasil
+                  loadMoreBtn.classList.add("d-none");
+                }
+              })
+              .catch(error => {
+                console.error('Error fetching articles:', error);
+                // Handle error
+                // Misalnya, tampilkan pesan kesalahan di modal body
+                modalBody.innerHTML = "<p>Error fetching articles. Please try again later.</p>";
+                // Sembunyikan tombol "Lihat Selengkapnya" jika terjadi kesalahan
+                loadMoreBtn.classList.add("d-none");
+              })
+              .finally(() => {
+                // Hide loading spinner
+                // loading.classList.add("d-none");
+                $("#loadingSpinner").addClass("d-none");
+              });
           }
 
-          var articleUrl = "/artikel/" + article.id + "/" + article.text;
+          function renderArticles(articles) {
+            // Clear modal body before rendering new articles
+            modalBody.innerHTML = '';
 
-          var markup = `
-    <a href="${articleUrl}" class='card' style="text-decoration: none; color: inherit;">
-      <div class='card-header'>
-        ${article.text}
-      </div>
-      <div class='card-body'>
-        <p class='card-text'>${article.deskripsi.substring(0, 100)}...</p>
-        <p class='card-text text-right'>
-          <small class='text-muted'>Created at: ${article.createdAt}</small><br>
-          <small class='text-muted'>Updated at: ${article.updatedAt}</small>
-        </p>
-      </div>
-    </a>
-  `;
+            if (!articles || articles.length === 0) {
+              modalBody.innerHTML = "<p>No articles found.</p>";
+            } else {
+              // Urutkan artikel berdasarkan tanggal pembuatan (createdAt) dari yang terbaru ke yang terlama
+              articles.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-          return markup;
-        }
+              articles.slice(0, articlesPerPage).forEach(article => {
+                const card = document.createElement('div');
+                card.classList.add('card', 'mb-3');
+                card.style.cursor = "pointer";
 
-        function formatArticleSelection(article) {
-          return article.text || article.judul;
-        }
+                const createdAt = new Date(article.createdAt).toLocaleDateString();
+                const updatedAt = new Date(article.updatedAt).toLocaleDateString();
 
-        $("#modalSearchInput").on("select2:selecting", function (e) {
-          // Mencegah Select2 dari mengubah pilihan
-          e.preventDefault();
+                card.innerHTML = `
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src="${article.gambar_artikel}" class="img-fluid rounded-start" alt="...">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title">${article.judul}</h5>
+                          <p class="card-text">${article.deskripsi}</p>
+                          <div class="row justify-content-end align-items-end">
+                            <div class="col-auto">
+                              <p class="card-text">
+                                <small class="text-muted">Created at ${createdAt}</small><br />
+                                <small class="text-muted">Last updated ${updatedAt}</small>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                // Add event listener to redirect to article link when card is clicked
+                card.addEventListener('click', function() {
+                  window.location.href = `/artikel/${article.id}/${encodeURIComponent(article.judul)}`;
+                });
+                modalBody.appendChild(card);
+              });
+            }
+          }
 
-          // Mendapatkan data artikel yang dipilih
-          var article = e.params.args.data;
+          // Update search on input change with debounce
+          searchInputModal.addEventListener("input", delayedSearch);
 
-          // Membuat URL artikel
-          var articleUrl = "/artikel/" + article.id + "/" + article.text;
+          // Show modal on input click
+          searchInputModal.addEventListener("click", function() {
+            searchModal.show();
+          });
 
-          // Melakukan redirect ke halaman artikel
-          window.location.href = articleUrl;
+          // Redirect on Enter key press
+          searchInputModal.addEventListener("keyup", function(event) {
+            if (event.key === 'Enter') {
+              window.location.href = `/search/${encodeURIComponent(searchInputModal.value.trim())}`;
+            }
+          });
+
+          // Initially hide "Lihat Selengkapnya" button
+          loadMoreBtn.classList.add("d-none");
         });
-      });
-    </script>
+      </script>
 
-    <script>
-      const baseUrl = `<%= baseUrl %>`;
-      // Menangkap event submit pada formulir HTML
-      $(document).ready(function () {
-          $("#formArtikel").submit(function (event) {
-          event.preventDefault();
+
+    </div>
+  </nav>
+
+  <main class="container mt-5 py-3">
+    <button class="btn btn-light mb-3" onclick="history.back()">
+      <i class="fas fa-arrow-circle-left fa-lg"></i>
+      <span class="ms-2 fs-5">Kembali</span>
+    </button>
+
+    <div id="tambahArtikelAlert"></div>
+
+    <h3 class="fw-bold">Tulis Karyamu</h3>
+    <form id="formArtikel" class="mt-4" action="/artikel/<%= first_name %>/<%= id %>/add-artikel" method="POST" enctype="multipart/form-data">
+      <hr />
+      <!-- Judul -->
+      <div class="form-group mb-4">
+        <input type="text" class="form-control form-control-lg" id="judul" name="judul" placeholder="Masukkan judul" />
+      </div>
+
+      <!-- Kategori -->
+      <div class="form-group mb-4">
+        <select class="form-control form-control-lg kategori" multiple="multiple" id="kategori" name="categories[]" placeholder="Kategori">
+          <!-- Generate options dynamically from kategori data -->
+          <% kategori.forEach(kat => { %>
+          <option value="<%= kat.id %>"><%= kat.nama %></option>
+          <% }); %>
+        </select>
+      </div>
+
+      <!-- Upload Gambar -->
+      <div class="form-group mb-4">
+        <div id="dropzone" class="dropzone">
+          <p>Masukkan gambar cover artikel</p>
+        </div>
+        <input type="file" class="form-control-file d-none" id="gambar_artikel" name="gambar_artikel" accept="image/*" />
+        <div id="imagePreview" class="mt-2 d-none">
+          <button type="button" class="btn btn-close" id="clearImagePreview">
+            ×
+          </button>
+          <img src="#" alt="Image Preview" width="100" class="img-thumbnail" />
+        </div>
+      </div>
+
+      <!-- Deskripsi dengan Summernote -->
+      <hr />
+      <div class="form-group mb-4">
+        <textarea class="form-control form-control-lg border border-dark summernote" id="deskripsi" name="deskripsi" rows="10" placeholder="Deskripsi"></textarea>
+      </div>
+
+      <!-- Referensi dengan Summernote -->
+      <div class="form-group mb-4">
+        <textarea class="form-control form-control-lg" id="link" name="link" rows="10" placeholder="Referensi"></textarea>
+      </div>
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary rounded-pill">
+          Posting
+        </button>
+      </div>
+    </form>
+    <!-- Animasi Loading -->
+    <div id="loadingOverlay" class="overlay d-none">
+      <div class="spinner-border text-1c0c41" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Load jQuery before Summernote and Select2 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!-- Text Editor Summernotes -->
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+  <!-- Select2 JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+  <script>
+    // Mendapatkan string JSON dari kategori dan mengonversinya menjadi objek JavaScript
+    const kategoriString = `<%= JSON.stringify(kategori) %>`;
+    const kategori = JSON.parse(kategoriString.replace(/&#34;/g, '"'));
+    // console.log(kategori);
+    // Memastikan bahwa kategori sudah didefinisikan sebelum digunakan
+    $(document).ready(function() {
+      $(".kategori").select2({
+        data: kategori, // Menggunakan objek kategori sebagai data untuk Select2
+        tags: false,
+        placeholder: "Pilih Kategori",
+        allowClear: true,
+        tokenSeparators: [",", " "],
+        maximumSelectionLength: 3,
+        minimumInputLength: 4,
+        selectOnClose: true,
+      });
+
+      // Inisialisasi Summernote
+      $(".summernote").summernote({
+        height: 300,
+        toolbar: [
+          ["customGroup", ["myText"]],
+          ["style", ["style"]],
+          ["font", ["bold", "italic", "underline", "clear"]],
+          ["fontname", ["fontname"]],
+          ["color", ["color"]],
+          ["para", ["ul", "ol", "paragraph"]],
+          ["insert", ["link", "picture", "video"]],
+          ["view", ["fullscreen", "codeview", "help"]],
+        ],
+        buttons: {
+          myText: function(context) {
+            var ui = $.summernote.ui;
+            var button = ui.buttonGroup([
+              ui.button({
+                className: "note-btn",
+                contents: "Isi Artikel",
+                tooltip: "Ketikkan apa yang ingin anda bagikan!",
+                click: function() {
+                  // Aksi yang dilakukan saat teks diklik
+                },
+              }),
+            ]);
+            return button.render();
+          },
+        },
+      });
+
+      // Inisialisasi Summernote
+      $("#link").summernote({
+        height: 100,
+        toolbar: [
+          ["customGroup", ["myText"]],
+          ["insert", ["link"]],
+        ],
+        buttons: {
+          myText: function(context) {
+            var ui = $.summernote.ui;
+            var button = ui.buttonGroup([
+              ui.button({
+                className: "note-btn",
+                contents: "Referensi Artikel ->",
+                tooltip: "Ctrl+K atau Command+K",
+              }),
+            ]);
+            return button.render();
+          },
+        },
+      });
+
+      // Image Preview
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            $("#imagePreview img").attr("src", e.target.result);
+            $("#imagePreview").removeClass("d-none");
+            $("#dropzone").addClass("d-none");
+          };
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      $("#dropzone").click(function() {
+        $("#gambar_artikel").click();
+      });
+
+      $("#gambar_artikel").change(function() {
+        readURL(this);
+      });
+
+      // Clear Image Preview
+      $("#clearImagePreview").click(function() {
+        $("#gambar_artikel").val("");
+        $("#imagePreview").addClass("d-none");
+        $("#dropzone").removeClass("d-none");
+      });
+    });
+  </script>
+
+  <script>
+    const baseUrl = `<%= baseUrl %>`;
+    // Menangkap event submit pada formulir HTML
+    $(document).ready(function() {
+      $("#formArtikel").submit(function(event) {
+        event.preventDefault();
 
         // Mengambil nilai dari setiap elemen input
         const judul = $("#judul").val();
@@ -441,9 +405,9 @@
         const kategoriId = $("#kategori").val();
 
         if (!judul || !deskripsi || !link || !gambar_artikel || !kategoriId) {
-         alert("Please fill in all fields.");
-         return;
-       }
+          alert("Please fill in all fields.");
+          return;
+        }
         // Membuat FormData untuk mengirim data dengan file gambar
         const formData = new FormData();
         formData.append("judul", judul);
@@ -460,50 +424,51 @@
         }
         console.log("formData:", JSON.stringify(Object.fromEntries(formData)));
 
-      const endPointCreateArtikel = "/api/v1/artikel/upload";
-      const creaArtikel = baseUrl + endPointCreateArtikel;
+        const endPointCreateArtikel = "/api/v1/artikel/upload";
+        const creaArtikel = baseUrl + endPointCreateArtikel;
         // Mengirim data ke server menggunakan permintaan POST
         $.ajax({
-         type: "POST",
-         url: creaArtikel,
-         headers: {
+          type: "POST",
+          url: creaArtikel,
+          headers: {
             Authorization: "Bearer <%= token %>",
-         },
-         data: formData,
-         processData: false,
-         contentType: false,
-         success: function (data) {
+          },
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
             console.log("Data dari server (success):", data);
             if (data.status) {
-               $("#tambahArtikelAlert")
-               .append(
+              $("#tambahArtikelAlert")
+                .append(
                   `<div class="alert alert-success">${data.message}</div>`
-               );
-               setTimeout(function () {
-            window.location.href = "/dashboard"; // Mengarahkan ke dasborad user
-            }, 3000);
+                );
+              setTimeout(function() {
+                window.location.href = "/dashboard"; // Mengarahkan ke dasborad user
+              }, 3000);
             } else {
-               $("#tambahArtikelAlert").append(
-                  `<div class="alert alert-danger"> ${data.message} Error: ${data.err}</div>`
-               );
+              $("#tambahArtikelAlert").append(
+                `<div class="alert alert-danger"> ${data.message} Error: ${data.err}</div>`
+              );
             }
-         },
-         error: function (xhr, status, error) {
-            const errorData = xhr.responseJSON
-              ? xhr.responseJSON
-              : "Failed to upload artikel. Please try again later.";
+          },
+          error: function(xhr, status, error) {
+            const errorData = xhr.responseJSON ?
+              xhr.responseJSON :
+              "Failed to upload artikel. Please try again later.";
             console.error("Upload artikel error:", errorData);
             console.error("Data dari server (error):", errorData);
             $("#tambahArtikelAlert").append(
               `<div class="alert alert-danger"> ${errorData.message}! &nbsp; Error: ${errorData.error}</div>`
             );
-         },
-         complete: function () {
+          },
+          complete: function() {
             $("#loadingOverlay").addClass("d-none");
-         },
+          },
+        });
       });
-   });
-});
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>

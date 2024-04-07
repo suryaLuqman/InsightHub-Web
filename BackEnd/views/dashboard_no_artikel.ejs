@@ -5,27 +5,35 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title %></title>
+  <title><% title %></title>
   <!-- add favicon -->
   <link rel="icon" type="image/png" href="/resources/images/favicon.ico" />
   <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/resources/css/style.css" />
 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
   <!-- fontawesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
   <div class="main">
+    <script>
+      const artikel = "<%= JSON.stringify(artikel) %>";
+    </script>
     <!-- nav -->
     <nav class="navbar banner-section  bg-body-light pb-3" style="border-bottom: 1px solid rgb(240, 237, 237)">
       <div class="container-fluid mx-5">
         <a class="navbar-brand" href="/">
           <img src="/resources/images/logo.png" width="250" height="50" />
         </a>
-        <form class="group" role="search" data-bs-toggle="modal" data-bs-target="#searchModal">
-          <input type="text" placeholder="Cari artikel" name="text" class="input-search me-5" />
+
+        <!-- Your Search Form -->
+        <form class="group" role="search">
+          <input type="text" placeholder="Cari artikel" name="text" id="searchInput" class="input-search me-5" data-bs-toggle="modal" data-bs-target="#searchModal" />
           <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
             <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
           </svg>
@@ -37,97 +45,177 @@
           </a>
         </form>
 
+        <!-- search Modal -->
         <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <input type="text" class="form-control mb-3" id="searchInputModal" placeholder="Ketik disini...">
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                      <div id="articleList"></div>
-                  </div>
+            <div class="modal-content">
+              <div class="modal-header">
+                <input type="text" class="form-control mb-3" id="searchInputModal" placeholder="Ketik disini...">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
+              <div class="modal-body" id="modalBody">
+                <!-- Added id for modal body -->
+                <!-- Article list will be rendered here -->
+              </div>
+              <div class="text-center">
+                <!-- Animasi Loading -->
+                <div class="spinner-container d-none" id="loadingSpinner">
+                  <div class="spinner-border text-1c0c41" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </div>
+              <a id="loadMoreBtn" class="btn btn-primary d-none" href="#">Lihat Selengkapnya</a>
+            </div>
           </div>
-      </div>
-      
-      <script>
-          document.addEventListener("DOMContentLoaded", function () {
-              const searchInputModal = document.getElementById("searchInputModal");
-              const articleList = document.getElementById("articleList");
-              const searchModal = new bootstrap.Modal(document.getElementById("searchModal")); // tambahkan ini
-      
-              // Function to handle search and display articles
-              function handleSearch() {
-                  const searchTerm = searchInputModal.value.trim().toLowerCase();
-      
-                  // Mock data (replace with actual API call)
-                  const articlesData = [{
-                      id: 1,
-                      judul: "Artikel ilmu ilmu kebenaran part 3",
-                      deskripsi: "Isi deskripsi",
-                      link: "http://google.com",
-                      gambar_artikel: "https://ik.imagekit.io/jeniriska/1712014704714_CUSwmQ12k.png",
-                      fileId: "f42f97068ff04a526883b57f48df2548e8a055772a268bc5810f0a1302e15ef8",
-                      kategoriId: [3],
-                      authorId: 1,
-                      createdAt: "2024-04-01T23:38:30.922Z",
-                      updatedAt: "2024-04-01T23:38:30.922Z",
-                      ratings: [],
-                      kategori: [{
-                          id: 3,
-                          nama: "Sistem pakan",
-                          deskripsi: "Artikel-artikel tentang pikiran buatan"
-                      }],
-                      avgRating: 0
-                  },
-                  // Add more article data here
-                  ];
-      
-                  // Filter articles based on search term
-                  const filteredArticles = articlesData.filter(article => article.judul.toLowerCase().includes(searchTerm));
-      
-                  // Display filtered articles
-                  renderArticles(filteredArticles);
+        </div>
+
+        <script>
+          // Fungsi debounce
+          function debounce(func, delay) {
+            let timer;
+            return function() {
+              const context = this;
+              const args = arguments;
+              clearTimeout(timer);
+              timer = setTimeout(() => {
+                func.apply(context, args);
+              }, delay);
+            };
+          }
+
+          document.addEventListener("DOMContentLoaded", function() {
+            const searchInputModal = document.getElementById("searchInputModal");
+            // const loading = document.getElementById("loading");
+            const loadMoreBtn = document.getElementById("loadMoreBtn");
+            const searchModal = new bootstrap.Modal(document.getElementById("searchModal"));
+            const modalBody = document.getElementById("modalBody");
+
+            let page = 1;
+            const articlesPerPage = 3;
+
+            // Fungsi handleSearch yang dibungkus dengan debounce
+            const delayedSearch = debounce(handleSearch, 500); // Waktu jeda 500ms
+
+            function handleSearch() {
+              // Membersihkan modal body sebelum mengirimkan data ke AJAX
+              modalBody.innerHTML = '';
+              loadMoreBtn.classList.add("d-none");
+              const searchTerm = searchInputModal.value.trim().toLowerCase();
+              console.log("Search term:", searchTerm);
+
+              if (searchTerm === "") {
+                // Handle empty search term if needed
+                return;
               }
-      
-              // Function to render articles in modal
-              function renderArticles(articles) {
-                  if (articles.length === 0) {
-                      articleList.innerHTML = "<p>No articles found.</p>";
+
+              // Show loading spinner
+              // loading.classList.remove("d-none");
+              $("#loadingSpinner").removeClass("d-none");
+              fetch(`https://insight-hub-api.vercel.app/api/v1/search-artikel/search?judul=${searchTerm}`)
+                .then(response => response.json())
+                .then(data => {
+                  console.log('Data fetched:', data);
+                  if (data && data.length > 0) {
+                    renderArticles(data);
+                    // Show "Lihat Selengkapnya" button after the first search
+                    if (data.length > articlesPerPage) {
+                      loadMoreBtn.setAttribute("href", `http://localhost:3000/artikel/search-artikel/search?judul=${searchTerm}`);
+                      loadMoreBtn.classList.remove("d-none");
+                    } else {
+                      loadMoreBtn.classList.add("d-none");
+                    }
                   } else {
-                      articleList.innerHTML = articles.map(article => `
-                          <div class="card mb-3">
-                              <div class="row g-0">
-                                  <div class="col-md-4">
-                                      <img src="${article.gambar_artikel}" class="img-fluid rounded-start" alt="...">
-                                  </div>
-                                  <div class="col-md-8">
-                                      <div class="card-body">
-                                          <h5 class="card-title">${article.judul}</h5>
-                                          <p class="card-text">${article.deskripsi}</p>
-                                          <a href="${article.link}" class="btn btn-primary">Read more</a>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      `).join('');
+                    // Jika tidak ada hasil, tampilkan pesan di modal body
+                    modalBody.innerHTML = "<p>No articles found.</p>";
+                    // Sembunyikan tombol "Lihat Selengkapnya" jika tidak ada hasil
+                    loadMoreBtn.classList.add("d-none");
                   }
+                })
+                .catch(error => {
+                  console.error('Error fetching articles:', error);
+                  // Handle error
+                  // Misalnya, tampilkan pesan kesalahan di modal body
+                  modalBody.innerHTML = "<p>Error fetching articles. Please try again later.</p>";
+                  // Sembunyikan tombol "Lihat Selengkapnya" jika terjadi kesalahan
+                  loadMoreBtn.classList.add("d-none");
+                })
+                .finally(() => {
+                  // Hide loading spinner
+                  // loading.classList.add("d-none");
+                  $("#loadingSpinner").addClass("d-none");
+                });
+            }
+
+            function renderArticles(articles) {
+              // Clear modal body before rendering new articles
+              modalBody.innerHTML = '';
+
+              if (!articles || articles.length === 0) {
+                modalBody.innerHTML = "<p>No articles found.</p>";
+              } else {
+                // Urutkan artikel berdasarkan tanggal pembuatan (createdAt) dari yang terbaru ke yang terlama
+                articles.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                articles.slice(0, articlesPerPage).forEach(article => {
+                  const card = document.createElement('div');
+                  card.classList.add('card', 'mb-3');
+                  card.style.cursor = "pointer";
+
+                  const createdAt = new Date(article.createdAt).toLocaleDateString();
+                  const updatedAt = new Date(article.updatedAt).toLocaleDateString();
+
+                  card.innerHTML = `
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src="${article.gambar_artikel}" class="img-fluid rounded-start" alt="...">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title">${article.judul}</h5>
+                          <p class="card-text">${article.deskripsi}</p>
+                          <div class="row justify-content-end align-items-end">
+                            <div class="col-auto">
+                              <p class="card-text">
+                                <small class="text-muted">Created at ${createdAt}</small><br />
+                                <small class="text-muted">Last updated ${updatedAt}</small>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                  // Add event listener to redirect to article link when card is clicked
+                  card.addEventListener('click', function() {
+                    window.location.href = `/artikel/${article.id}/${encodeURIComponent(article.judul)}`;
+                  });
+                  modalBody.appendChild(card);
+                });
               }
-      
-              // Event listener for input change
-              searchInputModal.addEventListener("input", handleSearch);
-      
-              // Event listener for input click to show modal
-              searchInputModal.addEventListener("click", function() {
-                  searchModal.show();
-              });
-      
-              // Initial rendering
-              handleSearch();
+            }
+
+            // Update search on input change with debounce
+            searchInputModal.addEventListener("input", delayedSearch);
+
+            // Show modal on input click
+            searchInputModal.addEventListener("click", function() {
+              searchModal.show();
+            });
+
+            // Redirect on Enter key press
+            searchInputModal.addEventListener("keyup", function(event) {
+              if (event.key === 'Enter') {
+                window.location.href = `/search/${encodeURIComponent(searchInputModal.value.trim())}`;
+              }
+            });
+
+            // Initially hide "Lihat Selengkapnya" button
+            loadMoreBtn.classList.add("d-none");
           });
-      </script>
-      
+        </script>
+
+
 
       </div>
     </nav>
@@ -138,15 +226,15 @@
           <div class="col-8">
             <p class="fs-2 fw-bold">Highlight</p>
             <div>
-              <a href="/dashboard/<%= first_name %>/addArticle" class="text-1c0c41" style="
-                    border-bottom: 2px solid #1c0c41; /* transparan saat normal */
-                    width: fit-content;
-                    padding-bottom: 5px;
-                    display: inline-block;
-                    text-decoration: none;
-                    position: relative;
-                  ">
-                <i class="fa-solid fa-pencil mt-4" style="font-size: 1.5rem; margin-right: 5px"></i>
+              <a href="/artikel/<%= first_name %>/<%= id %>/add-artikel" class="text-1c0c41" style="
+        border-bottom: 2px solid #1c0c41; /* transparan saat normal */
+        width: fit-content;
+        padding-bottom: 5px;
+        display: inline-block; 
+        text-decoration: none;
+        position: relative;
+    ">
+                <i class="fa-solid fa-pencil mt-4" style="font-size: 1.5rem; margin-right: 5px;"></i>
                 <!-- Menambahkan sedikit ruang di sekitar ikon -->
                 Tulis Karyamu
                 <!-- Pseudo-element untuk membuat efek animasi -->
@@ -164,8 +252,12 @@
                   <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
                 </div>
                 <div class="col-8">
-                  <p style="margin-top: 0 !important;margin-bottom: 0 !important;"><%= first_name %></p>
-                  <p><%= status %></p>
+                  <p style="margin-top: 0 !important;margin-bottom: 0 !important;">
+                    <%= first_name %>
+                  </p>
+                  <p>
+                    <%= status %>
+                  </p>
                 </div>
                 <hr />
               </div>
@@ -174,53 +266,57 @@
             <div class="badge-custom">
               <div class="row">
                 <div class="col-6">
-                  <% const halfCount = Math.ceil(kategori.length / 2); %> <%
-                    kategori.forEach((item, index) => { %> <% if (index <
-                    halfCount) { %>
+                  <% const halfCount=Math.ceil(kategori.length / 2); %>
+                  <% kategori.forEach((item, index)=> { %>
+                  <% if (index < halfCount) { %>
                   <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-4 mt-4 ms-5" data-kategoriid="<%= item.id %>">
                     <%= item.nama %>
                   </button>
-                  <% } %> <% }); %>
+                  <% } %>
+                  <% }); %>
                 </div>
                 <div class="col-6">
-                  <% kategori.forEach((item, index) => { %> <% if (index >=
-                    halfCount) { %>
+                  <% kategori.forEach((item, index)=> { %>
+                  <% if (index>= halfCount) { %>
                   <button class="badge-button fs-6 fw-medium badge rounded-pill text-bg-light py-2 px-3 ms-3 <%= index === halfCount ? 'mt-4' : 'mt-3' %>" data-kategoriid="<%= item.id %>">
                     <%= item.nama %>
                   </button>
-                  <% } %> <% }); %>
+                  <% } %>
+                  <% }); %>
                 </div>
               </div>
-              <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const buttons = document.querySelectorAll('.badge-button');
-                    const articles = document.querySelectorAll('.card');
-          
-                    buttons.forEach(button => {
-                        button.addEventListener('click', function() {
-                          const kategoriId = this.dataset.kategoriid;
-          
-                          articles.forEach(article => {
-                            const artikelKategoriId = article.dataset.kategoriid.split(',').map(id => id.trim());
-          
-                            if (artikelKategoriId.includes(kategoriId)) {
-                              article.style.display = 'block'; // Tampilkan artikel yang sesuai
-                            } else {
-                              article.style.display = 'none'; // Sembunyikan artikel yang tidak sesuai
-                            }
-                          });
-                        });
-                      });
-                  });
-              </script>
               <hr class="ms-5" />
               <p class="text-center">Created by Kelompok 3 KKP Batch 4</p>
             </div>
+
+            <script>
+              document.addEventListener("DOMContentLoaded", function() {
+                const buttons = document.querySelectorAll('.badge-button');
+                const articles = document.querySelectorAll('.card');
+
+                buttons.forEach(button => {
+                  button.addEventListener('click', function() {
+                    const kategoriId = this.dataset.kategoriid;
+
+                    articles.forEach(article => {
+                      const artikelKategoriId = article.dataset.kategoriid.split(',').map(id => id.trim());
+
+                      if (artikelKategoriId.includes(kategoriId)) {
+                        article.style.display = 'block'; // Tampilkan artikel yang sesuai
+                      } else {
+                        article.style.display = 'none'; // Sembunyikan artikel yang tidak sesuai
+                      }
+                    });
+                  });
+                });
+              });
+            </script>
           </div>
         </div>
       </div>
     </section>
   </div>
+
 
   <script src="/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
@@ -233,6 +329,10 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin Boostrap select Picker -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
 
   <script src="/resources/js/main.js"></script>
 </body>

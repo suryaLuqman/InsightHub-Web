@@ -23,30 +23,34 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#editButton").addClass("d-none");
   });
 
-// Variabel global untuk menyimpan data URL gambar profil
-var profileImageDataURL;
+  // Variabel global untuk menyimpan data URL gambar profil
+  var profileImageDataURL;
 
-// Ketika input file berubah, baca file yang dipilih pengguna dan tampilkan sebagai gambar profil
-document.getElementById('profileImageInput').addEventListener('change', function(e) {
-  var file = e.target.files[0];
-  var reader = new FileReader();
+  // Ketika input file berubah, baca file yang dipilih pengguna dan tampilkan sebagai gambar profil
+  document
+    .getElementById("profileImageInput")
+    .addEventListener("change", function (e) {
+      var file = e.target.files[0];
+      var reader = new FileReader();
 
-  reader.onloadend = function() {
-    document.querySelector('.rounded-circle').src = reader.result;
-    document.getElementById('profileImage').src = reader.result;
-    profileImageDataURL = reader.result; // Simpan data URL gambar profil
-  }
+      reader.onloadend = function () {
+        document.querySelector(".rounded-circle").src = reader.result;
+        document.getElementById("profileImage").src = reader.result;
+        profileImageDataURL = reader.result; // Simpan data URL gambar profil
+      };
 
-  if (file) {
-    reader.readAsDataURL(file);
-  }
-});
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    });
 
-// Event listener untuk tombol "Upload"
-document.getElementById('uploadPicButton').addEventListener('click', function() {
-  // Klik input file ketika tombol "Upload" diklik
-  document.getElementById('profileImageInput').click();
-});
+  // Event listener untuk tombol "Upload"
+  document
+    .getElementById("uploadPicButton")
+    .addEventListener("click", function () {
+      // Klik input file ketika tombol "Upload" diklik
+      document.getElementById("profileImageInput").click();
+    });
 
   // Event listener untuk tombol "Simpan"
   saveButton.addEventListener("click", function () {
@@ -71,6 +75,10 @@ document.getElementById('uploadPicButton').addEventListener('click', function() 
     };
 
     console.log("Data yang akan dikirimkan ke server:", formData);
+
+    // Menampilkan animasi loading
+    $("#loadingOverlay").removeClass("d-none");
+
     // Mendapatkan url utama dari env
     //  const urlAPI = "<%= urlAPI %>";
     const endPointLogin = "/api/v1/auth/test";

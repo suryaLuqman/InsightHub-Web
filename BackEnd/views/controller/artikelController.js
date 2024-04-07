@@ -72,39 +72,6 @@ exports.getArtikelPage = async (req, res) => {
 };
 
 
-// Controller to render viewArtikel page and fetch article based on artikelId
-exports.getViewArtikelPage = async (req, res) => {
-  try {
-    const { id } = req.params; // Mengambil id dari parameter route
-    const artikelId = parseInt(id); // Mengkonversi id menjadi integer jika diperlukan
-    console.log("artikelId:", artikelId);
-    // Lakukan validasi jika artikelId tidak ada atau tidak valid
-    if (!artikelId || isNaN(artikelId)) {
-      return res.status(400).render("error", { error: "Invalid Artikel ID." });
-    }
-
-    // Lakukan permintaan HTTP GET ke API untuk mencari artikel berdasarkan artikelId
-    const baseUrl = process.env.API;
-    const artikelUrl = `${baseUrl}/api/v1/search-artikel/search?artikelId=${artikelId}`;
-
-    const artikelResponse = await axios.get(artikelUrl);
-    const artikelData = artikelResponse.data;
-    console.log("artikelData:", artikelData);
-    // Render viewArtikel page dengan data artikel yang ditemukan
-    return res.render("viewArtikel", {
-      title: "View Artikel - InsightHub",
-      artikel: artikelData,
-    });
-  } catch (error) {
-    console.error("Failed to fetch data from API:", error);
-    return res
-      .status(500)
-      .render("error", { error: "Failed to fetch data from API." });
-  }
-};
-
-
-
 // Controller untuk membuat artikel baru
 exports.createArtikel = async (req, res) => {
   try {
