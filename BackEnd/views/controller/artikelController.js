@@ -155,3 +155,31 @@ exports.createArtikel = async (req, res) => {
     res.status(500).json({ error: "Failed to create article." });
   }
 };
+
+
+// controller search artikel
+exports.searchArtikel = async (req, res) => {
+  try {
+
+      const judul = req.query.judul;    
+      console.log("Judul:", judul);
+      const baseUrl = process.env.API;
+      const endpointArtikel = `/api/v1/search-artikel/search?judul=${judul}`; // End point yang ingin Anda ambil
+      const artikel = baseUrl + endpointArtikel; // Menggabungkan base URL dengan end point
+      const responseArtikel = await axios.get(artikel);
+      // console.log(responseArtikel.data.data);
+      const dataArtikel = responseArtikel.data.data;
+
+      // If there are articles, send article data to view
+      return res.render("hasil-pencarian", {
+        title: "InsightHub - Lets Start the journey with us",
+        artikel: dataArtikel
+      });
+
+  } catch (error) {
+    console.error("Failed to fetch data from API:", error);
+    return res
+      .status(500)
+      .render("error", { error: "Failed to fetch data from API." });
+  }
+}

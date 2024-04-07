@@ -45,10 +45,10 @@ app.use(session({
 
 // Set view engine (example using EJS)
 app.set('view engine', 'ejs');
+app.use("/artikel",artikelRoute);
 app.use(homeRoute);
 app.use(dashboardRoute);
 app.use(profileRoute);
-app.use("/artikel",artikelRoute);
 
 app.use('/api/v1', require('./routes/index.routes'));
 app.use((req, res, next) => {
