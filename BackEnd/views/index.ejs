@@ -89,6 +89,7 @@
             function handleSearch() {
               // Membersihkan modal body sebelum mengirimkan data ke AJAX
               modalBody.innerHTML = '';
+              loadMoreBtn.classList.add("d-none");
               const searchTerm = searchInputModal.value.trim().toLowerCase();
               console.log("Search term:", searchTerm);
 
