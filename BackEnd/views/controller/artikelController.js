@@ -280,10 +280,49 @@ exports.getViewArtikelPage = async (req, res) => {
         // console.log("Token:", token);
 
         const userProfile = await getUserProfile.getUserProfile(token);
-        // console.log("userProfile:", userProfile);
+        console.log("userProfile:", userProfile);
+        console.log("artikelData:", artikelData);
         const first_name = userProfile.data.userProfile.first_name;
         const id = userProfile.data.userProfile.id;
         const status = userProfile.data.userProfile.status;
+        const ratings = userProfile.data.ratings;
+        const reports = userProfile.data.reports;
+
+        ratings.forEach(rating => {
+          console.log("rating : ",rating);
+        });
+
+        reports.forEach(report => {
+          console.log("report : ",report);
+        });
+        
+        // check user has rate article or not
+        const ratedArticles = [];
+
+        ratings.forEach(rating => {
+          if (rating.artikelId === artikelId) {
+            ratedArticles.push(rating);
+          }
+        });
+
+        ratedArticles.forEach(ratedArticle => {
+          console.log("ratedArticle : ",ratedArticle);
+        });
+        console.log("length of ratedArticles : ",ratedArticles.length);
+
+        // check user has report article or not
+        const reportedArticles = [];
+        reports.forEach(report => {
+          if (report.artikelId === artikelId) {
+            reportedArticles.push(report);
+          }
+        });
+
+        reportedArticles.forEach(reportedArticle => {
+          console.log("reportedArticle : ",reportedArticle);
+        });
+        console.log("length of reportedArticles : ",reportedArticles.length);
+
         // console.log("artikel:", dataArtikel);
         // If there are articles, send article data to view
         return res.render("viewArtikel", {
@@ -294,6 +333,8 @@ exports.getViewArtikelPage = async (req, res) => {
           token: token,
           artikel: artikelData,
           kategori: dataKategori,
+          userRating: ratedArticles,
+          userReported: reportedArticles,
         })
       }else {
         console.log("Token not found");

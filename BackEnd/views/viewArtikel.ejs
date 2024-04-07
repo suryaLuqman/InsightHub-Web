@@ -75,13 +75,13 @@
                 </div>
                 <div class="col-8">
                   <p><%= artikel[0].author.nama %></p>
-                  <p>Dewan Perwakilan Rakyat</p>
+                  <p><%= artikel[0].author.status %></p>
                 </div>
                 <hr />
               </div>
             </section>
             <div class="rating">
-              <p class="text-center">Rating artikel ini</p>
+              <p class="text-center" id="labelRating">Rating artikel ini</p>
               <div class="star text-center">
                 <i class="fa-regular fa-star" onclick="confirmRating(1)"></i>
                 <i class="fa-regular fa-star" onclick="confirmRating(2)"></i>
@@ -89,6 +89,12 @@
                 <i class="fa-regular fa-star" onclick="confirmRating(4)"></i>
                 <i class="fa-regular fa-star" onclick="confirmRating(5)"></i>
               </div>
+
+              <p class="text-center mt-2">
+                <a href="" class="text-danger text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalReport">
+                  <i class="fa-solid fa-circle-exclamation me-2"></i>Laporkan
+                  konten ini</a>
+              </p>
 
               <!-- Bootstrap Modal -->
               <div class="modal fade" id="ratingConfirmationModal" tabindex="-1" aria-labelledby="ratingConfirmationModalLabel" aria-hidden="true">
@@ -116,6 +122,64 @@
                 </div>
               </div>
 
+              <!-- check reported and rated artikel -->
+              <script>
+                // Assuming you have the user's rating and report data
+                const userRating = `<%- JSON.stringify(userRating)%>`;
+                console.log("userRating : ", userRating);
+
+                // Find the start and end indices of the "nilai" value
+                const startRateValue = userRating.indexOf('"nilai":') + 8;
+                const endRateValue = userRating.indexOf(',', startRateValue);
+
+                // Extract the "nilai" value
+                const nilaiRate = userRating.substring(startRateValue, endRateValue);
+
+                console.log("Nilai nilaiRate:", nilaiRate);
+
+                // Assuming you have the user's rating and report data
+                const userHasReported = `<%- JSON.stringify(userReported)%>`;
+                console.log("userHasReported : ", userHasReported);
+
+                // Find the start and end indices of the "alasan" value
+                const startAlasan = userHasReported.indexOf('"alasan":') + 9;
+                const endAlasan = userHasReported.indexOf(',', startAlasan);
+
+                // Extract the "alasan" value
+                const alasanArray = userHasReported.substring(startAlasan, endAlasan).split(',');
+
+                console.log("Alasan array:", alasanArray);
+
+                $(document).ready(function() {
+                  // Disable the report button if the user has reported this article
+                  if (userHasReported !== '[]') {
+                    $("#modalReport button.btn-primary").prop("disabled", true);
+                    // mengisi text area dengan alasan user
+                    $("#alasan").val(alasanArray[0]);
+                    console.log("alasan user : ", alasanArray[0]);
+                    // menjadikan textarea menjadi readonly dan berwarna abu
+                    $("#alasan").prop("readonly", true);
+                    $("#alasan").addClass("bg-light");
+                    $("#alasan").addClass("text-muted");
+                    // ganti label pada textarea
+                    $("#alasanLabel").text("Anda telah melaporkan konten ini, alasan pelaporan :");
+                    console.log("User has reported this article");
+                  }
+
+                  // show rating if the user has rated this article
+                  if (userRating !== '[]') {
+                    // tampilkan bintang sesuai dengan rating user
+                    for (let i = 0; i < parseInt(nilaiRate); i++) {
+                      $(".star i").eq(i).addClass("fa-solid");
+                    }
+                    // disable button rating
+                    disableRating();
+                    // change label to show that user has rated this article
+                    $("#labelRating").text("Anda telah memberikan rating ");
+                    console.log("User has rated this article");
+                  }
+                })
+              </script>
 
 
               <script>
@@ -160,11 +224,6 @@
                   }
                 }
               </script>
-              <p class="text-center mt-2">
-                <a href="" class="text-danger text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalReport">
-                  <i class="fa-solid fa-circle-exclamation me-2"></i>Laporkan
-                  konten ini</a>
-              </p>
               <p class="text-center">Created by Kelompok 3 KKP Batch 4</p>
             </div>
           </div>
@@ -184,7 +243,7 @@
         <div class="modal-body">
           <form id="reportForm">
             <div class="mb-3">
-              <label for="alasan" class="form-label">Alasan Pelaporan</label>
+              <label for="alasan" id="alasanLabel" class="form-label">Alasan Pelaporan</label>
               <textarea class="form-control" id="alasan" rows="3" placeholder="Tuliskan alasan mengapa Anda melaporkan artikel ini..."></textarea>
             </div>
           </form>
@@ -258,7 +317,11 @@
         success: function(data) {
           console.log("Data dari server (success):", data);
           if (data.success) {
-            $("#viewArtikelAlert").text(data.message).removeClass("d-none");
+            $("#viewArtikelAlert")
+            .text(data.message)
+            .removeClass("d-none")
+            .removeClass("alert-danger")
+            .css("background-color", "#28a745");
           } else {
             const Message = data.message;
             const error = data.error;
@@ -331,7 +394,10 @@
         success: function(data) {
           console.log("Data dari server (success):", data);
           if (data.success) {
-            $("#viewArtikelAlert").text(data.message).removeClass("d-none");
+            $("#viewArtikelAlert")
+            .text(data.message)
+            .removeClass("d-none")
+            .css("background-color", "#28a745");
           } else {
             const Message = data.message;
             const error = data.error;
