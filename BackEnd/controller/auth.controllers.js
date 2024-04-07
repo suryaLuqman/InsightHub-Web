@@ -665,6 +665,18 @@ const getUserProfile = async (req, res, next) => {
         authorId: userId,
       },
     });
+    
+    // Hitung total postingan pengguna
+    const totalUserArtikels = userArtikels.length;
+
+    // Hitung total artikel yang dilaporkan oleh pengguna lain
+    const totalReportedArtikels = reports.length;
+
+    const totalRatings = ratings.reduce((acc, curr) => acc + curr.nilai, 0);
+  
+    // Batasi total rating agar tidak melebihi 5
+    const totalRatingsLimited = Math.min(totalRatings, 5);
+
     return res.status(200).json({
       success: true,
       message: "User profile retrieved successfully",
@@ -674,6 +686,9 @@ const getUserProfile = async (req, res, next) => {
         ratings: ratings,
         reports: reports,
         userArtikels: userArtikels,
+        totalUserArtikels: totalUserArtikels,
+        totalReportedArtikels: totalReportedArtikels,
+        totalRatings: totalRatingsLimited,
       },
     });
   } catch (error) {
