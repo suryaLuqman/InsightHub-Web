@@ -244,23 +244,25 @@
             </div>
 
             <hr class="mt-5" />
-            <%
-              // Mengurutkan artikel berdasarkan tanggal pembuatan (createdAt) dari yang paling baru
-              artikel.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            <% 
+            // Mengurutkan artikel berdasarkan tanggal pembuatan (createdAt) dari yang paling baru
+            artikel.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-              artikel.data.forEach(article => {
+            artikel.data.forEach(article => {
             %>
             <a href="/artikel/<%= article.id %>/<%= encodeURIComponent(article.judul) %>" class="text-decoration-none text-reset">
               <div class="card mb-3 border-0" data-artikelid="<%= article.id %>" data-kategoriId="<%= article.kategoriId %>">
                 <div class="row g-0">
                   <div class="col-md-3">
-                    <img src="<%= article.gambar_artikel %>" class="img-fluid rounded-start" alt="...">
+                    <div style="height: 120px; overflow: hidden;">
+                      <img src="<%= article.gambar_artikel %>" class="img-fluid rounded-start" alt="..." style="object-fit: cover; height: 100%; width: 100%;">
+                    </div>
                   </div>
                   <div class="col-md-9">
                     <div class="card-body">
                       <h5 class="card-title"><%= article.judul %></h5>
                       <!-- Teks dihapus dari tag HTML menggunakan JavaScript di sisi server -->
-                      <p class="card-text"><%= article.deskripsi.replace(/(<([^>]+)>)/gi, '') %></p>
+                      <p class="card-text"><%= article.deskripsi.substring(0, 300).replace(/(<([^>]+)>|&[^;]+;|.+<font[^>]*$)/gi, '') %>...</p>
                       <div class="row justify-content-end align-items-end">
                         <div class="col-auto">
                           <p class="card-text">

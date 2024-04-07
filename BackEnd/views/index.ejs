@@ -288,12 +288,13 @@
               <div class="card mb-4 border-0" data-artikelid="<%= artikelItem.id %>" data-kategoriid="<%= artikelItem.kategoriId %>">
                 <div class="row g-0">
                   <div class="col-md-5">
-                    <img src="<%= artikelItem.gambar_artikel %>" class="img-fluid rounded-start" alt="...">
-                  </div>
+                    <div style="height: 170px; overflow: hidden;">
+                      <img src="<%= artikelItem.gambar_artikel %>" class="img-fluid rounded-start" alt="..." style="object-fit: cover; height: 100%; width: 100%;">
+                    </div>                  </div>
                   <div class="col-md-7">
                     <div class="card-body">
                       <h5 class="card-title"><%= artikelItem.judul %></h5>
-                      <p class="card-text"><%= artikelItem.deskripsi.substring(0, 100) %>...</p>
+                      <p class="card-text"><%= artikelItem.deskripsi.substring(0, 300).replace(/(<([^>]+)>|&[^;]+;|.+<font[^>]*$)/gi, '') %>...</p>
                       <div class="row justify-content-end align-items-end">
                         <div class="col-auto">
                           <p class="card-text">
@@ -320,12 +321,14 @@
               <div class="card mb-4 border-0" data-artikelid="<%= artikelItem.id %>" data-kategoriid="<%= artikelItem.kategoriId %>">
                 <div class="row g-0">
                   <div class="col-md-5">
-                    <img src="<%= artikelItem.gambar_artikel %>" class="img-fluid rounded-start" alt="...">
+                    <div style="height: 170px; overflow: hidden;">
+                      <img src="<%= artikelItem.gambar_artikel %>" class="img-fluid rounded-start" alt="..." style="object-fit: cover; height: 100%; width: 100%;">
+                    </div>  
                   </div>
                   <div class="col-md-7">
                     <div class="card-body">
                       <h5 class="card-title"><%= artikelItem.judul %></h5>
-                      <p class="card-text"><%= artikelItem.deskripsi.substring(0, 100) %>...</p>
+                      <p class="card-text"><%= artikelItem.deskripsi.substring(0, 300).replace(/(<([^>]+)>|&[^;]+;|.+<font[^>]*$)/gi, '') %>...</p>
                       <div class="row justify-content-end align-items-end">
                         <div class="col-auto">
                           <p class="card-text">
