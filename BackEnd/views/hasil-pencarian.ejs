@@ -250,7 +250,7 @@
                     <div class="card-body">
                       <h5 class="card-title"><%= article.judul %></h5>
                       <!-- Teks dihapus dari tag HTML menggunakan JavaScript di sisi server -->
-                      <p class="card-text"><%= artikelItem.deskripsi.substring(0, 300).replace(/(<([^>]+)>|&[^;]+;|.+<font[^>]*$)/gi, '') %>...</p>
+                      <p class="card-text"><%= article.deskripsi.substring(0, 300).replace(/(<([^>]+)>|&[^;]+;|.+<font[^>]*$)/gi, '') %>...</p>
                       <div class="row justify-content-end align-items-end">
                         <div class="col-auto">
                           <p class="card-text">

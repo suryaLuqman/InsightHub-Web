@@ -222,14 +222,144 @@ exports.searchArtikel = async (req, res) => {
     } else {
       console.log("Cookie not found");
       return res.render("hasil-pencarian", {
-        title: "InsightHub - Lets Start the journey with us",
-        first_name: first_name,
-        id: id,
-        status: status,
-        token: token,
-        artikel: dataArtikel,
+          title: "InsightHub - Lets Start the journey with us",
+          first_name: "user",
+          id: null,
+          status: "pembaca",
+          token: null,
+          artikel: dataArtikel,
+          kategori: dataKategori,
       });
     }
+  } catch (error) {
+    console.error("Failed to fetch data from API:", error);
+    return res
+      .status(500)
+      .render("error", { error: "Failed to fetch data from API." });
+  }
+};
+
+exports.getViewArtikelPage = async (req, res) => {
+  try {
+    const { id } = req.params; // Mengambil id dari parameter route
+    const artikelId = parseInt(id); // Mengkonversi id menjadi integer jika diperlukan
+    console.log("artikelId:", artikelId);
+    // Lakukan validasi jika artikelId tidak ada atau tidak valid
+    if (!artikelId || isNaN(artikelId)) {
+      return res.status(400).render("error", { error: "Invalid Artikel ID." });
+    }
+
+    // Lakukan permintaan HTTP GET ke API untuk mencari artikel berdasarkan artikelId
+    const baseUrl = process.env.API;
+    const artikelUrl = `${baseUrl}/api/v1/search-artikel/search?artikelId=${artikelId}`;
+
+    const artikelResponse = await axios.get(artikelUrl);
+    const artikelData = artikelResponse.data;
+
+
+    // Kategori
+    let dataKategori = [];
+    artikelData.forEach((artikel) => {
+      dataKategori = dataKategori.concat(artikel.kategori);
+    });
+
+    // Remove duplicates
+    dataKategori = [...new Set(dataKategori.map(JSON.stringify))].map(
+      JSON.parse
+    );
+
+    const cookieIndex = req.rawHeaders.indexOf("Cookie");
+    if (cookieIndex !== -1) {
+      const cookie = req.rawHeaders[cookieIndex + 1];
+      // console.log("Cookie:", cookie);
+
+      // Use a regular expression to extract the token value from the cookie string
+      const tokenMatch = cookie.match(/token=([^;]*)/);
+      if (tokenMatch) {
+        const token = tokenMatch[1];
+        // console.log("Token:", token);
+
+        const userProfile = await getUserProfile.getUserProfile(token);
+        console.log("userProfile:", userProfile);
+        console.log("artikelData:", artikelData);
+        const first_name = userProfile.data.userProfile.first_name;
+        const id = userProfile.data.userProfile.id;
+        const status = userProfile.data.userProfile.status;
+        const ratings = userProfile.data.ratings;
+        const reports = userProfile.data.reports;
+
+        ratings.forEach(rating => {
+          console.log("rating : ",rating);
+        });
+
+        reports.forEach(report => {
+          console.log("report : ",report);
+        });
+        
+        // check user has rate article or not
+        const ratedArticles = [];
+
+        ratings.forEach(rating => {
+          if (rating.artikelId === artikelId) {
+            ratedArticles.push(rating);
+          }
+        });
+
+        ratedArticles.forEach(ratedArticle => {
+          console.log("ratedArticle : ",ratedArticle);
+        });
+        console.log("length of ratedArticles : ",ratedArticles.length);
+
+        // check user has report article or not
+        const reportedArticles = [];
+        reports.forEach(report => {
+          if (report.artikelId === artikelId) {
+            reportedArticles.push(report);
+          }
+        });
+
+        reportedArticles.forEach(reportedArticle => {
+          console.log("reportedArticle : ",reportedArticle);
+        });
+        console.log("length of reportedArticles : ",reportedArticles.length);
+
+        // console.log("artikel:", dataArtikel);
+        // If there are articles, send article data to view
+        return res.render("viewArtikel", {
+          title: "View Artikel - InsightHub",
+          first_name: first_name,
+          id: id,
+          status: status,
+          token: token,
+          artikel: artikelData,
+          kategori: dataKategori,
+          userRating: ratedArticles,
+          userReported: reportedArticles,
+        })
+      }else {
+        console.log("Token not found");
+        return res.render("viewArtikel", {
+          title: "View Artikel - InsightHub",
+          first_name: "user",
+          id: null,
+          status: "pembaca",
+          token: null,
+          artikel: artikelData,
+          kategori: dataKategori,
+        });
+      }
+    } else {
+      console.log("Cookie not found");
+      return res.render("viewArtikel", {
+        title: "View Artikel - InsightHub",
+        first_name: "user",
+        id: null,
+        status: "pembaca",
+        token: null,
+        artikel: artikelData,
+        kategori: dataKategori,
+      });
+      }
   } catch (error) {
     console.error("Failed to fetch data from API:", error);
     return res

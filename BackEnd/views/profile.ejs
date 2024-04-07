@@ -53,48 +53,44 @@
             <div class="tab-pane fade show active" id="postingan" role="tabpanel" aria-labelledby="postingan-tab">
               <div class="container py-3">
                 <!-- Card Start -->
-                <div class="card">
-                  <div class="row ">
-                    <div class="col-md-5 d-flex justify-content-center align-items-center" style="padding-left: 3%;">
-                      <div id="CarouselTest" class="carousel slide">
-                        <div class="carousel-inner">
-                          <div class="carousel-item active">
-                            <img class="d-block img-fluid" src="https://picsum.photos/450/300?image=1072" alt="">
-                          </div>
+                <% 
+                  // Mengurutkan artikel berdasarkan tanggal pembuatan (createdAt) dari yang paling baru
+                  artikel.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                  artikel.forEach(article => {
+                %>
+                <a href="/artikel/<%= article.id %>/<%= encodeURIComponent(article.judul) %>" class="text-decoration-none text-reset">
+                  <div class="card mb-3 border-0" data-artikelid="<%= article.id %>" data-kategoriId="<%= article.kategoriId %>">
+                    <div class="row g-0">
+                      <div class="col-md-3">
+                        <div style="height: 120px; overflow: hidden;">
+                          <img src="<%= article.gambar_artikel %>" class="img-fluid rounded-start" alt="..." style="object-fit: cover; height: 100%; width: 100%;">
                         </div>
                       </div>
-                    </div>
-
-
-                    <div class="col-md-7 px-3">
-                      <div class="card-block px-6 mt-4">
-                        <h4 class="card-title text-dark">FITASTY : UI/UX DESIGNER</h4>
-                        <p class="card-text text-dark">
-                          Lorem Ipsum is simply dummy text of the printing and typesetting
-                          industry. Lorem Ipsum has been the industry's standard
-                          dummy text ever since the 1500s, when an unknown printer took a
-                          galley of type and scrambled it to make a type specimen
-                          book. It has survived not only five centuries, but also the leap
-                          into electronic typesetting, remaining essentially
-                          unchanged.
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                          <p class="card-text text-dark">22 Maret 2024</p>
-                          <div class="dropdown">
-                            <button class="btn btn-link text-dark" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <li><a class="dropdown-item" href="#">Edit</a></li>
-                              <li><a class="dropdown-item text-danger" href="#">Delete</a>
-                              </li>
-                            </ul>
+                      <div class="col-md-9">
+                        <div class="card-body">
+                          <h5 class="card-title"><%= article.judul %></h5>
+                          <!-- Teks dihapus dari tag HTML menggunakan JavaScript di sisi server -->
+                          <p class="card-text"><%= article.deskripsi.substring(0, 300).replace(/(<([^>]+)>|&[^;]+;|.+<font[^>]*$)/gi, '') %>...</p>
+                          <div class="row justify-content-end align-items-end">
+                            <div class="col-auto">
+                              <p class="card-text">
+                                <small class="text-body-secondary">Created at <%= new Date(article.createdAt).toLocaleDateString() %></small>
+                              </p>
+                            </div>
+                            <div class="col-auto">
+                              <p class="card-text">
+                                <small class="text-body-secondary">Last updated <%= new Date(article.updatedAt).toLocaleDateString() %></small>
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </a>
+                <% }); %>
+
               </div>
             </div>
             <div class="tab-pane fade" id="statistik" role="tabpanel" aria-labelledby="statistik-tab">
@@ -179,13 +175,17 @@
             <div class="mb-3">
               <div class="input-group">
                 <!-- Display first name -->
-                <input type="text" id="namaInput" class="form-control border-end-0 readonly" placeholder="Nama" value="<%= profile.data.first_name %>" readonly>
+                <input type="text" id="namaInput" class="form-control border-end-0 readonly" placeholder="Nama" value="<%= profile.data.userProfile.first_name %>" readonly>
               </div>
             </div>
             <div class="mb-3">
               <div class="input-group">
                 <!-- Display status -->
-                <input type="text" id="statusInput" class="form-control border-end-0 readonly" placeholder="Status" value="<%= profile.data.status %>" readonly>
+                <% if (profile && profile.data && profile.data.userProfile) { %>
+                <input type="text" id="statusInput" class="form-control border-end-0 readonly" placeholder="Status" value="<%= profile.data.userProfile.status %>" readonly>
+                <% } else { %>
+                <input type="text" id="statusInput" class="form-control border-end-0 readonly" placeholder="Status" value="Default Status" readonly>
+                <% } %>
               </div>
             </div>
             <div class="mb-3">
