@@ -16,15 +16,26 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container.my-auto {
+      flex: 1;
+    }
+  </style>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
   <script>
     const urlAPI = "<%= urlAPI %>";
     const token = "<%= token %>";
     console.log("token:", token);
   </script>
-  <div class="container-fluid">
+  <div class="container-fluid my-auto">
     <div id="ProfileAlert" class="alert alert-danger text-center d-none" role="alert">
       <!-- Teks pesan kesalahan akan ditampilkan di sini -->
     </div>
@@ -96,32 +107,28 @@
             <div class="tab-pane fade" id="statistik" role="tabpanel" aria-labelledby="statistik-tab">
               <div class="container">
                 <h4 class="mb-4">Statistik Kamu</h4>
-
                 <div class="row">
                   <div class="col-md-4">
-                    <div class="kartu">
+                    <div class="card">
                       <div class="card-body">
-                        <h5 class="mb-4">Total Postingan :</h5>
-                        <br>
-                        <h4 class="mb-4">0</h4>
+                        <h5 class="card-title">Total Postingan :</h5>
+                        <h4 class="card-text">0</h4>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <div class="kartu">
+                    <div class="card">
                       <div class="card-body">
-                        <h5 class="mb-4">Total Postingan :</h5>
-                        <br>
-                        <h4 class="mb-4">0</h4>
+                        <h5 class="card-title">Total Postingan :</h5>
+                        <h4 class="card-text">0</h4>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <div class="kartu">
+                    <div class="card">
                       <div class="card-body">
-                        <h5 class="mb-4">Total Postingan :</h5>
-                        <br>
-                        <h4 class="mb-4">0</h4>
+                        <h5 class="card-title">Total Postingan :</h5>
+                        <h4 class="card-text">0</h4>
                       </div>
                     </div>
                   </div>
