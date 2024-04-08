@@ -75,29 +75,32 @@
                     <div class="card">
                       <div class="card-body">
                         <h5 class="card-title">Total Postingan :</h5>
-                        <h4 class="card-text">0</h4>
+                        <h4 class="card-text"><%= profile.data.totalUserArtikels ? profile.data.totalUserArtikels : 0 %></h4>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="card">
                       <div class="card-body">
-                        <h5 class="card-title">Total Postingan :</h5>
-                        <h4 class="card-text">0</h4>
+                        <h5 class="card-title">Average Rating :</h5>
+                        <h4 class="card-text">
+                          <%= profile.data.limitedAverageRating ? (profile.data.limitedAverageRating).toFixed(1) : 0 %> ⭐
+                        </h4>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="card">
                       <div class="card-body">
-                        <h5 class="card-title">Total Postingan :</h5>
-                        <h4 class="card-text">0</h4>
+                        <h5 class="card-title">Total Report :</h5>
+                        <h4 class="card-text"><%= profile.data.totalReportedArtikels ? profile.data.totalReportedArtikels : 0 %></h4>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
 
           </div>
         </div>
