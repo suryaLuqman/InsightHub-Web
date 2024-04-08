@@ -104,7 +104,7 @@
           <!-- Profile Image -->
           <div class="d-flex align-items-center mb-3">
             <!-- Use profile picture if available, otherwise use default image -->
-            <img src="<%= profile.data.profile_picture || '/resources/images/user.jpg' %>" alt="Profile Image" class="rounded-circle me-3" style="cursor: pointer !important; width: 70px !important; height: 60px !important;" data-bs-toggle="modal" data-bs-target="#profileImageModal">
+            <img src="<%= profile.data.userProfile.profile_picture || '/resources/images/user.jpg' %>" alt="Profile Image" class="rounded-circle me-3" style="cursor: pointer !important; width: 70px !important; height: 60px !important;" data-bs-toggle="modal" data-bs-target="#profileImageModal">
             <div class="align-middle">
               <div class="d-flex">
                 <!-- Ketika tombol upload diklik, klik input file -->
