@@ -5,6 +5,8 @@
 
 
 ## How To Use
+Dokumentasi API [dokumentasi api insight-hub](https://insight-hub-api.vercel.app/doc-api.html) 
+
 ### Base url : `https://insight-hub-api.vercel.app/`
 - [User Authentication](#user-authentication)
   - [Register User](#register-user)

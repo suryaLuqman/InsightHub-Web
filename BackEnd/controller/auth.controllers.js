@@ -644,7 +644,9 @@ const getUserProfile = async (req, res, next) => {
     // Temukan rating pengguna
     const ratings = await prisma.rating.findMany({
       where: {
-        userId: userId,
+        artikel: {
+          authorId: userId,
+        },
       },
       include: {
         artikel: true,
@@ -654,37 +656,40 @@ const getUserProfile = async (req, res, next) => {
     // Temukan laporan pengguna
     const reports = await prisma.report.findMany({
       where: {
-        userId: userId,
+        artikel: {
+          authorId: userId,
+        },
       },
       include: {
         artikel: true,
       },
     });
+
+    // Temukan artikel yang dimiliki oleh pengguna
     const userArtikels = await prisma.artikel.findMany({
       where: {
         authorId: userId,
       },
     });
-    
+
     // Hitung total postingan pengguna
     const totalUserArtikels = userArtikels.length;
 
-    // Hitung total artikel yang dilaporkan oleh pengguna lain
+    // Hitung total artikel yang dilaporkan oleh pengguna
     const totalReportedArtikels = reports.length;
 
     // Hitung total rating yang diterima oleh semua artikel pengguna
     const totalRatings = ratings.reduce((acc, curr) => acc + curr.nilai, 0);
-    console.log("Total ratings:", totalRatings);
 
     // Hitung rata-rata rating
     const averageRating = totalRatings / ratings.length;
-    console.log("Average rating:", averageRating);
 
     // Batasi nilai rata-rata agar tidak melebihi 5
     const limitedAverageRating = Math.min(averageRating, 5);
-    console.log("Limited average rating:", limitedAverageRating);
 
-
+    console.log("totalRatings:", totalRatings);
+    console.log("averageRating:", averageRating);
+    console.log("limitedAverageRating:", limitedAverageRating);
     return res.status(200).json({
       success: true,
       message: "User profile retrieved successfully",
@@ -703,7 +708,6 @@ const getUserProfile = async (req, res, next) => {
     next(error);
   }
 };
-
 
 const updateProfile = async (req, res, next) => {
   try {
