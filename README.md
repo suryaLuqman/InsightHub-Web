@@ -15,8 +15,8 @@
 Untuk menjalankan Insight Hub, Anda perlu mengikuti langkah-langkah instalasi berikut:
 
 1. Salin file `env.sample` ke file `.env` dan sesuaikan konfigurasi yang diperlukan.
-2. Pastikan semua dependensi terinstal dengan menjalankan `cd .\BackEnd\` `npm install`.
-3. Pastikan direktori `views` berada pada root direktori proyek dan berisi semua file tampilan (EJS templates) yang diperlukan.
+2. Pastikan semua dependensi terinstal dengan menjalankan `cd .\BackEnd\` kemudian `npm install`.
+3. Pastikan direktori `BackEnd\views` berada pada root direktori proyek dan berisi semua file tampilan (EJS templates) yang diperlukan.
 4. Jalankan aplikasi web pada folder `BackEnd` dengan perintah `npm run dev`.
 5. Aplikasi web dapat diakses melalui browser dengan menavigasi ke `http://localhost:<port>`.
 
