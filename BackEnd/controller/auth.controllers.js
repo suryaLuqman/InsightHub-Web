@@ -672,10 +672,18 @@ const getUserProfile = async (req, res, next) => {
     // Hitung total artikel yang dilaporkan oleh pengguna lain
     const totalReportedArtikels = reports.length;
 
+    // Hitung total rating yang diterima oleh semua artikel pengguna
     const totalRatings = ratings.reduce((acc, curr) => acc + curr.nilai, 0);
-  
-    // Batasi total rating agar tidak melebihi 5
-    const totalRatingsLimited = Math.min(totalRatings, 5);
+    console.log("Total ratings:", totalRatings);
+
+    // Hitung rata-rata rating
+    const averageRating = totalRatings / ratings.length;
+    console.log("Average rating:", averageRating);
+
+    // Batasi nilai rata-rata agar tidak melebihi 5
+    const limitedAverageRating = Math.min(averageRating, 5);
+    console.log("Limited average rating:", limitedAverageRating);
+
 
     return res.status(200).json({
       success: true,
@@ -688,7 +696,7 @@ const getUserProfile = async (req, res, next) => {
         userArtikels: userArtikels,
         totalUserArtikels: totalUserArtikels,
         totalReportedArtikels: totalReportedArtikels,
-        totalRatings: totalRatingsLimited,
+        limitedAverageRating: limitedAverageRating
       },
     });
   } catch (error) {
