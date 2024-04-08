@@ -26,6 +26,7 @@
     .container.my-auto {
       flex: 1;
     }
+
   </style>
 </head>
 
@@ -61,49 +62,54 @@
           </ul>
           <!-- Tabs Content -->
           <div class="tab-content mt-3" id="myTabContent">
-            <div class="tab-pane fade show active" id="postingan" role="tabpanel" aria-labelledby="postingan-tab">
-              <div class="container py-3">
-                <!-- Card Start -->
-                <% 
-                  // Mengurutkan artikel berdasarkan tanggal pembuatan (createdAt) dari yang paling baru
-                  artikel.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-                  artikel.forEach(article => {
-                %>
-                <a href="/artikel/<%= article.id %>/<%= encodeURIComponent(article.judul) %>" class="text-decoration-none text-reset">
-                  <div class="card mb-3 border-0" data-artikelid="<%= article.id %>" data-kategoriId="<%= article.kategoriId %>">
-                    <div class="row g-0">
-                      <div class="col-md-3">
-                        <div style="height: 120px; overflow: hidden;">
-                          <img src="<%= article.gambar_artikel %>" class="img-fluid rounded-start" alt="..." style="object-fit: cover; height: 100%; width: 100%;">
-                        </div>
-                      </div>
-                      <div class="col-md-9">
-                        <div class="card-body">
-                          <h5 class="card-title"><%= article.judul %></h5>
-                          <!-- Teks dihapus dari tag HTML menggunakan JavaScript di sisi server -->
-                          <p class="card-text"><%= article.deskripsi.substring(0, 300).replace(/(<([^>]+)>|&[^;]+;|.+<font[^>]*$)/gi, '') %>...</p>
-                          <div class="row justify-content-end align-items-end">
-                            <div class="col-auto">
-                              <p class="card-text">
-                                <small class="text-body-secondary">Created at <%= new Date(article.createdAt).toLocaleDateString() %></small>
-                              </p>
-                            </div>
-                            <div class="col-auto">
-                              <p class="card-text">
-                                <small class="text-body-secondary">Last updated <%= new Date(article.updatedAt).toLocaleDateString() %></small>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-                <% }); %>
-
+<div class="tab-pane fade show active" id="postingan" role="tabpanel" aria-labelledby="postingan-tab">
+  <div class="container py-3">
+    <!-- Card Start -->
+    <% 
+      artikel.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      artikel.forEach(article => {
+    %>
+    <div class="card">
+      <div class="row no-gutters">
+        <div class="col-md-3">
+          <div id="CarouselTest" class="carousel slide">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img class="d-block w-100" src="<%= article.gambar_artikel %>" alt="..." style="object-fit: cover; height: 140px;">
               </div>
             </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="card-body d-flex flex-column justify-content-center">
+            <h4 class="card-title text-dark"><%= article.judul %></h4>
+            <p class="card-text text-dark"><%= article.deskripsi.substring(0, 300).replace(/(<([^>]+)>|&[^;]+;|.+<font[^>]*$)/gi, '') %>...</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="card-text text-dark">Created at <%= new Date(article.createdAt).toLocaleDateString() %>, Updated at <%= new Date(article.updatedAt).toLocaleDateString() %></p>
+              <div class="dropdown">
+                <button class="btn btn-link text-dark" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li>
+                    <a class="dropdown-item" href="#">Edit</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+</div>
+
+
             <div class="tab-pane fade" id="statistik" role="tabpanel" aria-labelledby="statistik-tab">
               <div class="container">
                 <h4 class="mb-4">Statistik Kamu</h4>
