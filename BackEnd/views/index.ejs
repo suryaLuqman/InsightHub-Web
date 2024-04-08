@@ -407,10 +407,14 @@
           <h3 class="text-center">Masuk</h3>
           <div class="modal-body">
             <input type="text" id="loginEmail" class="form-control" placeholder="Email" />
-            <div class="input-grub">
-              <input type="password" id="loginPassword" class="form-control mt-3" placeholder="Password" aria-describedby="togglePassword" />
-              <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                <i class="bi bi-eye-slash"></i>
+            <div class="input-group">
+              <input type="password" name="password" id="loginPassword" class="form-control mt-3" placeholder="Password" aria-describedby="togglePassword" />
+              <!-- <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                <i class="bi bi-eye-slash"></i> -->
+                <span class="input-group-text" onclick="password_show_hide();">
+                  <i class="fas fa-eye" id="show_eye"></i>
+                  <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+                </span>
               </button>
             </div>
             <button onclick="loginUser()" class="d-block btn btn-login-modal mt-4 register-btn">
@@ -443,10 +447,16 @@
           <div class="modal-body">
             <input type="text" id="registerEmail" class="form-control tooltip-custom" placeholder="Email" required data-bs-toggle="tooltip" title="Email harus diisi" />
             <input type="text" id="registerNama" class="form-control mt-3 tooltip-custom" placeholder="Nama" required />
-            <input type="password" id="registerPassword" class="form-control mt-3 tooltip-custom" placeholder="Password" required />
-            <button class="btn btn-outline-secondary" type="button" id="toggleRegisterPassword">
-              <i class="bi bi-eye-slash"></i>
-            </button>
+              <div class="input-group">
+                  <input type="password" name="password" id="registerPassword" class="form-control mt-3 tooltip-custom" placeholder="Password" required />
+                  <!-- <button class="btn btn-outline-secondary" type="button" id="toggleRegisterPassword">
+                    <i class="bi bi-eye-slash"></i>
+                  </button> -->
+                  <span class="input-group-text" onclick="passwordShowHideRegister();">
+                    <i class="fas fa-eye" id="showing_eye"></i>
+                    <i class="fas fa-eye-slash d-none" id="hiding_eye"></i>
+                  </span>
+              </div>
             <input type="text" id="registerPhone" class="form-control mt-3 tooltip-custom" placeholder="Nomer Telephone" required />
             <input type="text" id="status" class="form-control mt-3 tooltip-custom" placeholder="Pekerjaan saat ini" required />
             <button onclick="registerUser()" class="d-block btn btn-login-modal mt-4 register-btn">
@@ -502,7 +512,38 @@
     </div>
   </div>
   <script>
-    // modal fix
+  function password_show_hide() {
+    let x = document.getElementById("loginPassword");
+    let show_eye = document.getElementById("show_eye");
+    let hide_eye = document.getElementById("hide_eye");
+      hide_eye.classList.remove("d-none");
+      if (x.type === "password") {
+        x.type = "text";
+        show_eye.style.display = "none";
+        hide_eye.style.display = "block";
+      } else {
+        x.type = "password";
+        show_eye.style.display = "block";
+        hide_eye.style.display = "none";
+
+      }
+  }
+function passwordShowHideRegister() {
+    let x = document.getElementById("registerPassword");
+    let show_eye = document.getElementById("showing_eye");
+    let hide_eye = document.getElementById("hiding_eye");
+      hide_eye.classList.remove("d-none");
+      if (x.type === "password") {
+        x.type = "text";
+        show_eye.style.display = "none";
+        hide_eye.style.display = "block";
+      } else {
+        x.type = "password";
+        show_eye.style.display = "block";
+        hide_eye.style.display = "none";
+
+    }
+}
 
     function hideAllModals() {
       var modals = document.querySelectorAll('.modal');
@@ -907,7 +948,7 @@
       });
     }
   </script>
-  <script>
+  <!-- <script>
     // Function to toggle password visibility
     function togglePasswordVisibility(inputId, buttonId) {
       const passwordInput = document.getElementById(inputId);
@@ -925,7 +966,7 @@
     togglePasswordVisibility('loginPassword', 'togglePassword');
     togglePasswordVisibility('registerPassword', 'toggleRegisterPassword');
     // togglePasswordVisibility('konfirmasiPassword', 'toggleKonfirmasiPassword');
-  </script>
+  </script> -->
 
   <script src="/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
