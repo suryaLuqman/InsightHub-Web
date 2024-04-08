@@ -1,42 +1,181 @@
-# Insight Hub
+# Insight Hub Web API Documentation
 
-![logo](https://github.com/suryaLuqman/InsightHub-Web/assets/44109243/b8cc43bc-852c-45b7-ad08-4478a622741c)
+[![PostgreSQL Logo](https://img.icons8.com/color/24/000000/postgreesql.png)](#) PostgreSQL v16.2 
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;[![Node.js Logo](https://img.icons8.com/color/24/000000/nodejs.png)](#) Node.js v16.17.0
 
-## Insight-Hub: Platform Pembelajaran Berbasis Komunitas sebagai Sarana Pengembangan Keilmuan.
 
-### Teknologi yang Digunakan
+## How To Use
+Dokumentasi API [dokumentasi api insight-hub](https://insight-hub-api.vercel.app/doc-api.html) 
 
-- [![PostgreSQL Logo](https://img.icons8.com/color/16/000000/postgreesql.png)](#) PostgreSQL v16.2 
+### Base url : `https://insight-hub-api.vercel.app/`
+- [User Authentication](#user-authentication)
+  - [Register User](#register-user)
+  - [User Login](#user-login)
+  - [Forgot Password](#forgot-password)
+  - [Change Password](#change-password)
+  - [Register Superadmin](#register-superadmin)
+  - [Superadmin Login](#superadmin-login)
+  - [Register Admin](#register-admin)
+  - [Admin Login](#admin-login)
+- [Categories](#categories)
+  - [Add New Category](#add-new-category)
+  - [Get All Categories](#get-all-categories)
+  - [Delete Category](#delete-category)
+- [Articles](#articles)
+  - [Add New Article](#add-new-article)
+  - [Get All Articles](#get-all-articles)
+  - [Update Article](#update-article)
+  - [Delete Article](#delete-article)
+  - [Search Article](#search-article)
+  - [Save Article](#save-article)
+  - [Get Saved Articles](#get-saved-articles)
+  - [Rate Article](#rate-article)
+  - [Report Article](#report-article)
 
-- [![Node.js Logo](https://img.icons8.com/color/16/000000/nodejs.png)](#) Node.js v16.17.0
+## User Authentication
 
-### Instalasi
+### Register User
+- **Endpoint:** `/api/v1/auth/register/user`
+- **Method:** `POST`
+- **Request Body:**
+  - `email`: string
+  - `password`: string
+  - `nama`: string
+  - `no_hp`: string
 
-Untuk menjalankan Insight Hub, Anda perlu mengikuti langkah-langkah instalasi berikut:
+### User Login
+- **Endpoint:** `/api/v1/auth/login`
+- **Method:** `POST`
+- **Request Body:**
+  - `email`: string
+  - `password`: string
 
-1. Salin file `env.sample` ke file `.env` dan sesuaikan konfigurasi yang diperlukan.
-2. Pastikan semua dependensi terinstal dengan menjalankan `npm install`.
-3. Pastikan direktori `views` berada pada root direktori proyek dan berisi semua file tampilan (EJS templates) yang diperlukan.
-4. Jalankan aplikasi web dengan perintah `npm start`.
-5. Aplikasi web dapat diakses melalui browser dengan menavigasi ke `http://localhost:<port>`.
+### Forgot Password
+- **Endpoint:** `/api/v1/auth/forgotPassword`
+- **Method:** `POST`
+- **Request Body:**
+  - `email`: string
 
-### Panduan Penggunaan API 🔥
+### Change Password
+- **Endpoint:** `/api/v1/auth/change-password?token={link email params}`
+- **Method:** `POST`
+- **Request Params:**
+  - `token`: string
+- **Request Body:**
+  - `password`: string
+  - `confirm_password`: string
 
-Dokumentasi API dapat ditemukan di [dokumentasi api insight-hub](https://insight-hub-api.vercel.app/doc-api.html) atau pada file [doc-api.html](https://github.com/suryaLuqman/InsightHub-Web/blob/main/BackEnd/doc-api.html) .
+### Register Superadmin
+- **Endpoint:** `/api/v1/auth/register/su`
+- **Method:** `POST`
+- **Request Body:**
+  - `email`: string
+  - `password`: string
+  - `nama`: string
 
-### Tampilan Website Statis
+### Superadmin Login
+- **Endpoint:** `/api/v1/auth/login`
+- **Method:** `POST`
+- **Request Body:**
+  - `email`: string
+  - `password`: string
 
-Tampilan website statis dapat dilihat pada [web statis insight-hub](https://insight-hub-statis.vercel.app/). Anda dapat melihat halaman dengan menambahkan nama file pada URL, misalnya [halaman-artikel.html](https://insight-hub-statis.vercel.app/halaman-artikel.html) akan menampilkan halaman dashboard.
+### Register Admin
+- **Endpoint:** `/api/v1/auth/register/admin`
+- **Method:** `POST`
+- **Request Body:**
+  - `email`: string
+  - `password`: string
+  - `nama`: string
+- **Request Headers:**
+  - `Authorization: Bearer <token_didapat_saat_login_dengan_superUser_dan_token_akan_nonAktif_lebih_dari_1_hari>`
 
-### Tangkapan Layar Halaman Web
+### Admin Login
+- **Endpoint:** `/api/v1/auth/login`
+- **Method:** `POST`
+- **Request Body:**
+  - `email`: string
+  - `password`: string
 
-![Halaman Login](https://github.com/suryaLuqman/InsightHub-Web/assets/44109243/adb48476-51a7-4a13-ad58-cc6110f9d37d)
-![Halaman Utama](https://example.com/screenshot-halaman-utama.png)
+## Categories
 
-### Kontribusi
+### Add New Category
+- **Endpoint:** `/api/v1/kategori/add`
+- **Method:** `POST`
+- **Request Body:**
+  - `nama`: string
+  - `deskripsi`: string
 
-Jika Anda ingin berkontribusi pada proyek ini, silakan buat _pull request_ dan kami akan mempertimbangkannya.
+### Get All Categories
+- **Endpoint:** `/api/v1/kategori/get-all`
+- **Method:** `GET`
 
-### Lisensi
+### Delete Category
+- **Endpoint:** `/api/v1/kategori/delete/:id`
+- **Method:** `DELETE`
 
-Proyek ini dilisensikan di bawah Lisensi MIT. Lihat file [LICENSE](LICENSE) untuk informasi lebih lanjut.
+## Articles
+
+### Add New Article
+- **Endpoint:** `/api/v1/artikel/upload`
+- **Method:** `POST`
+- **Request Body:**
+  - `judul`: string
+  - `deskripsi`: string
+  - `link`: string
+  - `gambar_artikel`: file
+  - `kategoriId`: number
+- **Request Headers:**
+  - `Authorization: Bearer <user_token_here>`
+
+### Get All Articles
+- **Endpoint:** `/api/v1/artikel/get-all`
+- **Method:** `GET`
+
+### Update Article
+- **Endpoint:** `/api/v1/artikel/updateArtikel/:id`
+- **Method:** `PUT`
+- **Request Body:**
+  - `judul`: string
+  - `deskripsi`: string
+  - `link`: string
+  - `kategoriId`: number
+  - `gambar_artikel`: file
+- **Request Headers:**
+  - `Authorization: Bearer <user_token_here>`
+
+### Delete Article
+- **Endpoint:** `/api/v1/artikel/delete/:id`
+- **Method:** `DELETE`
+
+### Search Article
+- **Endpoint:** `/api/v1/search-artikel/search?:param=key`
+- **Method:** `GET`
+
+### Save Article
+- **Endpoint:** `/api/v1/artikel/save/:artikelId`
+- **Method:** `POST`
+- **Request Headers:**
+  - `Authorization: Bearer <user_token_here>`
+
+### Get Saved Articles
+- **Endpoint:** `/api/v1/artikel/saved`
+- **Method:** `GET`
+- **Request Headers:**
+  - `Authorization: Bearer <user_token_here>`
+
+### Rate Article
+- **Endpoint:** `/api/v1/artikel/rate/:artikelId`
+- **Method:** `POST`
+- **Request Body:**
+  - `nilai`: number
+- **Request Headers:**
+  - `Authorization: Bearer <user_token_here>`
+
+### Report Article
+- **Endpoint:** `/api/v1/artikel/report/:artikelId`
+- **Method:** `POST`
+- **Request Body:**
+  - `alasan`: string
+- **Request Headers:**
+  - `Authorization: Bearer <user_token_here>`
