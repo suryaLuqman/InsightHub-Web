@@ -344,26 +344,53 @@ const deleteArtikel = async (req, res, next) => {
         data: null,
       });
     }
-    
-    // Hapus artikel bersama dengan data terkait
+
+    // Hapus semua entri yang terkait dari tabel savedArtikels jika data tersedia
+    if (artikel.savedArtikels && artikel.savedArtikels.length > 0) {
+      await prisma.savedArtikels.deleteMany({
+        where: {
+          artikelId: artikelId,
+        },
+      });
+    }
+
+    // Hapus semua rating yang terkait dengan artikel yang akan dihapus
+    if (artikel.ratings && artikel.ratings.length > 0) {
+      await prisma.rating.deleteMany({
+        where: {
+          artikelId: artikelId,
+        },
+      });
+    }
+
+    // Hapus semua laporan yang terkait dengan artikel yang akan dihapus
+    if (artikel.reports && artikel.reports.length > 0) {
+      await prisma.report.deleteMany({
+        where: {
+          artikelId: artikelId,
+        },
+      });
+    }
+
+    // Hapus artikel
     await prisma.artikel.delete({
       where: {
         id: artikelId,
       },
-      include: {
-        savedArtikels: true, // Memuat relasi dengan savedArtikels
-        ratings: true,
-        reports: true,
-      },
     });
 
     return res.status(200).json({
-      status: true,
+      success: true,
       message: 'Article deleted successfully',
       data: null,
     });
   } catch (err) {
-    next(err);
+    console.error('Error deleting article:', err);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to delete article',
+      data: null,
+    });
   }
 };
 
