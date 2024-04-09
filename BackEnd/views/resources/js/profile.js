@@ -90,6 +90,13 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("profileImageInput").click();
   });
 
+    // delete pic
+    $("#deletePicButton").on("click", function () {
+      document.querySelector(".rounded-circle").src = "/resources/images/user.jpg";
+      document.getElementById("profileImage").src = "/resources/images/user.jpg";
+    });
+
+
   saveButton.addEventListener("click", function () {
       $("#namaInput").prop("readonly", true);
       $("#statusInput").prop("readonly", true);
@@ -101,90 +108,24 @@ document.addEventListener("DOMContentLoaded", function () {
       $("#buttonGantiPassword").addClass("d-none");
       $("#editButton").removeClass("d-none");
 
-      if (!profileImageDataURL) {
-          console.error("No image selected.");
-          return;
-      }
+      const formData = new FormData();
+      formData.append("first_name", $("#namaInput").val());
+      formData.append("status", $("#statusInput").val());
 
-      compressImage(profileImageDataURL, 0.5) // Ubah nilai kualitas sesuai kebutuhan
-      .then(function (compressedDataURL) {
-          const formData = new FormData();
-          formData.append("first_name", $("#namaInput").val());
-          formData.append("status", $("#statusInput").val());
-
-          // Ubah data URL menjadi Blob dan tambahkan ke FormData
-          const imageBlob = dataURLToBlob(compressedDataURL);
-          formData.append("profile_picture", imageBlob);
-
-  
-          console.log("Data yang akan dikirimkan ke server:", formData);
-  
-          // Menampilkan animasi loading
-          $("#loadingOverlay").removeClass("d-none");
-
-          const endPointUpdate = "/api/v1/auth/profile/update";
-          const updateProfileURL = urlAPI + endPointUpdate;
-          console.log("=token =",token);
-  
-          $.ajax({
-              url: updateProfileURL,
-              type: "PUT", // Ganti metode menjadi PUT
-              headers: {
-                  Authorization: `Bearer ${token}`,
-              },
-                  data: formData,
-                  processData: false,
-                  contentType: false,
-                  success: function (data) {
-                      console.log("Data dari server (success):", data);
-                      $("#ProfileAlert").text(data.message).removeClass("d-none");
-                  },
-                  error: function (xhr, status, error) {
-                      const errorData = xhr.responseJSON
-                          ? xhr.responseJSON
-                          : "Login failed. Please try again later.";
-                      console.error("Login error:", errorData);
-                      console.error("Data dari server (error):", errorData);
-
-                      console.log("Data yang akan dikirimkan ke server:", formData);
-
-                      if (errorData.error) {
-                          $("#ProfileAlert")
-                              .html(
-                                  `<i class="fas fa-exclamation-triangle"></i> ${errorData.message} Error: ${errorData.error}`
-                              )
-                              .removeClass("d-none");
-                          console.error("ini jalan if atas 1");
-                      } else {
-                          $("#ProfileAlert")
-                              .html(
-                                  `<i class="fas fa-exclamation-triangle"></i> ${errorData.message}`
-                              )
-                              .removeClass("d-none");
-                          console.error("ini jalan else bawah 1");
-                      }
-                  },
-                  complete: function (xhr, status) {
-                      if (status === "success") {
-                          setTimeout(function () {
-                              // Hapus kelas 'd-none' untuk memunculkan spinner selama 3 detik jika berhasil
-                              $("#loadingOverlay").removeClass("d-none");
-                              setTimeout(function () {
-                                  $("#loadingOverlay").addClass("d-none");
-                              }, 5000);
-                          }, 0); // Timeout 0 ms agar dijalankan setelah penyelesaian AJAX
-                      } else {
-                          // Hapus kelas 'd-none' untuk memunculkan spinner selama 1 detik jika gagal
-                          setTimeout(function () {
-                              $("#loadingOverlay").removeClass("d-none");
-                              setTimeout(function () {
-                                  $("#loadingOverlay").addClass("d-none");
-                              }, 500);
-                          }, 0);
-                      }
-                  },
-              });
+      if (profileImageDataURL) {
+          compressImage(profileImageDataURL, 0.5)
+          .then(function (compressedDataURL) {
+              // Ubah data URL menjadi Blob dan tambahkan ke FormData
+              const imageBlob = dataURLToBlob(compressedDataURL);
+              formData.append("profile_picture", imageBlob);
+              console.log("Data yang akan dikirimkan ke server:", formData);
+              saveProfile(formData);
           });
+      } else {
+          // Jika tidak ada gambar yang dipilih, langsung simpan profil
+          console.log("Data yang akan dikirimkan ke server:", formData);
+          saveProfile(formData);
+      }
   });
 
   // Event listener untuk tombol "Cancel"
@@ -200,11 +141,83 @@ document.addEventListener("DOMContentLoaded", function () {
       $("#deletePicButton").addClass("d-none");
       $("#buttonGantiPassword").addClass("d-none");
       $("#editButton").removeClass("d-none");
-      document.querySelector(".rounded-circle").src =
-          "/resources/images/user.jpg";
-      document.getElementById("profileImage").src = "/resources/images/user.jpg";
+      document.querySelector(".rounded-circle").src = document.querySelector(".rounded-circle").src;
+      document.getElementById("profileImage").src = document.getElementById("profileImage").src;
   });
 });
+
+// Fungsi untuk menyimpan profil
+function saveProfile(formData) {
+  // Menampilkan animasi loading
+  $("#loadingOverlay").removeClass("d-none");
+
+  const endPointUpdate = "/api/v1/auth/profile/update";
+  const updateProfileURL = urlAPI + endPointUpdate;
+
+  $.ajax({
+      url: updateProfileURL,
+      type: "PUT",
+      headers: {
+          Authorization: `Bearer ${token}`,
+      },
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (data) {
+          console.log("Data dari server (success):", data);
+          $("#ProfileAlert")
+          .text(data.message)
+          .removeClass("d-none")
+          // .addClass("alert-success")
+          .removeClass("alert-danger")
+          .css("background-color", "#28a745");
+      },
+      error: function (xhr, status, error) {
+          const errorData = xhr.responseJSON
+              ? xhr.responseJSON
+              : "Login failed. Please try again later.";
+          console.error("Login error:", errorData);
+          console.error("Data dari server (error):", errorData);
+
+          console.log("Data yang akan dikirimkan ke server:", formData);
+
+          if (errorData.error) {
+              $("#ProfileAlert")
+                  .html(
+                      `<i class="fas fa-exclamation-triangle"></i> ${errorData.message} Error: ${errorData.error}`
+                  )
+                  .removeClass("d-none");
+              console.error("ini jalan if atas 1");
+          } else {
+              $("#ProfileAlert")
+                  .html(
+                      `<i class="fas fa-exclamation-triangle"></i> ${errorData.message}`
+                  )
+                  .removeClass("d-none");
+              console.error("ini jalan else bawah 1");
+          }
+      },
+      complete: function (xhr, status) {
+          if (status === "success") {
+              setTimeout(function () {
+                  // Hapus kelas 'd-none' untuk memunculkan spinner selama 3 detik jika berhasil
+                  $("#loadingOverlay").removeClass("d-none");
+                  setTimeout(function () {
+                      $("#loadingOverlay").addClass("d-none");
+                  }, 5000);
+              }, 0); // Timeout 0 ms agar dijalankan setelah penyelesaian AJAX
+          } else {
+              // Hapus kelas 'd-none' untuk memunculkan spinner selama 1 detik jika gagal
+              setTimeout(function () {
+                  $("#loadingOverlay").removeClass("d-none");
+                  setTimeout(function () {
+                      $("#loadingOverlay").addClass("d-none");
+                  }, 500);
+              }, 0);
+          }
+      },
+  });
+}
 
 $(document).ready(function () {
   $("#simpanPassword").click(function (event) {
