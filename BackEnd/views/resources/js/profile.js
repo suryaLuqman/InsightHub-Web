@@ -279,3 +279,40 @@ $(document).ready(function () {
     });
   });
 });
+
+$(document).ready(function () {
+  // Fungsi untuk menghapus artikel
+  function deleteArtikel(articleId) {
+    $.ajax({
+      url: `/api/v1/artikel/deleteArtikel/${articleId}`, // Menggunakan artikelId dari parameter fungsi
+      type: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      success: function (data) {
+        console.log("Artikel berhasil dihapus:", data);
+        // Tambahkan logika untuk menangani respons dari server jika diperlukan
+        // Misalnya, memperbarui tampilan setelah artikel dihapus
+      },
+      error: function (xhr, status, error) {
+        console.error("Gagal menghapus artikel:", error);
+        // Tambahkan logika untuk menangani kesalahan jika diperlukan
+        // Misalnya, menampilkan pesan kesalahan kepada pengguna
+      },
+    });
+  }
+
+  // Tambahkan event listener untuk tombol delete artikel
+  $(".delete-article").on("click", function (event) {
+    event.preventDefault(); // Hindari default action dari tag 'a' (yaitu, navigasi ke href)
+    // Ambil ID artikel dari atribut data pada tombol delete
+    const articleId = $(this).data("article-id");
+    // Konfirmasi pengguna sebelum menghapus artikel
+    if (confirm("Apakah Anda yakin ingin menghapus artikel ini?")) {
+      // Panggil fungsi deleteArtikel dengan ID artikel sebagai argumen
+      deleteArtikel(articleId); // Menggunakan articleId yang telah diperoleh
+    }
+  });
+});
+
+
