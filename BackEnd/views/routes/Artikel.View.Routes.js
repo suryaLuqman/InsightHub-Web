@@ -8,7 +8,8 @@ router.get('/search-artikel/search', artikelController.searchArtikel);
 router.get('/:id/:judul', artikelController.getViewArtikelPage);
 
 router.get('/:first_name/:id/add-artikel', artikelController.getArtikelPage);
-
 router.post('/:first_name/:id/add-artikel', artikelController.createArtikel);
+
+router.get('/:first_name/:id/update-artikel/:artikelId', artikelController.updateArtikelPage);
 
 module.exports = router;

@@ -367,3 +367,82 @@ exports.getViewArtikelPage = async (req, res) => {
       .render("error", { error: "Failed to fetch data from API." });
   }
 };
+
+exports.updateArtikelPage = async (req, res) => {
+  try {
+    const { first_name, id,artikelId } = req.params;
+
+    // Panggil fungsi checkSession untuk memeriksa sesi
+    const session = await checkSession(id);
+    // console.log("session checController dasboard:", session);
+    // Jika sesi tidak valid, arahkan pengguna kembali ke halaman login
+    if (!session) {
+      return res.redirect("/");
+    }
+
+    // Baca nilai session
+    const user = session.sess.user;
+    const status = user && user.status;
+    const token = user && user.token;
+    //  console.log("session baca nilai sessiion:", user);
+    //  console.log("status:", status);
+    //  console.log("token:", token);
+
+    // Jika pengguna tidak diautentikasi, redirect ke halaman login
+    if (!token) {
+      return res.redirect("/");
+    }
+
+    // Logic to fetch dashboard data based on $first_name
+    const baseUrl = process.env.API;
+    const kategoriUrl = `${baseUrl}/api/v1/kategori/get-all`;
+
+    const [kategoriResponse] = await Promise.all([axios.get(kategoriUrl)]);
+
+    const kategoriData = kategoriResponse.data;
+
+    // artikel
+    const endpointArtikel = "/api/v1/artikel/get-all"; // End point yang ingin Anda ambil
+    const artikel = baseUrl + endpointArtikel; // Menggabungkan base URL dengan end point
+    const responseArtikel = await axios.get(artikel);
+    // console.log(responseArtikel.data.data);
+    const dataArtikel = responseArtikel.data.data;
+
+    // // Get Artikel by Id
+    // console.log("artikelId : ",artikelId);
+    // const endpointArtikelID = `/api/v1/search-artikel/search?artikelId=${artikelId}`;
+    // const artikelID = baseUrl + endpointArtikelID;
+    // console.log("artikelID : ",artikelID);
+    // const responseArtikelID = await axios.get(artikelID);
+    // console.log("responseArtikelID : ",responseArtikelID.data.data);
+    // const dataArtikelID = responseArtikelID.data.data;
+
+    // Artikel get by ID
+    const endpointArtikelID = `/api/v1/search-artikel/search?artikelId=${artikelId}`; // End point yang ingin Anda ambil
+    // console.log("endpointArtikelID : ",endpointArtikelID);
+    const urlArtikelID = baseUrl + endpointArtikelID; // Menggabungkan base URL dengan end point
+    // console.log("urlArtikelID : ",urlArtikelID);
+    const responseArtikelID = await axios.get(urlArtikelID);
+    // console.log("responseArtikelID : ",responseArtikelID);
+    const dataArtikelID = responseArtikelID.data;
+    // console.log("dataArtikelID : ",dataArtikelID);
+
+    // If there are articles, send article data to view
+    return res.render("update-artikel", {
+      title: "InsightHub - Lets Start the journey with us",
+      first_name: first_name,
+      id: id,
+      status: status,
+      token: token,
+      kategori: kategoriData,
+      artikel: dataArtikel,
+      artikelbyID:dataArtikelID,
+      baseUrl: process.env.API,
+    });
+  } catch (error) {
+    console.error("Failed to fetch data from API:", error);
+    return res
+      .status(500)
+      .render("error", { error: "Failed to fetch data from API." });
+  }
+};
