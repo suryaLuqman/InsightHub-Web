@@ -437,6 +437,7 @@ exports.updateArtikelPage = async (req, res) => {
       kategori: kategoriData,
       artikel: dataArtikel,
       artikelbyID:dataArtikelID,
+      artikelId: artikelId,
       baseUrl: process.env.API,
     });
   } catch (error) {

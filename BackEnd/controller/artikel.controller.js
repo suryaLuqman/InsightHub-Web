@@ -192,7 +192,46 @@ const updateArtikel = async (req, res, next) => {
       });
     }
 
-    // Cek apakah judul sudah digunakan oleh artikel lain
+
+    // Ambil artikel yang ada berdasarkan artikelId
+    const existingArtikel = await prisma.artikel.findUnique({
+      where: { id: parseInt(artikelId) },
+    });
+
+    // Jika artikel tidak ditemukan
+    if (!existingArtikel) {
+      return res.status(404).json({
+        success: false,
+        message: 'Artikel not found',
+        data: null,
+      });
+    }
+    // Jika judul baru sama dengan judul yang sudah ada sebelumnya atau tidak ada perubahan pada judul, lanjutkan dengan proses update
+    if (judul === existingArtikel.judul || judul === null) {
+      const updatedArtikel = await prisma.artikel.update({
+        where: { id: parseInt(artikelId) },
+        data: {
+          judul: existingArtikel.judul, // Tetap gunakan judul yang sama
+          deskripsi,
+          link,
+          kategori: { connect: { id: parseInt(kategoriId) } },
+        },
+        include: { kategori: true },
+      });
+
+      return res.status(200).json({
+        status: true,
+        message: 'Article updated successfully',
+        data: {
+          artikel: {
+            ...updatedArtikel,
+            kategoriId: updatedArtikel.kategori.map(kategori => kategori.id),
+          },
+        },
+      });
+    }
+
+    // Jika judul baru berbeda dengan judul yang sudah ada sebelumnya, lakukan validasi lebih lanjut
     const existingJudul = await prisma.artikel.findFirst({
       where: {
         judul: judul,
@@ -202,6 +241,7 @@ const updateArtikel = async (req, res, next) => {
       },
     });
 
+    // Jika judul sudah digunakan oleh artikel lain, kembalikan pesan kesalahan
     if (existingJudul) {
       return res.status(400).json({
         status: false,
@@ -209,19 +249,17 @@ const updateArtikel = async (req, res, next) => {
         data: null,
       });
     }
-
-    const existingArtikel = await prisma.artikel.findUnique({
-      where: { id: parseInt(artikelId) },
-    });
-
-    if (!existingArtikel) {
-      return res.status(404).json({
-        success: false,
-        message: 'Artikel not found',
-        data: null,
+      // Lakukan update artikel dengan judul yang baru
+      await prisma.artikel.update({
+        where: { id: parseInt(artikelId) },
+        data: {
+          judul,
+          deskripsi,
+          link,
+          kategori: { connect: { id: parseInt(kategoriId) } },
+        },
+        include: { kategori: true },
       });
-    }
-
     // Jika ada file yang diunggah
     if (req.file) {
       const strFile = req.file.buffer.toString('base64');
