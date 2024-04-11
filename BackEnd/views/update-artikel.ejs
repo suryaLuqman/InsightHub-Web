@@ -292,7 +292,7 @@
   <script>
     // Mendapatkan string JSON dari kategori dan mengonversinya menjadi objek JavaScript
     const kategoriString = `<%= JSON.stringify(kategori) %>`;
-    console.log("kategoriString : ",kategoriString);
+    console.log("kategoriString : ", kategoriString);
     const kategori = JSON.parse(kategoriString.replace(/&#34;/g, '"'));
     console.log(kategori);
     // Memastikan bahwa kategori sudah didefinisikan sebelum digunakan
@@ -473,62 +473,78 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-const artikelByID = `<%= JSON.stringify(artikelbyID) %>`;
-console.log("artikelByID:", artikelByID);
+      const artikelByID = `<%= JSON.stringify(artikelbyID) %>`;
+      console.log("artikelByID:", artikelByID);
 
-// Mengganti semua instans " dengan "
-// const artikelByIDReplaced = artikelByID.replace(/&#34;/g, '"');
-const artikelByIDReplaced = artikelByID.replace(/&quot;/g, '"')
-                                        .replace(/&lt;/g, '<')
-                                        .replace(/&gt;/g, '>')
-                                        .replace(/&apos;/g, "'")
-                                        .replace(/&#34;/g, '"')
-                                        .replace(/&#39;/g, "'")
-                                        .replace(/<[^>]*>/g, '');
-console.log("artikelByIDReplaced:", artikelByIDReplaced);
+      // Mengganti semua instans " dengan "
+      // const artikelByIDReplaced = artikelByID.replace(/&#34;/g, '"');
+      const artikelByIDReplaced = artikelByID.replace(/&quot;/g, '"')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&apos;/g, "'")
+        .replace(/&#34;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/<[^>]*>/g, '');
+      console.log("artikelByIDReplaced:", artikelByIDReplaced);
 
-// Parsing string JSON yang sudah diganti
-let artikel;
-try {
-    artikel = JSON.parse(artikelByIDReplaced);
-} catch (error) {
-    console.error(error);
-}
+      const getLinkArtikelRef = artikelByID.replace(/&quot;/g, '"')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&apos;/g, "'")
+        .replace(/&#34;/g, '"')
+        .replace(/&#39;/g, "'");
 
-console.log("artikel:", artikel);
+        let startIndex = getLinkArtikelRef.indexOf('"link":"') + 8;
+        let endIndex = getLinkArtikelRef.indexOf('",', startIndex);
+        const linkRef = getLinkArtikelRef.substring(startIndex, endIndex);
+        console.log("linkRef:", linkRef);
+
+      // deskripsi
+      startIndex2 = getLinkArtikelRef.indexOf('"deskripsi":"') + 13;
+      endIndex2 = getLinkArtikelRef.indexOf('",', startIndex2);
+      const deskripsi = getLinkArtikelRef.substring(startIndex2, endIndex2);
+      console.log("deskripsi:", deskripsi);
+
+      // Parsing string JSON yang sudah diganti
+      let artikel;
+      try {
+        artikel = JSON.parse(artikelByIDReplaced);
+      } catch (error) {
+        console.error(error);
+      }
+      
+      // mengganti link dengan linkRef
+      artikel[0].link = linkRef;
+
+      // deskripsi
+      artikel[0].deskripsi = deskripsi;
+      
+      console.log("artikel:", artikel);
 
 
+      // Mengisi nilai input judul
+      document.getElementById("judul").value = artikel[0].judul;
 
+      // Mengisi nilai teks area deskripsi
+      document.getElementById("deskripsi").value = artikel[0].deskripsi;
 
-// Mengisi nilai input judul
-document.getElementById("judul").value = artikel[0].judul;
-
-// Mengisi nilai teks area deskripsi
-document.getElementById("deskripsi").value = artikel[0].deskripsi;
-
-// Mengisi nilai teks area link
-document.getElementById("link").value = artikel[0].link;
+      // Mengisi nilai teks area link
+      document.getElementById("link").innerHTML = artikel[0].link;
 
 // Menampilkan gambar artikel
-const imagePreview = document.getElementById("imagePreview");
-const dropzone = document.getElementById("dropzone");
-if (artikel[0].gambar_artikel) {
-  imagePreview.innerHTML = `<img src="${artikel[0].gambar_artikel}" alt="Image Preview" width="100" class="img-thumbnail" />`;
-  imagePreview.classList.remove("d-none");
-  dropzone.classList.add("d-none");
+// For the image, you need to update the 'src' attribute of the image preview and show the image preview
+document.getElementById('imagePreview').classList.remove('d-none');
+document.querySelector('#imagePreview img').src = artikel[0].gambar_artikel;
+document.getElementById("dropzone").classList.add("d-none");
+
+// For the 'kategori' field, you need to select the options that match the 'kategoriId' values in the 'artikel' object
+let select = document.getElementById('kategori');
+for (let i = 0; i < select.options.length; i++) {
+    let option = select.options[i];
+    if (artikel[0].kategori.includes(option.value)) {
+        option.selected = true;
+    }
 }
-
-// Mengisi nilai select kategori
-const kategoriSelect = document.getElementById("kategori");
-artikel[0].kategori.forEach(kat => {
-  const option = document.createElement("option");
-  option.value = kat.id;
-  option.textContent = kat.nama;
-  kategoriSelect.appendChild(option);
-});
-
-// Memperbarui tampilan select2
-$(".kategori").trigger("change");
 
     });
   </script>
