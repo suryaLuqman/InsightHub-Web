@@ -537,14 +537,15 @@ document.getElementById('imagePreview').classList.remove('d-none');
 document.querySelector('#imagePreview img').src = artikel[0].gambar_artikel;
 document.getElementById("dropzone").classList.add("d-none");
 
-// For the 'kategori' field, you need to select the options that match the 'kategoriId' values in the 'artikel' object
-let select = document.getElementById('kategori');
-for (let i = 0; i < select.options.length; i++) {
-    let option = select.options[i];
-    if (artikel[0].kategori.includes(option.value)) {
-        option.selected = true;
-    }
-}
+// For the 'kategori' field, you need to select the options that match the 'kategori' values in the 'artikel' object
+// Inisialisasi select2
+$('.kategori').select2();
+
+// Dapatkan kategori dari artikel
+var kategoriArtikel = artikel[0].kategori.map(kat => kat.id);
+
+// Atur nilai yang dipilih
+$('.kategori').val(kategoriArtikel).trigger('change');
 
     });
   </script>
