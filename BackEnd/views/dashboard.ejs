@@ -45,6 +45,47 @@
           </a>
         </form>
 
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            // Dapatkan elemen yang akan dijadikan trigger
+            var triggerElement = document.querySelector('a[href="/profile/<%= first_name %>/<%= id %>"]');
+
+            // Buat elemen dropdown
+            var dropdownElement = document.createElement('div');
+            dropdownElement.className = 'dropdown-menu';
+            dropdownElement.style.position = 'absolute';
+            dropdownElement.style.top = '100%';
+            dropdownElement.style.left = '200px';
+            dropdownElement.innerHTML = `
+            <a class="dropdown-item" href="/profile/<%= first_name %>/<%= id %>"><i class="fas fa-user"></i> Edit Profile</a>
+            <a class="dropdown-item" href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          `;
+
+            // Tambahkan dropdown ke trigger
+            triggerElement.parentNode.insertBefore(dropdownElement, triggerElement.nextSibling);
+
+            // Tambahkan event listener untuk menampilkan/menyembunyikan dropdown
+            triggerElement.addEventListener('click', function(e) {
+              e.stopPropagation();
+              dropdownElement.classList.toggle('show');
+            });
+
+            // Tambahkan event listener untuk menutup dropdown ketika klik di luar
+            window.addEventListener('click', function(e) {
+              if (dropdownElement.classList.contains('show')) {
+                dropdownElement.classList.remove('show');
+              }
+            });
+
+            // Tambahkan event listener untuk logout
+            document.getElementById('logout-link').addEventListener('click', function(e) {
+              e.preventDefault();
+              // Lakukan proses logout di sini
+            });
+
+          })
+        </script>
+        
         <!-- search Modal -->
         <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
