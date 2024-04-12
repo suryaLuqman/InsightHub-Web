@@ -179,7 +179,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiO
   "deskripsi": "Deskripsi artikel baru",
   "link": "https://example.com",
   "kategoriId": 1,
-  "gambar_artikel": ""
+  "kategoriId": 3,
+  "gambar_artikel": "{sertakan gambar/upload}"
   
 }
 ###DELETE ARTIKEL 
@@ -204,7 +205,7 @@ GET https://insight-hub-api.vercel.app/api/v1/search-artikel/search?judul=ok
 GET https://insight-hub-api.vercel.app/api/v1/search-artikel/search?authorId=1
 
 ###Mencari Artikel Berdasarkan ArtikelId
-GET https://insight-hub-api.vercel.app/api/v1/search-artikel/search?artikelId=6
+GET https://insight-hub-api.vercel.app/api/v1/search-artikel/search?artikelId=16
 
 
 

@@ -34,13 +34,60 @@
         <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
           <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
         </svg>
-        <a href="" class="me-4 fs-3">
+        <a href="#" class="me-4 fs-3" data-bs-toggle="modal" data-bs-target="#notif">
           <i class="fa-regular fa-bell text-black"></i>
         </a>
         <a href="/profile/<%= first_name %>/<%= id %>">
           <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
         </a>
       </form>
+
+      <!-- Modal Notif-->
+      <div class="modal fade" id="notif" tabindex="-1" aria-labelledby="notifLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="notifLabel">Notifikasi</h4>
+              <button type="button" class="btn-close rounded-circle" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <ul class="nav nav-underline nav-fill" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link" id="all-tab" data-bs-toggle="tab" href="#all" role="tab" aria-controls="all">All</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="recent-tab" data-bs-toggle="tab" href="#recent" role="tab" aria-controls="recent">Recent</a>
+                  </li>
+                </ul>
+
+                <div class="tab-content">
+                  <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
+                    <div class="list-group">
+                      <div class="container py-3 border-top justify-content-center">
+                        <figure class="figure">
+                          <img src="/resources/images/notif-empty.png" class="figure-img img-fluid">
+                          <figcaption class="figure-caption text-center fw-bold">Belum ada notifikasi apapun</figcaption>
+                        </figure>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="recent" role="tabpanel" aria-labelledby="recent-tab">
+                    <div class="list-group">
+                      <div class="container py-3 border-top justify-content-center">
+                        <figure class="figure">
+                          <img src="/resources/images/notif-empty.png" class="figure-img img-fluid">
+                          <figcaption class="figure-caption text-center fw-bold">Belum ada notifikasi apapun</figcaption>
+                        </figure>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- search Modal -->
       <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
@@ -226,7 +273,7 @@
     <h3 class="fw-bold">Tulis Karyamu</h3>
     <form id="formArtikel" class="mt-4" action="/artikel/<%= first_name %>/<%= id %>/updateArtikel" method="PUT" enctype="multipart/form-data">
       <!-- Hidden input for artikel ID -->
-      <input type="hidden" id="artikelId" name="artikelId" value="<%= artikelId %>" /> 
+      <input type="hidden" id="artikelId" name="artikelId" value="<%= artikelId %>" />
       <!-- Judul -->
       <div class="form-group mb-4">
         <input type="text" class="form-control form-control-lg" id="judul" name="judul" placeholder="Masukkan judul" />
@@ -414,10 +461,10 @@
         .replace(/&#34;/g, '"')
         .replace(/&#39;/g, "'");
 
-        let startIndex = getLinkArtikelRef.indexOf('"link":"') + 8;
-        let endIndex = getLinkArtikelRef.indexOf('",', startIndex);
-        const linkRef = getLinkArtikelRef.substring(startIndex, endIndex);
-        console.log("linkRef:", linkRef);
+      let startIndex = getLinkArtikelRef.indexOf('"link":"') + 8;
+      let endIndex = getLinkArtikelRef.indexOf('",', startIndex);
+      const linkRef = getLinkArtikelRef.substring(startIndex, endIndex);
+      console.log("linkRef:", linkRef);
 
       // deskripsi
       startIndex2 = getLinkArtikelRef.indexOf('"deskripsi":"') + 13;
@@ -432,13 +479,13 @@
       } catch (error) {
         console.error(error);
       }
-      
+
       // mengganti link dengan linkRef
       artikel[0].link = linkRef;
 
       // deskripsi
       artikel[0].deskripsi = deskripsi;
-      
+
       console.log("artikel:", artikel);
 
 
@@ -451,104 +498,104 @@
       // Mengisi nilai teks area link
       document.getElementById("link").innerHTML = artikel[0].link;
 
-// Menampilkan gambar artikel
-// For the image, you need to update the 'src' attribute of the image preview and show the image preview
-document.getElementById('imagePreview').classList.remove('d-none');
-document.querySelector('#imagePreview img').src = artikel[0].gambar_artikel;
-document.getElementById("dropzone").classList.add("d-none");
+      // Menampilkan gambar artikel
+      // For the image, you need to update the 'src' attribute of the image preview and show the image preview
+      document.getElementById('imagePreview').classList.remove('d-none');
+      document.querySelector('#imagePreview img').src = artikel[0].gambar_artikel;
+      document.getElementById("dropzone").classList.add("d-none");
 
-// For the 'kategori' field, you need to select the options that match the 'kategori' values in the 'artikel' object
-// Inisialisasi select2
-$('.kategori').select2();
+      // For the 'kategori' field, you need to select the options that match the 'kategori' values in the 'artikel' object
+      // Inisialisasi select2
+      $('.kategori').select2();
 
-// Dapatkan kategori dari artikel
-var kategoriArtikel = artikel[0].kategori.map(kat => kat.id);
+      // Dapatkan kategori dari artikel
+      var kategoriArtikel = artikel[0].kategori.map(kat => kat.id);
 
-// Atur nilai yang dipilih
-$('.kategori').val(kategoriArtikel).trigger('change');
+      // Atur nilai yang dipilih
+      $('.kategori').val(kategoriArtikel).trigger('change');
 
     });
   </script>
 
-<script>
-  const baseUrl = `<%= baseUrl %>`;
-  $(document).ready(function() {
-    $("#formArtikel").submit(function(event) {
-      event.preventDefault();
+  <script>
+    const baseUrl = `<%= baseUrl %>`;
+    $(document).ready(function() {
+      $("#formArtikel").submit(function(event) {
+        event.preventDefault();
 
-      // Mengambil nilai artikelId dari elemen HTML dengan ID artikelId (hidden input)
-      const artikelId = $("#artikelId").val(); // Ubah dari $("#artikel").val(); menjadi $("#artikelId").val();
+        // Mengambil nilai artikelId dari elemen HTML dengan ID artikelId (hidden input)
+        const artikelId = $("#artikelId").val(); // Ubah dari $("#artikel").val(); menjadi $("#artikelId").val();
 
-      // Membuat FormData untuk mengirim data
-      const formData = new FormData();
+        // Membuat FormData untuk mengirim data
+        const formData = new FormData();
 
-      // Mengambil nilai dari setiap elemen input yang diubah
-      const judul = $("#judul").val();
-      const deskripsi = $("#deskripsi").val();
-      const link = $("#link").val();
-      const gambar_artikel = $("#gambar_artikel")[0].files[0];
-      const kategoriId = $("#kategori").val();
+        // Mengambil nilai dari setiap elemen input yang diubah
+        const judul = $("#judul").val();
+        const deskripsi = $("#deskripsi").val();
+        const link = $("#link").val();
+        const gambar_artikel = $("#gambar_artikel")[0].files[0];
+        const kategoriId = $("#kategori").val();
 
-      // Menambahkan data yang diubah ke FormData
-      if (judul) formData.append("judul", judul);
-      if (deskripsi) formData.append("deskripsi", deskripsi);
-      if (link) formData.append("link", link);
-      if (gambar_artikel) formData.append("gambar_artikel", gambar_artikel);
-      if (kategoriId) formData.append("kategoriId", kategoriId);
+        // Menambahkan data yang diubah ke FormData
+        if (judul) formData.append("judul", judul);
+        if (deskripsi) formData.append("deskripsi", deskripsi);
+        if (link) formData.append("link", link);
+        if (gambar_artikel) formData.append("gambar_artikel", gambar_artikel);
+        if (kategoriId) formData.append("kategoriId", kategoriId);
 
-      // Validasi bahwa setidaknya satu bagian artikel yang akan diperbarui
-      if (!judul && !deskripsi && !link && !gambar_artikel && !kategoriId) {
-        alert("Please update at least one field.");
-        return;
-      }
+        // Validasi bahwa setidaknya satu bagian artikel yang akan diperbarui
+        if (!judul && !deskripsi && !link && !gambar_artikel && !kategoriId) {
+          alert("Please update at least one field.");
+          return;
+        }
 
-      const updateArtikelUrl = `${baseUrl}/api/v1/artikel/updateArtikel/${artikelId}`;
-      // Mengirim data ke server menggunakan permintaan PUT
-      $.ajax({
-        url: updateArtikelUrl,
-        type: "PUT",
-        headers: {
-          Authorization: `Bearer <%= token %>`,
-        },
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-          console.log("Data dari server (success):", data);
-          if (data.status) {
-            $("#tambahArtikelAlert")
-            $("#tambahArtikelAlert")
-            .append(
-              `<div class="alert alert-success" style="background-color: #28a745">${data.message}</div>`
-            );
+        const updateArtikelUrl = `${baseUrl}/api/v1/artikel/updateArtikel/${artikelId}`;
+        // Mengirim data ke server menggunakan permintaan PUT
+        $.ajax({
+          url: updateArtikelUrl,
+          type: "PUT",
+          headers: {
+            Authorization: `Bearer <%= token %>`,
+          },
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+            console.log("Data dari server (success):", data);
+            if (data.status) {
+              $("#tambahArtikelAlert")
+              $("#tambahArtikelAlert")
+                .append(
+                  `<div class="alert alert-success" style="background-color: #28a745">${data.message}</div>`
+                );
 
-            // setTimeout(function() {
-            //   const artikelUrl = `${baseUrl}/api/v1/search-artikel/search?artikelId=${artikelId}`;
-            //   window.location.href = artikelUrl; // Mengarahkan ke dasborad user
-            // }, 3000);
-          } else {
+              // setTimeout(function() {
+              //   const artikelUrl = `${baseUrl}/api/v1/search-artikel/search?artikelId=${artikelId}`;
+              //   window.location.href = artikelUrl; // Mengarahkan ke dasborad user
+              // }, 3000);
+            } else {
+              $("#tambahArtikelAlert").append(
+                `<div class="alert alert-danger"> ${data.message} Error: ${data.err}</div>`
+              );
+            }
+          },
+          error: function(xhr, status, error) {
+            const errorData = xhr.responseJSON ?
+              xhr.responseJSON :
+              "Failed to upload artikel. Please try again later.";
+            console.error("Upload artikel error:", errorData);
+            console.error("Data dari server (error):", errorData);
             $("#tambahArtikelAlert").append(
-              `<div class="alert alert-danger"> ${data.message} Error: ${data.err}</div>`
+              `<div class="alert alert-danger"> ${errorData.message}! &nbsp; Error: ${errorData.error}</div>`
             );
-          }
-        },
-        error: function(xhr, status, error) {
-          const errorData = xhr.responseJSON ?
-            xhr.responseJSON :
-            "Failed to upload artikel. Please try again later.";
-          console.error("Upload artikel error:", errorData);
-          console.error("Data dari server (error):", errorData);
-          $("#tambahArtikelAlert").append(
-            `<div class="alert alert-danger"> ${errorData.message}! &nbsp; Error: ${errorData.error}</div>`
-          );
-        },
-        complete: function() {
-          $("#loadingOverlay").addClass("d-none");
-        },
+          },
+          complete: function() {
+            $("#loadingOverlay").addClass("d-none");
+          },
+        });
       });
     });
-  });
-</script>
+  </script>
 
 
 </body>

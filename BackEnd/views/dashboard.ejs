@@ -37,7 +37,7 @@
           <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
             <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
           </svg>
-          <a href="" class="me-4 fs-3">
+          <a href="#" class="me-4 fs-3" data-bs-toggle="modal" data-bs-target="#notif">
             <i class="fa-regular fa-bell text-black"></i>
           </a>
           <a href="/profile/<%= first_name %>/<%= id %>">
@@ -66,6 +66,53 @@
                 </div>
               </div>
               <a id="loadMoreBtn" class="btn btn-primary d-none" href="#">Lihat Selengkapnya</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Notif-->
+        <div class="modal fade" id="notif" tabindex="-1" aria-labelledby="notifLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="notifLabel">Notifikasi</h4>
+                <button type="button" class="btn-close rounded-circle" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <ul class="nav nav-underline nav-fill" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link" id="all-tab" data-bs-toggle="tab" href="#all" role="tab" aria-controls="all">All</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="recent-tab" data-bs-toggle="tab" href="#recent" role="tab" aria-controls="recent">Recent</a>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content">
+                    <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
+                      <div class="list-group">
+                        <div class="container py-3 border-top justify-content-center">
+                          <figure class="figure">
+                            <img src="/resources/images/notif-empty.png" class="figure-img img-fluid">
+                            <figcaption class="figure-caption text-center fw-bold">Belum ada notifikasi apapun</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="recent" role="tabpanel" aria-labelledby="recent-tab">
+                      <div class="list-group">
+                        <div class="container py-3 border-top justify-content-center">
+                          <figure class="figure">
+                            <img src="/resources/images/notif-empty.png" class="figure-img img-fluid">
+                            <figcaption class="figure-caption text-center fw-bold">Belum ada notifikasi apapun</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
