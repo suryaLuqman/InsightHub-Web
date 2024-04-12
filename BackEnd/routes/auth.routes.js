@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const { login,deleteProfilePicture, registerUser,updateProfile, getUserProfile, registerAdmin,authenticateUser,registerSU , changePassword,forgotPassword, getAllUser } = require('../controller/auth.controllers');
+const { login,logout,deleteProfilePicture, registerUser,updateProfile, getUserProfile, registerAdmin,authenticateUser,registerSU , changePassword,forgotPassword, getAllUser } = require('../controller/auth.controllers');
 const { image } = require ('../libs/multer');
 
 router.post('/login', login);
+router.post('/logout', authenticateUser, logout);
 router.post('/register/user', registerUser);
 router.post('/register/su', registerSU);
 router.post('/register/admin', authenticateUser, registerAdmin);

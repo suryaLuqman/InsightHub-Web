@@ -160,6 +160,42 @@ const login = async (req, res, next) => {
   }
 };
 
+const logout = async (req, res, next) => {
+  try {
+    // Cek apakah session untuk pengguna ini sudah ada
+    let existingSession = await prisma.session.findUnique({
+      where: { sid: req.sessionID },
+    });
+
+    if (existingSession) {
+      // Jika session sudah ada, lakukan penghapusan
+      await prisma.session.delete({
+        where: { sid: req.sessionID },
+      });
+      console.log("Session deleted successfully");
+    }
+
+    // Hapus cookie session
+    req.session.destroy((err) => {
+      if (err) return next(err);
+
+      // Bersihkan cookie
+      res.clearCookie('connect.sid');
+
+      // Redirect atau kirim response sesuai kebutuhan Anda
+      res.status(200).json({
+        success: true,
+        message: "Logout success",
+        data: null,
+      });
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
 const registerUser = async (req, res, next) => {
   try {
     const { email, password, nama, no_hp, status } = req.body; // Tambahkan status di sini jika ada
@@ -793,6 +829,7 @@ const deleteProfilePicture = async (req, res, next) => {
 
 module.exports = {
   login,
+  logout,
   registerUser,
   registerAdmin,
   authenticateUser,
