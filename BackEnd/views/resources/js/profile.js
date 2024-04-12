@@ -283,6 +283,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   // Fungsi untuk menghapus artikel
   function deleteArtikel(articleId) {
+    $("#loadingOverlay").removeClass("d-none");
     $.ajax({
       url: `/api/v1/artikel/deleteArtikel/${articleId}`, // Menggunakan artikelId dari parameter fungsi
       type: "DELETE",
@@ -290,29 +291,73 @@ $(document).ready(function () {
         Authorization: `Bearer ${token}`,
       },
       success: function (data) {
-        console.log("Artikel berhasil dihapus:", data);
-        // Tambahkan logika untuk menangani respons dari server jika diperlukan
-        // Misalnya, memperbarui tampilan setelah artikel dihapus
+        console.log("Data dari server (success):", data);
+        $("#ProfileAlert")
+          .text(data.message)
+          .removeClass("d-none")
+          .removeClass("alert-danger")
+          .css("background-color", "#28a745");
+        setTimeout(function () {
+          //  reload halaman setelah 2 detik
+          window.location.reload();
+        }, 2000);
       },
       error: function (xhr, status, error) {
-        console.error("Gagal menghapus artikel:", error);
-        // Tambahkan logika untuk menangani kesalahan jika diperlukan
-        // Misalnya, menampilkan pesan kesalahan kepada pengguna
+        const errorData = xhr.responseJSON ? xhr.responseJSON : "Failed to Delete Artikel. Please try again later.";
+        console.error("Delete Artikel error:", errorData);
+        console.error("Data dari server (error):", errorData);
+        if (errorData.error) {
+          $("#ProfileAlert")
+            .html(
+              `<i class="fas fa-exclamation-triangle"></i> ${errorData.message} Error: ${errorData.error}`
+            )
+            .removeClass("d-none");
+          console.error("ini jalan if atas 1");
+        } else {
+          $("#ProfileAlert")
+            .html(
+              `<i class="fas fa-exclamation-triangle"></i> ${errorData.message}`
+            )
+            .removeClass("d-none");
+          console.error("ini jalan else bawah 1");
+        }
+      },
+      complete: function (xhr, success) {
+        if (success) {
+          setTimeout(function () {
+            // Hapus kelas 'd-none' untuk memunculkan spinner selama 3 detik jika berhasil
+            $("#loadingOverlay").removeClass("d-none");
+            setTimeout(function () {
+              $("#loadingOverlay").addClass("d-none");
+            }, 5000);
+          }, 0); // Timeout 0 ms agar dijalankan setelah penyelesaian AJAX
+        } else {
+          // Hapus kelas 'd-none' untuk memunculkan spinner selama 1 detik jika gagal
+          setTimeout(function () {
+            $("#loadingOverlay").removeClass("d-none");
+            setTimeout(function () {
+              $("#loadingOverlay").addClass("d-none");
+            }, 500);
+          }, 0);
+        }
       },
     });
   }
 
-  // Tambahkan event listener untuk tombol delete artikel
-  $(".delete-article").on("click", function (event) {
-    event.preventDefault(); // Hindari default action dari tag 'a' (yaitu, navigasi ke href)
-    // Ambil ID artikel dari atribut data pada tombol delete
-    const articleId = $(this).data("article-id");
-    // Konfirmasi pengguna sebelum menghapus artikel
-    if (confirm("Apakah Anda yakin ingin menghapus artikel ini?")) {
-      // Panggil fungsi deleteArtikel dengan ID artikel sebagai argumen
-      deleteArtikel(articleId); // Menggunakan articleId yang telah diperoleh
-    }
+  // Tambahkan event listener pada tombol hapus artikel
+  document.querySelectorAll('.delete-article').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const articleId = this.getAttribute('data-article-id');
+      const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+      modal.show();
+      document.getElementById('confirmDelete').addEventListener('click', function() {
+        // Lakukan penghapusan artikel di sini
+        console.log('Menghapus artikel dengan id: ' + articleId);
+        deleteArtikel(articleId);
+        // Tutup modal
+        modal.hide();
+      });
+    });
   });
 });
-
-
