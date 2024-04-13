@@ -24,6 +24,11 @@ const authenticateUser = (req, res, next) => {
 
   if (!token) return res.sendStatus(401);
 
+  // Periksa apakah token ada dalam daftar token yang sudah logout
+  if (loggedOutTokens.includes(token)) {
+    return res.status(401).json({ success: false, message: "Token has been logged out. Please log in again." });
+  }
+
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) return res.sendStatus(403);
 
@@ -31,6 +36,58 @@ const authenticateUser = (req, res, next) => {
     next();
   });
 };
+
+const loggedOutTokens = []; // Simpan token yang sudah logout di sini
+
+const logout = async (req, res, next) => {
+  try {
+    // Ambil token dari header authorization
+    const token = req.headers.authorization?.split(" ")[1];
+    if (token) {
+      // Tambahkan token ke daftar token yang sudah logout
+      loggedOutTokens.push(token);
+
+      // Hapus token dari sesi pengguna
+      const session = await prisma.session.findUnique({
+        where: {
+          sid: req.sessionID
+        }
+      });
+
+      if (session) {
+        // Hapus token dari sesi
+        const updatedSession = await prisma.session.update({
+          where: {
+            sid: req.sessionID
+          },
+          data: {
+            data: session.data.filter(item => item !== token)
+          }
+        });
+      }
+    }
+
+    // Hapus cookie session
+    req.session.destroy(async (err) => {
+      if (err) {
+        return next(err);
+      }
+
+      // Bersihkan cookie
+      res.clearCookie('connect.sid');
+
+      // Redirect atau kirim response sesuai kebutuhan Anda
+      res.status(200).json({
+        success: true,
+        message: "Logout success",
+        data: null,
+      });
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 const login = async (req, res, next) => {
   try {
@@ -154,40 +211,6 @@ const login = async (req, res, next) => {
         token: token,
         profile: profile,
       },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-const logout = async (req, res, next) => {
-  try {
-    // Cek apakah session untuk pengguna ini sudah ada
-    let existingSession = await prisma.session.findUnique({
-      where: { sid: req.sessionID },
-    });
-
-    if (existingSession) {
-      // Jika session sudah ada, lakukan penghapusan
-      await prisma.session.delete({
-        where: { sid: req.sessionID },
-      });
-      console.log("Session deleted successfully");
-    }
-
-    // Hapus cookie session
-    req.session.destroy((err) => {
-      if (err) return next(err);
-
-      // Bersihkan cookie
-      res.clearCookie('connect.sid');
-
-      // Redirect atau kirim response sesuai kebutuhan Anda
-      res.status(200).json({
-        success: true,
-        message: "Logout success",
-        data: null,
-      });
     });
   } catch (error) {
     next(error);
@@ -830,6 +853,7 @@ const deleteProfilePicture = async (req, res, next) => {
 module.exports = {
   login,
   logout,
+  loggedOutTokens,
   registerUser,
   registerAdmin,
   authenticateUser,
