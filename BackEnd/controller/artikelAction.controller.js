@@ -1,12 +1,19 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const prisma = require('../libs/prisma');
+const { logout, loggedOutTokens } = require('./auth.controllers');
 
 // Middleware untuk mengotentikasi pengguna
 function verifyToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];
   if (typeof bearerHeader !== 'undefined') {
     const bearerToken = bearerHeader.split(' ')[1];
+    if (loggedOutTokens.includes(bearerToken)) { // Memeriksa apakah token telah logout
+      return res.status(401).json({
+        success: false,
+        message: "Silahkan login ulang.",
+      });
+    }
     jwt.verify(bearerToken, process.env.JWT_SECRET, (err, authData) => {
       if (err) {
         res.status(403).json({
@@ -25,7 +32,6 @@ function verifyToken(req, res, next) {
     });
   }
 }
-
 
 
 // Controller untuk menyimpan artikel
