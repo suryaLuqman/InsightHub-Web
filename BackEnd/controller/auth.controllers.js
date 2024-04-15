@@ -26,7 +26,7 @@ const authenticateUser = (req, res, next) => {
 
   // Periksa apakah token ada dalam daftar token yang sudah logout
   if (loggedOutTokens.includes(token)) {
-    return res.status(401).json({ success: false, message: "Token has been logged out. Please log in again." });
+    return res.status(401).json({ success: false, message: "Silahkan login ulang." });
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {

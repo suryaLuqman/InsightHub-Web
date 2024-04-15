@@ -5,19 +5,16 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const prisma = require('../libs/prisma');
 const { createArtikelSchema } = require('../validation/artikel.validation');
+const authenticateUser = require('./auth.controllers');
 
-const authenticate = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader?.split(' ')[1];
 
-  if (!token) return res.sendStatus(401);
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return res.sendStatus(403);
-
-    req.user = decoded;
-    next();
-  });
+// Middleware untuk memeriksa apakah pengguna sudah logout
+const checkLogoutStatus = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (req.loggedOutTokens && req.loggedOutTokens.includes(token)) {
+    return res.status(401).json({ success: false, message: "Silahkan login ulang." });
+  }
+  next();
 };
 
 const createArtikel = async (req, res, next) => {
@@ -439,5 +436,6 @@ module.exports = {
   getAllArtikel,
   updateArtikel,
   deleteArtikel,
-  authenticate
+  authenticateUser,
+  checkLogoutStatus
 };
