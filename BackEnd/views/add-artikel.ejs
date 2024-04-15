@@ -42,6 +42,7 @@
         </a>
       </form>
 
+      <!-- Dropdown Menu -->
       <script>
         document.addEventListener("DOMContentLoaded", function() {
           // Dapatkan elemen yang akan dijadikan trigger
@@ -63,6 +64,7 @@
 
           // Tambahkan event listener untuk menampilkan/menyembunyikan dropdown
           triggerElement.addEventListener('click', function(e) {
+            e.preventDefault(); // Menonaktifkan aksi default link
             e.stopPropagation();
             dropdownElement.classList.toggle('show');
           });
