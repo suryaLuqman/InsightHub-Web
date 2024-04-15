@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
 const homeRoute = require('./views/routes/homeRoute');
+const adminHomeRoute = require('./views/routes/admin/admin.HomeRoute');
 const dashboardRoute = require('./views/routes/dashboardRoute');
 const profileRoute = require('./views/routes/profileRoute');
 const artikelRoute = require('./views/routes/Artikel.View.Routes');
@@ -49,6 +50,8 @@ app.use("/artikel",artikelRoute);
 app.use(homeRoute);
 app.use(dashboardRoute);
 app.use(profileRoute);
+
+app.use("/admin",adminHomeRoute);
 
 app.use('/api/v1', require('./routes/index.routes'));
 app.use((req, res, next) => {
