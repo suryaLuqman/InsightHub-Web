@@ -82,8 +82,27 @@
             // Tambahkan event listener untuk logout
             document.getElementById('logout-link').addEventListener('click', function(e) {
               e.preventDefault();
+              const token = `<%= token %>`
+              console.log("token",token);
               // Lakukan proses logout di sini
+              $.ajax({
+                url: '/api/v1/auth/logout',
+                type: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+                },
+                success: function() {
+                  // Redirect ke "/" ketika berhasil logout
+                  window.location.href = "/";
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                  // Handle any errors here
+                  console.error(textStatus, errorThrown);
+                }
+              });
             });
+
 
           })
         </script>
