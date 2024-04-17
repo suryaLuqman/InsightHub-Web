@@ -642,11 +642,12 @@
                 .append(
                   `<div class="alert alert-success" style="background-color: #28a745">${data.message}</div>`
                 );
-
-              // setTimeout(function() {
-              //   const artikelUrl = `${baseUrl}/api/v1/search-artikel/search?artikelId=${artikelId}`;
-              //   window.location.href = artikelUrl; // Mengarahkan ke dasborad user
-              // }, 3000);
+              // Ambil first_name dan id dari data token
+              const first_name = '<%= first_name %>';
+              const id = '<%= id %>';
+              // Redirect ke halaman dashboard
+              window.location.href = `/dashboard/${first_name}/${id}`;
+            
             } else {
               $("#tambahArtikelAlert").append(
                 `<div class="alert alert-danger"> ${data.message} Error: ${data.err}</div>`

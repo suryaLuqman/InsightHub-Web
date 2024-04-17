@@ -558,21 +558,24 @@
           processData: false,
           contentType: false,
           success: function(data) {
-            console.log("Data dari server (success):", data);
-            if (data.status) {
-              $("#tambahArtikelAlert")
-                .append(
-                  `<div class="alert alert-success">${data.message}</div>`
-                );
-              setTimeout(function() {
-                window.location.href = "/dashboard"; // Mengarahkan ke dasborad user
-              }, 3000);
-            } else {
-              $("#tambahArtikelAlert").append(
-                `<div class="alert alert-danger"> ${data.message} Error: ${data.err}</div>`
-              );
-            }
-          },
+  console.log("Data dari server (success):", data);
+  if (data.status) {
+    $("#tambahArtikelAlert")
+      .append(
+        `<div class="alert alert-success" style="background-color: #28a745">${data.message}</div>`
+      );
+    // Ambil first_name dan id dari data token
+    const first_name = '<%= first_name %>';
+    const id = '<%= id %>';
+    // Redirect ke halaman dashboard
+    window.location.href = `/dashboard/${first_name}/${id}`;
+  } else {
+    $("#tambahArtikelAlert").append(
+      `<div class="alert alert-danger"> ${data.message} Error: ${data.err}</div>`
+    );
+  }
+},
+
           error: function(xhr, status, error) {
             const errorData = xhr.responseJSON ?
               xhr.responseJSON :
