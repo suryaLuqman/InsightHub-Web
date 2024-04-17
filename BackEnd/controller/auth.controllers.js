@@ -54,7 +54,7 @@ const logout = async (req, res, next) => {
         }
       });
 
-      if (session) {
+      if (session && session.data) {
         // Hapus token dari sesi
         const updatedSession = await prisma.session.update({
           where: {
@@ -87,6 +87,7 @@ const logout = async (req, res, next) => {
     next(error);
   }
 };
+
 
 
 const login = async (req, res, next) => {

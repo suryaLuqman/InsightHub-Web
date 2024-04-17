@@ -76,29 +76,42 @@
             }
           });
 
-          // Tambahkan event listener untuk logout
           document.getElementById('logout-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            const token = `<%= token %>`
-            console.log("token", token);
-            // Lakukan proses logout di sini
-            $.ajax({
-              url: '/api/v1/auth/logout',
-              type: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-              },
-              success: function() {
-                // Redirect ke "/" ketika berhasil logout
-                window.location.href = "/";
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                // Handle any errors here
-                console.error(textStatus, errorThrown);
-              }
-            });
-          });
+  e.preventDefault();
+  const token = `<%= token %>`
+  
+  // Cek apakah token ada
+  if (!token) {
+    console.error('Token tidak ditemukan. Silahkan login terlebih dahulu.');
+    return;
+  }
+
+  console.log("token",token);
+  // Lakukan proses logout di sini
+  $.ajax({
+    url: '/api/v1/auth/logout', // Hanya endpoint
+    type: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    success: function(response) {
+      // Redirect ke "/" ketika berhasil logout
+      window.location.href = "/";
+      console.log(response.message); // Tampilkan pesan sukses
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      // Jika token tidak valid, tampilkan pesan error
+      if (jqXHR.status === 401 || jqXHR.status === 403) {
+        console.error('Token tidak valid atau sudah kadaluarsa. Silahkan login ulang.');
+      } else {
+        // Handle other errors here
+        console.error('Error:', textStatus, ', Details:', errorThrown);
+        console.error('Response body:', jqXHR.responseText);
+      }
+    }
+  });
+});
 
         })
       </script>
