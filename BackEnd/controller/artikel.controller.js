@@ -356,7 +356,6 @@ const deleteArtikel = async (req, res, next) => {
         id: artikelId,
       },
       include: {
-        author: true,
         savedArtikels: true, // Memuat relasi dengan savedArtikels
         ratings: true,
         reports: true,
@@ -382,7 +381,7 @@ const deleteArtikel = async (req, res, next) => {
 
     // Hapus semua entri yang terkait dari tabel savedArtikels jika data tersedia
     if (artikel.savedArtikels && artikel.savedArtikels.length > 0) {
-      await prisma.savedArtikels.deleteMany({
+      await prisma.savedArtikel.deleteMany({
         where: {
           artikelId: artikelId,
         },
@@ -428,6 +427,7 @@ const deleteArtikel = async (req, res, next) => {
     });
   }
 };
+
 
 
 

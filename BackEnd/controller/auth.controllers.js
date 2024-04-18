@@ -18,55 +18,84 @@ const {
 } = require("../validation/auth.validations");
 const { Console } = require("console");
 
-const authenticateUser = (req, res, next) => {
+const authenticateUser = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(" ")[1];
 
   if (!token) return res.sendStatus(401);
 
-  // Periksa apakah token ada dalam daftar token yang sudah logout
+  // Verifikasi apakah token ada dalam daftar token yang sudah logout
   if (loggedOutTokens.includes(token)) {
     return res.status(401).json({ success: false, message: "Silahkan login ulang." });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return res.sendStatus(403);
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    if (err) {
+      if (err.name === 'TokenExpiredError') {
+        return res.status(401).json({ success: false, message: "Token telah kedaluwarsa." });
+      }
+      return res.sendStatus(403);
+    }
 
-    req.user = decoded;
-    next();
+    try {
+      // Cek apakah sesi pengguna masih tersedia
+      if (!req.session) {
+        return res.status(401).json({ success: false, message: "Sesi pengguna tidak ditemukan." });
+      }
+
+      // Ambil data sesi pengguna dari database
+      const session = await prisma.session.findFirst({
+        where: {
+          userId: decoded.userId, // Memeriksa apakah userId di session sesuai dengan userId yang di-decode dari token
+          sid: req.session.sid // Memeriksa apakah sid di session sama dengan sid yang disimpan dalam database
+        }
+      });
+
+      if (!session) {
+        return res.status(401).json({ success: false, message: "Sesi pengguna tidak valid." });
+      }
+
+      req.user = decoded;
+      next();
+    } catch (error) {
+      console.error("Error during user authentication:", error);
+      return res.sendStatus(500);
+    }
   });
 };
+
+
 
 const loggedOutTokens = []; // Simpan token yang sudah logout di sini
 
 const logout = async (req, res, next) => {
   try {
-    // Ambil token dari header authorization
     const token = req.headers.authorization?.split(" ")[1];
     if (token) {
       // Tambahkan token ke daftar token yang sudah logout
       loggedOutTokens.push(token);
 
-      // Hapus token dari sesi pengguna
-      const session = await prisma.session.findUnique({
+      // Cari sesi pengguna berdasarkan userId
+      const session = await prisma.session.findFirst({
         where: {
-          sid: req.sessionID
+          userId: req.session.userId // Menggunakan userId dari sesi yang disimpan saat login
         }
       });
 
-      if (session && session.data) {
-        // Hapus token dari sesi
-        const updatedSession = await prisma.session.update({
+      if (session) {
+        console.log("Found session:", session);
+        console.log("Session sid before deletion:", session.sid);
+        // Hapus sesi jika ditemukan
+        await prisma.session.delete({
           where: {
-            sid: req.sessionID
-          },
-          data: {
-            data: session.data.filter(item => item !== token)
+            sid: session.sid
           }
         });
+        console.log("Session deleted:", session);
+      } else {
+        console.log("Session not found for userId:", req.session.userId);
       }
     }
-
     // Hapus cookie session
     req.session.destroy(async (err) => {
       if (err) {
@@ -84,11 +113,10 @@ const logout = async (req, res, next) => {
       });
     });
   } catch (error) {
+    console.error("Error during logout:", error);
     next(error);
   }
 };
-
-
 
 const login = async (req, res, next) => {
   try {

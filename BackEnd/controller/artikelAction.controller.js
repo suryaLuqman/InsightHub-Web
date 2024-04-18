@@ -14,15 +14,37 @@ function verifyToken(req, res, next) {
         message: "Silahkan login ulang.",
       });
     }
-    jwt.verify(bearerToken, process.env.JWT_SECRET, (err, authData) => {
+    jwt.verify(bearerToken, process.env.JWT_SECRET, async (err, authData) => {
       if (err) {
         res.status(403).json({
           success: false,
           message: "Invalid token",
         });
       } else {
-        req.user = authData;
-        next();
+        try {
+          // Cek apakah sesi pengguna masih tersedia
+          if (!req.session) {
+            return res.status(401).json({ success: false, message: "Sesi pengguna tidak ditemukan." });
+          }
+
+          // Ambil data sesi pengguna dari database
+          const session = await prisma.session.findFirst({
+            where: {
+              userId: authData.userId, // Memeriksa apakah userId di session sesuai dengan userId yang di-decode dari token
+              sid: req.session.sid // Memeriksa apakah sid di session sama dengan sid yang disimpan dalam database
+            }
+          });
+
+          if (!session) {
+            return res.status(401).json({ success: false, message: "Sesi pengguna tidak valid." });
+          }
+
+          req.user = authData;
+          next();
+        } catch (error) {
+          console.error("Error during user authentication:", error);
+          return res.sendStatus(500);
+        }
       }
     });
   } else {
@@ -32,6 +54,7 @@ function verifyToken(req, res, next) {
     });
   }
 }
+
 
 
 // Controller untuk menyimpan artikel
