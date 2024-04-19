@@ -93,7 +93,7 @@ const createArtikel = async (req, res, next) => {
 
     const artikel = await prisma.artikel.create({
       data: {
-        author: { connect: { id: req.user.id } },
+        author: { connect: { id: req.user.id } }, // Menghubungkan artikel dengan penulis berdasarkan ID pengguna
         judul,
         deskripsi,
         link,
@@ -103,6 +103,7 @@ const createArtikel = async (req, res, next) => {
       },
       include: {
         kategori: true, 
+        author: true // Sertakan informasi penulis dalam respons
       },
     });
 
@@ -113,14 +114,24 @@ const createArtikel = async (req, res, next) => {
         data: null,
       });
     }
-
+    const authorInfo = await prisma.userProfile.findUnique({
+      where: {
+        id: req.user.id,
+      },
+      select: {
+        first_name: true,
+        profile_picture: true
+        // Tambahkan properti lainnya seperti last_name jika diperlukan
+      },
+    });
     return res.status(200).json({
       status: true,
       message: 'Article created successfully',
       data: { 
         artikel: {
           ...artikel,
-          kategoriId: existingKategori.map(kategori => kategori.id) 
+          kategoriId: existingKategori.map(kategori => kategori.id),
+          author: authorInfo 
         }
       },
     });
@@ -189,7 +200,15 @@ const updateArtikel = async (req, res, next) => {
       });
     }
 
-
+    // Ambil informasi penulis
+    const authorInfo = await prisma.userProfile.findUnique({
+      where: {
+        id: req.user.id
+      },
+      select: {
+        first_name: true // Tambahkan properti lain jika diperlukan
+      }
+    });
     // Ambil artikel yang ada berdasarkan artikelId
     const existingArtikel = await prisma.artikel.findUnique({
       where: { id: parseInt(artikelId) },
@@ -334,7 +353,8 @@ const updateArtikel = async (req, res, next) => {
       data: { 
         artikel: {
           ...artikel,
-          kategoriId: artikel.kategori.map(kategori => kategori.id) // Menambahkan kategoriId ke dalam data artikel
+          kategoriId: artikel.kategori.map(kategori => kategori.id),
+          author: authorInfo // Menambahkan kategoriId ke dalam data artikel
         }
       },
     });

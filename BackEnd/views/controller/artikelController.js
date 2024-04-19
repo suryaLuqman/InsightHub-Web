@@ -282,9 +282,25 @@ exports.getViewArtikelPage = async (req, res) => {
         const userProfile = await getUserProfile.getUserProfile(token);
         console.log("userProfile:", userProfile);
         console.log("artikelData:", artikelData);
-        const first_name = userProfile.data.userProfile.first_name;
+        
+
+         // Mengambil informasi penulis dari artikel
+    const authorId = artikelData[0].author.id; // Mengambil ID penulis dari artikel
+    const authorInfo = await prisma.userProfile.findUnique({ // Mengambil informasi penulis berdasarkan ID penulis
+      where: {
+        id: authorId,
+      },
+      select: {
+        first_name: true, // Mengambil first_name penulis
+        profile_picture: true,
+        // Jika perlu, tambahkan properti lainnya seperti last_name
+      },
+    });
+        
+
+
         const id = userProfile.data.userProfile.id;
-        const status = userProfile.data.userProfile.status;
+        // const status = userProfile.data.userProfile.status;
         const ratings = userProfile.data.ratings;
         const reports = userProfile.data.reports;
 
@@ -327,9 +343,10 @@ exports.getViewArtikelPage = async (req, res) => {
         // If there are articles, send article data to view
         return res.render("viewArtikel", {
           title: "View Artikel - InsightHub",
-          first_name: first_name,
+          first_name: authorInfo.first_name, 
           id: id,
-          status: status,
+          profile_picture: authorInfo.profile_picture, // Mengirim URL foto profil penulis ke tampilan
+          status: "penulis", 
           token: token,
           artikel: artikelData,
           kategori: dataKategori,
@@ -340,9 +357,10 @@ exports.getViewArtikelPage = async (req, res) => {
         console.log("Token not found");
         return res.render("viewArtikel", {
           title: "View Artikel - InsightHub",
-          first_name: "user",
+          first_name: authorInfo.first_name, 
           id: null,
-          status: "pembaca",
+          profile_picture: authorInfo.profile_picture, // Mengirim URL foto profil penulis ke tampilan
+          status: "penulis",
           token: null,
           artikel: artikelData,
           kategori: dataKategori,
@@ -352,9 +370,10 @@ exports.getViewArtikelPage = async (req, res) => {
       console.log("Cookie not found");
       return res.render("viewArtikel", {
         title: "View Artikel - InsightHub",
-        first_name: "user",
+        first_name: authorInfo.first_name, 
         id: null,
-        status: "pembaca",
+        profile_picture: authorInfo.profile_picture, // Mengirim URL foto profil penulis ke tampilan
+        status: "penulis",
         token: null,
         artikel: artikelData,
         kategori: dataKategori,

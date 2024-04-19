@@ -41,7 +41,7 @@
             <i class="fa-regular fa-bell text-black"></i>
           </a>
           <a href="/profile/<%= first_name %>/<%= id %>">
-            <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
+            <img id="profileImage" src="<%= profile.data.userProfile.profile_picture || '/resources/images/user.jpg' %>" alt="Profile Image" width="50" height="50" class="rounded" />
           </a>
         </form>
 
@@ -369,7 +369,7 @@
             <div class="profile ms-5">
               <div class="row">
                 <div class="col-2">
-                  <img src="/resources/images/hero.png" width="50" height="50" class="rounded" alt="" />
+                  <img id="profileImage" src="<%= profile.data.userProfile.profile_picture || '/resources/images/user.jpg' %>" alt="Profile Image" width="50" height="50" class="rounded" />
                 </div>
                 <div class="col-8">
                   <p style="margin-top: 0 !important;margin-bottom: 0 !important;">

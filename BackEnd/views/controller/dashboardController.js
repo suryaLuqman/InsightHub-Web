@@ -43,12 +43,21 @@ exports.dashboard = async (req, res) => {
     const baseUrl = process.env.API;
     const artikelUrl = `${baseUrl}/api/v1/artikel/get-all`;
     const kategoriUrl = `${baseUrl}/api/v1/kategori/get-all`;
+    const profileUrl = `${baseUrl}/api/v1/auth/profile`; // Tambahkan URL untuk mengambil profil
 
-    const [artikelResponse, kategoriResponse] = await Promise.all([
-      axios.get(artikelUrl),
-      axios.get(kategoriUrl),
-    ]);
+    // Mengambil data profil, artikel, dan kategori dari API secara bersamaan
+    const [profileResponse, artikelResponse, kategoriResponse] =
+      await Promise.all([
+        axios.get(profileUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        axios.get(artikelUrl),
+        axios.get(kategoriUrl),
+      ]);
 
+    const profileData = profileResponse.data;
     const artikelData = artikelResponse.data;
     const kategoriData = kategoriResponse.data;
    //  console.log("artikelData:", artikelData);
@@ -65,6 +74,7 @@ exports.dashboard = async (req, res) => {
         token: token,
         artikel: artikelData,
         kategori: kategoriData,
+        profile: profileData
       });
     } else {
       console.log("no articles found.");
@@ -77,6 +87,7 @@ exports.dashboard = async (req, res) => {
         token: token,
         artikel: artikelData,
         kategori: kategoriData,
+        profile: profileData
       });
     }
   } catch (error) {
