@@ -426,6 +426,13 @@ exports.updateArtikelPage = async (req, res) => {
     const responseArtikel = await axios.get(artikel);
     // console.log(responseArtikel.data.data);
     const dataArtikel = responseArtikel.data.data;
+    const profileUrl = `${baseUrl}/api/v1/auth/profile`;
+    const profileResponse = await axios.get(profileUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const profileData = profileResponse.data;
 
     // // Get Artikel by Id
     // console.log("artikelId : ",artikelId);
@@ -457,6 +464,7 @@ exports.updateArtikelPage = async (req, res) => {
       artikel: dataArtikel,
       artikelbyID:dataArtikelID,
       artikelId: artikelId,
+      profile:profileData,
       baseUrl: process.env.API,
     });
   } catch (error) {
