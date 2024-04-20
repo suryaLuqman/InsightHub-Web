@@ -41,6 +41,13 @@ exports.getArtikelPage = async (req, res) => {
     const [kategoriResponse] = await Promise.all([axios.get(kategoriUrl)]);
 
     const kategoriData = kategoriResponse.data;
+    const profileUrl = `${baseUrl}/api/v1/auth/profile`;
+    const profileResponse = await axios.get(profileUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const profileData = profileResponse.data;
 
     // artikel
     const endpointArtikel = "/api/v1/artikel/get-all"; // End point yang ingin Anda ambil
@@ -58,6 +65,7 @@ exports.getArtikelPage = async (req, res) => {
       token: token,
       kategori: kategoriData,
       artikel: dataArtikel,
+      profile:profileData,
       baseUrl: process.env.API,
     });
   } catch (error) {
