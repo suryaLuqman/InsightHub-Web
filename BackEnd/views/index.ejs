@@ -275,7 +275,7 @@
         <div class="row">
           <div class="col-12">
             <span class="fs-3 fw-semibold">Kumpulan Artikel</span>
-            <a class="float-end text-decoration-none text-black" href="">Lihat lebih banyak Artikel</a>
+            <a class="float-end text-decoration-none text-black" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalRegister">Lihat lebih banyak Artikel</a>
           </div>
         </div>
         <div class="row mt-5">
@@ -660,6 +660,23 @@ function passwordShowHideRegister() {
         }
       });
     }
+// Fungsi untuk menutup modal dan menghapus backdrop secara manual
+function closeModalAndBackdrop(modalId) {
+  // Menutup modal
+  $(modalId).modal('hide');
+  // Menghapus backdrop
+  $('.modal-backdrop').remove();
+}
+
+// Menambahkan event handler untuk tombol close pada modal login
+$('#modalLogin .btn-close').click(function() {
+  closeModalAndBackdrop('#modalLogin');
+});
+
+// Menambahkan event handler untuk menangani penutupan modal login
+$('#modalLogin').on('hidden.bs.modal', function (e) {
+  closeModalAndBackdrop('#modalLogin');
+});
 
     // register
     function registerUser() {
@@ -856,7 +873,22 @@ function passwordShowHideRegister() {
 
       });
     }
+    function closeModalAndBackdrop() {
+  // Menutup modal
+  $('#modalRegister').modal('hide');
+  // Menghapus backdrop
+  $('.modal-backdrop').remove();
+}
 
+// Menambahkan event handler untuk tombol close pada modal register
+$('#modalRegister .btn-close').click(function() {
+  closeModalAndBackdrop();
+});
+
+// Menambahkan event handler untuk menangani penutupan modal register
+$('#modalRegister').on('hidden.bs.modal', function (e) {
+  closeModalAndBackdrop();
+});
     function forgotPassword() {
       const email = $("#inputEmail").val().trim(); // Menggunakan ID yang sesuai dengan elemen input
 
